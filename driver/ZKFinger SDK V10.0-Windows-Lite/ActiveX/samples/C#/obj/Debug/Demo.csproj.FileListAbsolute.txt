@@ -1,0 +1,4 @@
+E:\全部安装包\NEW\版本发布\新ZKFinger SDK\20170320\ZKFinger SDK 5.3\Pro\ActiveX\samples\C#\bin\Debug\demo.exe.config
+E:\全部安装包\NEW\版本发布\新ZKFinger SDK\20170320\ZKFinger SDK 5.3\Pro\ActiveX\samples\C#\obj\Debug\Interop.ZKFPEngXControl.dll
+E:\全部安装包\NEW\版本发布\新ZKFinger SDK\20170320\ZKFinger SDK 5.3\Pro\ActiveX\samples\C#\obj\Debug\AxInterop.ZKFPEngXControl.dll
+E:\全部安装包\NEW\版本发布\新ZKFinger SDK\20170320\ZKFinger SDK 5.3\Pro\ActiveX\samples\C#\obj\Debug\Demo.csproj.ResolveComReference.cache
