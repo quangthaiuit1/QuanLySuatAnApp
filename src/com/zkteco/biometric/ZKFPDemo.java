@@ -2,7 +2,6 @@ package com.zkteco.biometric;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -39,17 +38,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
-import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import lixco.com.entity.FoodNhaAn;
 import lixco.com.entity.OrderFood;
@@ -97,6 +89,7 @@ public class ZKFPDemo extends JFrame {
 	JLabel labelThongbao;
 	JTextArea textAreaTenMonAn;
 	JLabel labelTenMonAnLarge;
+	JTextArea textAreaTenMonAnLarge;
 
 	JLabel labelName1;
 	JLabel labelName2;
@@ -106,9 +99,12 @@ public class ZKFPDemo extends JFrame {
 	JLabel labelHinhNV2;
 	JLabel labelHinhNV3;
 
-	JLabel labelTenMonAn1;
-	JLabel labelTenMonAn2;
-	JLabel labelTenMonAn3;
+//	JLabel labelTenMonAn1;
+//	JLabel labelTenMonAn2;
+//	JLabel labelTenMonAn3;
+	JTextArea textAreaTenMonAn1;
+	JTextArea textAreaTenMonAn2;
+	JTextArea textAreaTenMonAn3;
 
 	JPanel panelHinhNV1;
 	JPanel panelHinhNV2;
@@ -196,7 +192,7 @@ public class ZKFPDemo extends JFrame {
 		labelMaThe = new JLabel("Mã thẻ", JLabel.CENTER);
 		this.add(labelMaThe);
 		labelMaThe.setBounds(30, heightFirst + nRsize, widthJComponentLeft, heightJComponentLeft);
-		labelMaThe.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
+//		labelMaThe.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
 
 //		textAreaTheTu = new JTextArea();
 //		this.add(textAreaTheTu);
@@ -233,29 +229,6 @@ public class ZKFPDemo extends JFrame {
 //			}
 //		});
 
-//		textAreaTheTu.addAncestorListener(new AncestorListener() {
-//			@Override
-//			public void ancestorRemoved(AncestorEvent pEvent) {
-//				System.out.println("Thai");
-//			}
-//
-//			@Override
-//			public void ancestorMoved(AncestorEvent pEvent) {
-//
-//			}
-//
-//			@Override
-//			public void ancestorAdded(AncestorEvent pEvent) {
-//				// TextField is added to its parent => request focus in Event Dispatch Thread
-//				SwingUtilities.invokeLater(new Runnable() {
-//					@Override
-//					public void run() {
-//						textAreaTheTu.requestFocusInWindow();
-//					}
-//				});
-//			}
-//		});
-
 //		textAreaTheTu.getDocument().addDocumentListener(new DocumentListener() {
 //
 //			@Override
@@ -286,7 +259,7 @@ public class ZKFPDemo extends JFrame {
 		this.add(labelThongbao);
 		labelThongbao.setBounds(30, heightFirst + heightJComponentLeft * 2 + nRsize, widthJComponentLeft,
 				heightJComponentLeft);
-		labelThongbao.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
+//		labelThongbao.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
 		// thong bao
 		textArea = new JTextArea();
 		this.add(textArea);
@@ -299,7 +272,7 @@ public class ZKFPDemo extends JFrame {
 		this.add(labelMaNV);
 		labelMaNV.setBounds(30, heightFirst + heightJComponentLeft * 4 + nRsize, widthJComponentLeft,
 				heightJComponentLeft);
-		labelMaNV.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
+//		labelMaNV.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
 
 		textAreaMaNV = new JTextArea();
 		this.add(textAreaMaNV);
@@ -311,7 +284,7 @@ public class ZKFPDemo extends JFrame {
 		this.add(labelTenNV);
 		labelTenNV.setBounds(30, heightFirst + heightJComponentLeft * 6 + nRsize, widthJComponentLeft,
 				heightJComponentLeft);
-		labelTenNV.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
+//		labelTenNV.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
 
 		textAreaTenNV = new JTextArea();
 		this.add(textAreaTenNV);
@@ -323,7 +296,7 @@ public class ZKFPDemo extends JFrame {
 		this.add(labelPhongban);
 		labelPhongban.setBounds(30, heightFirst + heightJComponentLeft * 8 + nRsize, widthJComponentLeft,
 				heightJComponentLeft);
-		labelPhongban.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
+//		labelPhongban.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
 
 		textAreaPhongban = new JTextArea();
 		this.add(textAreaPhongban);
@@ -335,7 +308,7 @@ public class ZKFPDemo extends JFrame {
 		this.add(labelNgay);
 		labelNgay.setBounds(30, heightFirst + heightJComponentLeft * 10 + nRsize, widthJComponentLeft,
 				heightJComponentLeft);
-		labelNgay.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
+//		labelNgay.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
 
 		textAreaNgay = new JTextArea();
 		this.add(textAreaNgay);
@@ -353,7 +326,7 @@ public class ZKFPDemo extends JFrame {
 //		togglebtnKhongQuetVT.setBackground(Color.green);
 
 		int marginLeftJComponentHinhNho = 340;
-		int heightFirstJComponentHinhNho = 450 + nRsize + heightJComponentLeft + 10;
+		int heightFirstJComponentHinhNho = 450 + nRsize + heightJComponentLeft + 50;
 
 		labelName1 = new JLabel();
 		this.add(labelName1);
@@ -373,15 +346,19 @@ public class ZKFPDemo extends JFrame {
 		btnImage1 = new JButton();
 		this.add(btnImage1);
 		btnImage1.setBounds(marginLeftJComponentHinhNho - 10,
-				heightFirstJComponentHinhNho + heightJComponentLeft + 30 + heightHinhNhanVien, heightHinhMonAn,
+				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien, heightHinhMonAn,
 				widthHinhMonAn);
 
-		labelTenMonAn1 = new JLabel();
-		this.add(labelTenMonAn1);
-		labelTenMonAn1.setBounds(marginLeftJComponentHinhNho - 10,
-				heightFirstJComponentHinhNho + heightJComponentLeft + 30 + heightHinhNhanVien + heightHinhMonAn - 20,
-				heightHinhMonAn, 30);
-		labelTenMonAn1.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
+		textAreaTenMonAn1 = new JTextArea();
+		this.add(textAreaTenMonAn1);
+		textAreaTenMonAn1.setBounds(marginLeftJComponentHinhNho - 10,
+				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien + heightHinhMonAn - 20,
+				heightHinhMonAn, 50);
+		textAreaTenMonAn1.setLineWrap(true);
+		textAreaTenMonAn1.setWrapStyleWord(true);
+		textAreaTenMonAn1.setOpaque(false);
+		textAreaTenMonAn1.setEditable(false);
+		textAreaTenMonAn1.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
 
 		// width giua cac hinh nhan vien
 		int widthGiuaHinhNhanVien = 170;
@@ -399,15 +376,19 @@ public class ZKFPDemo extends JFrame {
 		btnImage2 = new JButton();
 		this.add(btnImage2);
 		btnImage2.setBounds(marginLeftJComponentHinhNho + widthHinhMonAn + widthGiuaHinhNhanVien,
-				heightFirstJComponentHinhNho + heightJComponentLeft + 30 + heightHinhNhanVien, heightHinhMonAn,
+				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien, heightHinhMonAn,
 				widthHinhMonAn);
 
-		labelTenMonAn2 = new JLabel();
-		this.add(labelTenMonAn2);
-		labelTenMonAn2.setBounds(marginLeftJComponentHinhNho + widthHinhMonAn + widthGiuaHinhNhanVien,
-				heightFirstJComponentHinhNho + heightJComponentLeft + 30 + heightHinhNhanVien + heightHinhMonAn - 20,
-				heightHinhMonAn, 30);
-		labelTenMonAn2.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
+		textAreaTenMonAn2 = new JTextArea();
+		this.add(textAreaTenMonAn2);
+		textAreaTenMonAn2.setBounds(marginLeftJComponentHinhNho + widthHinhMonAn + widthGiuaHinhNhanVien,
+				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien + heightHinhMonAn - 20,
+				heightHinhMonAn, 50);
+		textAreaTenMonAn2.setLineWrap(true);
+		textAreaTenMonAn2.setWrapStyleWord(true);
+		textAreaTenMonAn2.setOpaque(false);
+		textAreaTenMonAn2.setEditable(false);
+		textAreaTenMonAn2.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
 
 		labelName3 = new JLabel();
 		this.add(labelName3);
@@ -423,14 +404,18 @@ public class ZKFPDemo extends JFrame {
 		btnImage3 = new JButton();
 		this.add(btnImage3);
 		btnImage3.setBounds(marginLeftJComponentHinhNho + widthHinhMonAn * 2 + widthGiuaHinhNhanVien * 2,
-				heightFirstJComponentHinhNho + heightJComponentLeft + 30 + heightHinhNhanVien, heightHinhMonAn,
+				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien, heightHinhMonAn,
 				widthHinhMonAn);
-		labelTenMonAn3 = new JLabel();
-		this.add(labelTenMonAn3);
-		labelTenMonAn3.setBounds(marginLeftJComponentHinhNho + widthHinhMonAn * 2 + widthGiuaHinhNhanVien * 2,
-				heightFirstJComponentHinhNho + heightJComponentLeft + 30 + heightHinhNhanVien + heightHinhMonAn - 20,
-				heightHinhMonAn, 30);
-		labelTenMonAn3.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
+		textAreaTenMonAn3 = new JTextArea();
+		this.add(textAreaTenMonAn3);
+		textAreaTenMonAn3.setBounds(marginLeftJComponentHinhNho + widthHinhMonAn * 2 + widthGiuaHinhNhanVien * 2,
+				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien + heightHinhMonAn - 20,
+				heightHinhMonAn, 50);
+		textAreaTenMonAn3.setLineWrap(true);
+		textAreaTenMonAn3.setWrapStyleWord(true);
+		textAreaTenMonAn3.setOpaque(false);
+		textAreaTenMonAn3.setEditable(false);
+		textAreaTenMonAn3.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
 
 //		btnEnroll = new JButton("Enroll");
 //		this.add(btnEnroll);
@@ -476,8 +461,11 @@ public class ZKFPDemo extends JFrame {
 //		group.add(radioZK);
 		// For End
 
+		// khoi tao chieu cao tu hinh lon
+		int heightImageLarge = 450;
+
 		btnImg = new JButton();
-		btnImg.setBounds(420, 5, widthHinhLon, heightHinhLon);
+		btnImg.setBounds(420, nRsize + 80, widthHinhLon, heightHinhLon);
 //		btnImg.setDefaultCapable(false);
 		this.add(btnImg);
 
@@ -485,14 +473,21 @@ public class ZKFPDemo extends JFrame {
 //		textAreaTenMonAn.setBounds(330, 360, 500, 30);
 //		this.add(textAreaTenMonAn);
 
-		// khoi tao chieu cao tu hinh lon
-		int heightImageLarge = 450;
+//		labelTenMonAnLarge = new JLabel("");
+//		labelTenMonAnLarge.setBounds(420, 9, 900, 60);
+//		labelTenMonAnLarge.setFont(new Font("Times New Roman", Font.BOLD, 38));
+//		labelTenMonAnLarge.setForeground(new Color(186, 10, 10));
 
-		labelTenMonAnLarge = new JLabel("", JLabel.CENTER);
-		labelTenMonAnLarge.setBounds(340, heightImageLarge + nRsize, 900, heightJComponentLeft);
-		labelTenMonAnLarge.setFont(new Font("Times New Roman", Font.BOLD, 35));
-//		labelTenMonAnLarge.setForeground(new Color(221, 175, 59));
-		this.add(labelTenMonAnLarge);
+		textAreaTenMonAnLarge = new JTextArea("");
+		textAreaTenMonAnLarge.setBounds(420, 9, 650, 90);
+		textAreaTenMonAnLarge.setLineWrap(true);
+		textAreaTenMonAnLarge.setWrapStyleWord(true);
+		textAreaTenMonAnLarge.setOpaque(false);
+		textAreaTenMonAnLarge.setEditable(false);
+		textAreaTenMonAnLarge.setFont(new Font("Times New Roman", Font.BOLD, 38));
+//		textAreaTenMonAnLarge.setForeground(new Color(186, 10, 10));
+		textAreaTenMonAnLarge.setForeground(Color.BLACK);
+		this.add(textAreaTenMonAnLarge);
 
 		// image he thong chua san sang
 		String pathImageTest = "imagesSystem/image-unsuccess.png";
@@ -982,7 +977,8 @@ public class ZKFPDemo extends JFrame {
 											DateFormat df = new SimpleDateFormat(pattern);
 											String foodDate = df.format(orderFoodCurrent.getFood_date());
 											textAreaNgay.setText(foodDate);
-											labelTenMonAnLarge.setText(orderFoodCurrent.getFoodName());
+//											labelTenMonAnLarge.setText(orderFoodCurrent.getFoodName().toUpperCase());
+											textAreaTenMonAnLarge.setText(orderFoodCurrent.getFoodName().toUpperCase());
 											// set hinh
 											// check neu hinh bi null
 											if (orderFoodCurrent.getImage() == null) {
@@ -1052,7 +1048,8 @@ public class ZKFPDemo extends JFrame {
 													ImageIcon image = new ImageIcon(scaled);
 													labelHinhNV1.setIcon(image);
 												}
-												labelTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName());
+												textAreaTenMonAn1
+														.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
 												// image mon an 1
 												if (foodNhaAnTop4.get(0).getImageFood() == null) {
 													btnImage1.setIcon(null);
@@ -1084,7 +1081,8 @@ public class ZKFPDemo extends JFrame {
 													ImageIcon image = new ImageIcon(scaled);
 													labelHinhNV1.setIcon(image);
 												}
-												labelTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName());
+												textAreaTenMonAn1
+														.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
 												// check neu image null
 												if (foodNhaAnTop4.get(0).getImageFood() == null) {
 													btnImage1.setIcon(null);
@@ -1116,7 +1114,8 @@ public class ZKFPDemo extends JFrame {
 													ImageIcon image2 = new ImageIcon(scaled2);
 													labelHinhNV2.setIcon(image2);
 												}
-												labelTenMonAn2.setText(foodNhaAnTop4.get(1).getFoodName());
+												textAreaTenMonAn2
+														.setText(foodNhaAnTop4.get(1).getFoodName().toUpperCase());
 												// check neu image mon an 2 null
 												if (foodNhaAnTop4.get(1).getImageFood() == null) {
 													btnImage2.setIcon(null);
@@ -1150,7 +1149,8 @@ public class ZKFPDemo extends JFrame {
 
 												// hinh mon an 1
 												// check neu image null
-												labelTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName());
+												textAreaTenMonAn1
+														.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
 												if (foodNhaAnTop4.get(0).getImageFood() == null) {
 													btnImage1.setIcon(null);
 												} else {
@@ -1183,7 +1183,8 @@ public class ZKFPDemo extends JFrame {
 
 												// image mon an 2
 												// check neu image mon an 2 null
-												labelTenMonAn2.setText(foodNhaAnTop4.get(1).getFoodName());
+												textAreaTenMonAn2
+														.setText(foodNhaAnTop4.get(1).getFoodName().toUpperCase());
 												if (foodNhaAnTop4.get(1).getImageFood() == null) {
 													btnImage2.setIcon(null);
 												} else {
@@ -1215,7 +1216,8 @@ public class ZKFPDemo extends JFrame {
 												}
 
 												// image mon an 3
-												labelTenMonAn3.setText(foodNhaAnTop4.get(2).getFoodName());
+												textAreaTenMonAn3
+														.setText(foodNhaAnTop4.get(2).getFoodName().toUpperCase());
 												if (foodNhaAnTop4.get(2).getImageFood() == null) {
 													btnImage3.setIcon(null);
 												} else {
@@ -2098,7 +2100,9 @@ public class ZKFPDemo extends JFrame {
 										DateFormat df = new SimpleDateFormat(pattern);
 										String foodDate = df.format(orderFoodCurrent.getFood_date());
 										textAreaNgay.setText(foodDate);
-										labelTenMonAnLarge.setText(orderFoodCurrent.getFoodName());
+//										labelTenMonAnLarge.setText(orderFoodCurrent.getFoodName().toUpperCase());a
+										textAreaTenMonAnLarge.setText(orderFoodCurrent.getFoodName().toUpperCase());
+
 										// set hinh
 										// check neu hinh bi null
 										if (orderFoodCurrent.getImage() == null) {
@@ -2187,7 +2191,7 @@ public class ZKFPDemo extends JFrame {
 												ImageIcon image = new ImageIcon(scaled);
 												labelHinhNV1.setIcon(image);
 											}
-											labelTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName());
+											textAreaTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
 											// image mon an 1
 											if (foodNhaAnTop4.get(0).getImageFood() == null) {
 												btnImage1.setIcon(null);
@@ -2219,7 +2223,7 @@ public class ZKFPDemo extends JFrame {
 												ImageIcon image = new ImageIcon(scaled);
 												labelHinhNV1.setIcon(image);
 											}
-											labelTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName());
+											textAreaTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
 											// check neu image null
 											if (foodNhaAnTop4.get(0).getImageFood() == null) {
 												btnImage1.setIcon(null);
@@ -2250,7 +2254,7 @@ public class ZKFPDemo extends JFrame {
 												ImageIcon image2 = new ImageIcon(scaled2);
 												labelHinhNV2.setIcon(image2);
 											}
-											labelTenMonAn2.setText(foodNhaAnTop4.get(1).getFoodName());
+											textAreaTenMonAn2.setText(foodNhaAnTop4.get(1).getFoodName().toUpperCase());
 											// check neu image mon an 2 null
 											if (foodNhaAnTop4.get(1).getImageFood() == null) {
 												btnImage2.setIcon(null);
@@ -2284,7 +2288,7 @@ public class ZKFPDemo extends JFrame {
 
 											// hinh mon an 1
 											// check neu image null
-											labelTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName());
+											textAreaTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
 											if (foodNhaAnTop4.get(0).getImageFood() == null) {
 												btnImage1.setIcon(null);
 											} else {
@@ -2316,7 +2320,7 @@ public class ZKFPDemo extends JFrame {
 
 											// image mon an 2
 											// check neu image mon an 2 null
-											labelTenMonAn2.setText(foodNhaAnTop4.get(1).getFoodName());
+											textAreaTenMonAn2.setText(foodNhaAnTop4.get(1).getFoodName().toUpperCase());
 											if (foodNhaAnTop4.get(1).getImageFood() == null) {
 												btnImage2.setIcon(null);
 											} else {
@@ -2347,7 +2351,7 @@ public class ZKFPDemo extends JFrame {
 											}
 
 											// image mon an 3
-											labelTenMonAn3.setText(foodNhaAnTop4.get(2).getFoodName());
+											textAreaTenMonAn3.setText(foodNhaAnTop4.get(2).getFoodName().toUpperCase());
 											if (foodNhaAnTop4.get(2).getImageFood() == null) {
 												btnImage3.setIcon(null);
 											} else {
