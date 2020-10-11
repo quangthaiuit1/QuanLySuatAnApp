@@ -478,19 +478,20 @@ public class ZKFPDemo extends JFrame {
 //		labelTenMonAnLarge.setFont(new Font("Times New Roman", Font.BOLD, 38));
 //		labelTenMonAnLarge.setForeground(new Color(186, 10, 10));
 
-		textAreaTenMonAnLarge = new JTextArea("");
-		textAreaTenMonAnLarge.setBounds(420, 9, 650, 90);
+		textAreaTenMonAnLarge = new JTextArea("CÁ DIÊU HỒNG SỐT CÀ KHO TƯƠNG + CÁ DIÊU HỒNG SỐT CẠ");
+		textAreaTenMonAnLarge.setBounds(420, 2, 750, 105);
 		textAreaTenMonAnLarge.setLineWrap(true);
 		textAreaTenMonAnLarge.setWrapStyleWord(true);
 		textAreaTenMonAnLarge.setOpaque(false);
 		textAreaTenMonAnLarge.setEditable(false);
-		textAreaTenMonAnLarge.setFont(new Font("Times New Roman", Font.BOLD, 38));
+		textAreaTenMonAnLarge.setFont(new Font("Calibri", Font.BOLD, 43));
 //		textAreaTenMonAnLarge.setForeground(new Color(186, 10, 10));
 		textAreaTenMonAnLarge.setForeground(Color.BLACK);
 		this.add(textAreaTenMonAnLarge);
 
 		// image he thong chua san sang
 		String pathImageTest = "imagesSystem/image-unsuccess.png";
+//		String pathImageTest = "imagesSystem/image-danhansuatan.png";
 		File fileTest = new File(pathImageTest);
 		BufferedImage bimgTest = null;
 		try {
@@ -838,26 +839,43 @@ public class ZKFPDemo extends JFrame {
 											boolean checkedExist = false;
 											if (resultSetChecked.next()) {
 												checkedExist = true;
-												Toolkit.getDefaultToolkit().beep();
-												JOptionPane optionPane = new JOptionPane(
-														"BẠN ĐÃ NHẬN PHẦN ĂN TRƯỚC ĐÓ!", JOptionPane.WARNING_MESSAGE);
-												JDialog dialog = optionPane.createDialog(btnImg, "Chú ý!");
-												dialog.setAlwaysOnTop(true);
-//													dialog.setVisible(true);
-
-												new Thread(new Runnable() {
-													@Override
-													public void run() {
-														try {
-															Thread.sleep(2000);
-														} catch (InterruptedException e) {
-															e.printStackTrace();
-														}
-														dialog.setVisible(false);
-													}
-												}).start();
-												dialog.setVisible(true);
-												btnImg.setIcon(null);
+//												Toolkit.getDefaultToolkit().beep();
+//												JOptionPane optionPane = new JOptionPane(
+//														"BẠN ĐÃ NHẬN PHẦN ĂN TRƯỚC ĐÓ!", JOptionPane.WARNING_MESSAGE);
+//												JDialog dialog = optionPane.createDialog(btnImg, "Chú ý!");
+//												dialog.setAlwaysOnTop(true);
+////													dialog.setVisible(true);
+//
+//												new Thread(new Runnable() {
+//													@Override
+//													public void run() {
+//														try {
+//															Thread.sleep(2000);
+//														} catch (InterruptedException e) {
+//															e.printStackTrace();
+//														}
+//														dialog.setVisible(false);
+//													}
+//												}).start();
+//												dialog.setVisible(true);
+//												btnImg.setIcon(null);
+												String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan.png";
+												File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
+												BufferedImage bimgDaNhanSuatAn = null;
+												try {
+													bimgDaNhanSuatAn = ImageIO.read(fileDaNhanSuatAn);
+												} catch (IOException e1) {
+													e1.printStackTrace();
+												}
+												if (bimgDaNhanSuatAn == null) {
+													btnImg.setIcon(null);
+												}
+												if (bimgDaNhanSuatAn != null) {
+													Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+															heightHinhLon, Image.SCALE_SMOOTH);
+													ImageIcon imageTest = new ImageIcon(scaledTest);
+													btnImg.setIcon(imageTest);
+												}
 												return;
 											}
 											// Neu chua an se them du lieu vao DB -> 2 truong hop: 1 la co dang ky , 2
@@ -1327,26 +1345,43 @@ public class ZKFPDemo extends JFrame {
 											boolean checkedExist = false;
 											if (resultSetChecked.next()) {
 												checkedExist = true;
-												Toolkit.getDefaultToolkit().beep();
-												JOptionPane optionPane = new JOptionPane(
-														"BẠN ĐÃ NHẬN PHẦN ĂN TRƯỚC ĐÓ!", JOptionPane.WARNING_MESSAGE);
-												JDialog dialog = optionPane.createDialog(btnImg, "Chú ý!");
-												dialog.setAlwaysOnTop(true);
-//													dialog.setVisible(true);
-
-												new Thread(new Runnable() {
-													@Override
-													public void run() {
-														try {
-															Thread.sleep(2000);
-														} catch (InterruptedException e) {
-															e.printStackTrace();
-														}
-														dialog.setVisible(false);
-													}
-												}).start();
-												dialog.setVisible(true);
-												btnImg.setIcon(null);
+//												Toolkit.getDefaultToolkit().beep();
+//												JOptionPane optionPane = new JOptionPane(
+//														"BẠN ĐÃ NHẬN PHẦN ĂN TRƯỚC ĐÓ!", JOptionPane.WARNING_MESSAGE);
+//												JDialog dialog = optionPane.createDialog(btnImg, "Chú ý!");
+//												dialog.setAlwaysOnTop(true);
+////													dialog.setVisible(true);
+//
+//												new Thread(new Runnable() {
+//													@Override
+//													public void run() {
+//														try {
+//															Thread.sleep(2000);
+//														} catch (InterruptedException e) {
+//															e.printStackTrace();
+//														}
+//														dialog.setVisible(false);
+//													}
+//												}).start();
+//												dialog.setVisible(true);
+//												btnImg.setIcon(null);
+												String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan.png";
+												File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
+												BufferedImage bimgDaNhanSuatAn = null;
+												try {
+													bimgDaNhanSuatAn = ImageIO.read(fileDaNhanSuatAn);
+												} catch (IOException e1) {
+													e1.printStackTrace();
+												}
+												if (bimgDaNhanSuatAn == null) {
+													btnImg.setIcon(null);
+												}
+												if (bimgDaNhanSuatAn != null) {
+													Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+															heightHinhLon, Image.SCALE_SMOOTH);
+													ImageIcon imageTest = new ImageIcon(scaledTest);
+													btnImg.setIcon(imageTest);
+												}
 												togglebtnKhongQuetVT.setText("CÓ Đ.KÝ");
 												ZKFPDemo.ON_ALLOW_EXCEPTION = false;
 												return;
@@ -1963,26 +1998,44 @@ public class ZKFPDemo extends JFrame {
 										boolean checkedExist = false;
 										if (resultSetChecked.next()) {
 											checkedExist = true;
-											Toolkit.getDefaultToolkit().beep();
-											JOptionPane optionPane = new JOptionPane("BẠN ĐÃ NHẬN PHẦN ĂN TRƯỚC ĐÓ!",
-													JOptionPane.WARNING_MESSAGE);
-											JDialog dialog = optionPane.createDialog(btnImg, "Chú ý!");
-											dialog.setAlwaysOnTop(true);
+//											Toolkit.getDefaultToolkit().beep();
+//											JOptionPane optionPane = new JOptionPane("BẠN ĐÃ NHẬN PHẦN ĂN TRƯỚC ĐÓ!",
+//													JOptionPane.WARNING_MESSAGE);
+//											JDialog dialog = optionPane.createDialog(btnImg, "Chú ý!");
+//											dialog.setAlwaysOnTop(true);
+////											dialog.setVisible(true);
+//
+//											new Thread(new Runnable() {
+//												@Override
+//												public void run() {
+//													try {
+//														Thread.sleep(2000);
+//													} catch (InterruptedException e) {
+//														e.printStackTrace();
+//													}
+//													dialog.setVisible(false);
+//												}
+//											}).start();
 //											dialog.setVisible(true);
-
-											new Thread(new Runnable() {
-												@Override
-												public void run() {
-													try {
-														Thread.sleep(2000);
-													} catch (InterruptedException e) {
-														e.printStackTrace();
-													}
-													dialog.setVisible(false);
-												}
-											}).start();
-											dialog.setVisible(true);
-											btnImg.setIcon(null);
+//											btnImg.setIcon(null);
+											// image he thong da nhan suat an
+											String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan.png";
+											File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
+											BufferedImage bimgDaNhanSuatAn = null;
+											try {
+												bimgDaNhanSuatAn = ImageIO.read(fileDaNhanSuatAn);
+											} catch (IOException e) {
+											}
+											if (bimgDaNhanSuatAn == null) {
+												btnImg.setIcon(null);
+											}
+											if (bimgDaNhanSuatAn != null) {
+												Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+														heightHinhLon, Image.SCALE_SMOOTH);
+												ImageIcon imageTest = new ImageIcon(scaledTest);
+												btnImg.setIcon(imageTest);
+											}
+											// end image he thong
 											return;
 										}
 										// Neu chua an se them du lieu vao DB -> 2 truong hop: 1 la co dang ky , 2
@@ -2461,26 +2514,42 @@ public class ZKFPDemo extends JFrame {
 										boolean checkedExist = false;
 										if (resultSetChecked.next()) {
 											checkedExist = true;
-											Toolkit.getDefaultToolkit().beep();
-											JOptionPane optionPane = new JOptionPane("BẠN ĐÃ NHẬN PHẦN ĂN TRƯỚC ĐÓ!",
-													JOptionPane.WARNING_MESSAGE);
-											JDialog dialog = optionPane.createDialog(btnImg, "Chú ý!");
-											dialog.setAlwaysOnTop(true);
+//											Toolkit.getDefaultToolkit().beep();
+//											JOptionPane optionPane = new JOptionPane("BẠN ĐÃ NHẬN PHẦN ĂN TRƯỚC ĐÓ!",
+//													JOptionPane.WARNING_MESSAGE);
+//											JDialog dialog = optionPane.createDialog(btnImg, "Chú ý!");
+//											dialog.setAlwaysOnTop(true);
+////											dialog.setVisible(true);
+//
+//											new Thread(new Runnable() {
+//												@Override
+//												public void run() {
+//													try {
+//														Thread.sleep(2000);
+//													} catch (InterruptedException e) {
+//														e.printStackTrace();
+//													}
+//													dialog.setVisible(false);
+//												}
+//											}).start();
 //											dialog.setVisible(true);
-
-											new Thread(new Runnable() {
-												@Override
-												public void run() {
-													try {
-														Thread.sleep(2000);
-													} catch (InterruptedException e) {
-														e.printStackTrace();
-													}
-													dialog.setVisible(false);
-												}
-											}).start();
-											dialog.setVisible(true);
-											btnImg.setIcon(null);
+//											btnImg.setIcon(null);
+											String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan.png";
+											File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
+											BufferedImage bimgDaNhanSuatAn = null;
+											try {
+												bimgDaNhanSuatAn = ImageIO.read(fileDaNhanSuatAn);
+											} catch (IOException e) {
+											}
+											if (bimgDaNhanSuatAn == null) {
+												btnImg.setIcon(null);
+											}
+											if (bimgDaNhanSuatAn != null) {
+												Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+														heightHinhLon, Image.SCALE_SMOOTH);
+												ImageIcon imageTest = new ImageIcon(scaledTest);
+												btnImg.setIcon(imageTest);
+											}
 											togglebtnKhongQuetVT.setText("CÓ Đ.KÝ");
 											ZKFPDemo.ON_ALLOW_EXCEPTION = false;
 											return;
