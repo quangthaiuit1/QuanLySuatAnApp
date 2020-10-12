@@ -45,6 +45,7 @@ import javax.swing.JToggleButton;
 
 import lixco.com.entity.FoodNhaAn;
 import lixco.com.entity.OrderFood;
+import lixco.com.staticentity.DateUtil;
 import lixco.com.staticentity.FoodCustom;
 import lixco.com.staticentity.Shifts;
 import lixco.com.trong.DepartmentData;
@@ -168,8 +169,12 @@ public class ZKFPDemo extends JFrame {
 
 	public static List<TimekeepingData> listDataVerify;
 	public static int shiftsCurrent = 0;
+	// Date current
+	private Date dateCurrent = null;
 
 	public void launchFrame() {
+		dateCurrent = DateUtil.DATE_WITHOUT_TIME(new Date());
+
 		this.setLayout(null);
 		btnOpen = new JButton("START");
 		this.add(btnOpen);
@@ -327,6 +332,7 @@ public class ZKFPDemo extends JFrame {
 
 		int marginLeftJComponentHinhNho = 340;
 		int heightFirstJComponentHinhNho = 450 + nRsize + heightJComponentLeft + 50;
+		int sizeTextTenMonAn = 26;
 
 		labelName1 = new JLabel();
 		this.add(labelName1);
@@ -346,19 +352,19 @@ public class ZKFPDemo extends JFrame {
 		btnImage1 = new JButton();
 		this.add(btnImage1);
 		btnImage1.setBounds(marginLeftJComponentHinhNho - 10,
-				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien, heightHinhMonAn,
+				heightFirstJComponentHinhNho + heightJComponentLeft + 5 + heightHinhNhanVien, heightHinhMonAn,
 				widthHinhMonAn);
 
-		textAreaTenMonAn1 = new JTextArea();
+		textAreaTenMonAn1 = new JTextArea("");
 		this.add(textAreaTenMonAn1);
 		textAreaTenMonAn1.setBounds(marginLeftJComponentHinhNho - 10,
-				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien + heightHinhMonAn - 20,
-				heightHinhMonAn, 50);
+				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien + heightHinhMonAn - 43,
+				heightHinhMonAn + 100, 70);
 		textAreaTenMonAn1.setLineWrap(true);
 		textAreaTenMonAn1.setWrapStyleWord(true);
 		textAreaTenMonAn1.setOpaque(false);
 		textAreaTenMonAn1.setEditable(false);
-		textAreaTenMonAn1.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
+		textAreaTenMonAn1.setFont(new Font("Calibri", Font.BOLD, sizeTextTenMonAn));
 
 		// width giua cac hinh nhan vien
 		int widthGiuaHinhNhanVien = 170;
@@ -376,19 +382,19 @@ public class ZKFPDemo extends JFrame {
 		btnImage2 = new JButton();
 		this.add(btnImage2);
 		btnImage2.setBounds(marginLeftJComponentHinhNho + widthHinhMonAn + widthGiuaHinhNhanVien,
-				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien, heightHinhMonAn,
+				heightFirstJComponentHinhNho + heightJComponentLeft + 5 + heightHinhNhanVien, heightHinhMonAn,
 				widthHinhMonAn);
 
-		textAreaTenMonAn2 = new JTextArea();
+		textAreaTenMonAn2 = new JTextArea("");
 		this.add(textAreaTenMonAn2);
 		textAreaTenMonAn2.setBounds(marginLeftJComponentHinhNho + widthHinhMonAn + widthGiuaHinhNhanVien,
-				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien + heightHinhMonAn - 20,
-				heightHinhMonAn, 50);
+				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien + heightHinhMonAn - 43,
+				heightHinhMonAn + 100, 70);
 		textAreaTenMonAn2.setLineWrap(true);
 		textAreaTenMonAn2.setWrapStyleWord(true);
 		textAreaTenMonAn2.setOpaque(false);
 		textAreaTenMonAn2.setEditable(false);
-		textAreaTenMonAn2.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
+		textAreaTenMonAn2.setFont(new Font("Calibri", Font.BOLD, sizeTextTenMonAn));
 
 		labelName3 = new JLabel();
 		this.add(labelName3);
@@ -404,18 +410,18 @@ public class ZKFPDemo extends JFrame {
 		btnImage3 = new JButton();
 		this.add(btnImage3);
 		btnImage3.setBounds(marginLeftJComponentHinhNho + widthHinhMonAn * 2 + widthGiuaHinhNhanVien * 2,
-				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien, heightHinhMonAn,
+				heightFirstJComponentHinhNho + heightJComponentLeft + 5 + heightHinhNhanVien, heightHinhMonAn,
 				widthHinhMonAn);
-		textAreaTenMonAn3 = new JTextArea();
+		textAreaTenMonAn3 = new JTextArea("");
 		this.add(textAreaTenMonAn3);
 		textAreaTenMonAn3.setBounds(marginLeftJComponentHinhNho + widthHinhMonAn * 2 + widthGiuaHinhNhanVien * 2,
-				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien + heightHinhMonAn - 20,
-				heightHinhMonAn, 50);
+				heightFirstJComponentHinhNho + heightJComponentLeft + 20 + heightHinhNhanVien + heightHinhMonAn - 43,
+				heightHinhMonAn + 70, 70);
 		textAreaTenMonAn3.setLineWrap(true);
 		textAreaTenMonAn3.setWrapStyleWord(true);
 		textAreaTenMonAn3.setOpaque(false);
 		textAreaTenMonAn3.setEditable(false);
-		textAreaTenMonAn3.setFont(new Font("Times New Roman", Font.BOLD, sizeTextJComponentLeft));
+		textAreaTenMonAn3.setFont(new Font("Calibri", Font.BOLD, sizeTextTenMonAn));
 
 //		btnEnroll = new JButton("Enroll");
 //		this.add(btnEnroll);
@@ -478,7 +484,7 @@ public class ZKFPDemo extends JFrame {
 //		labelTenMonAnLarge.setFont(new Font("Times New Roman", Font.BOLD, 38));
 //		labelTenMonAnLarge.setForeground(new Color(186, 10, 10));
 
-		textAreaTenMonAnLarge = new JTextArea("CÁ DIÊU HỒNG SỐT CÀ KHO TƯƠNG + CÁ DIÊU HỒNG SỐT CẠ");
+		textAreaTenMonAnLarge = new JTextArea("");
 		textAreaTenMonAnLarge.setBounds(420, 2, 750, 105);
 		textAreaTenMonAnLarge.setLineWrap(true);
 		textAreaTenMonAnLarge.setWrapStyleWord(true);
@@ -593,7 +599,7 @@ public class ZKFPDemo extends JFrame {
 					shiftsCurrent = Shifts.SHIFTS_1_ID;
 					// bao gom nhan vien van phong + nhan vien ca 12 tieng
 					arr = TimekeepingDataService.timtheongay(dateSearchString);
-//					arr = TimekeepingDataService.timtheongay("05/10/2020");
+//					arr = TimekeepingDataService.timtheongay("10/10/2020");
 				}
 				if (Shifts.SHIFTS_2_HOUR - 2 <= datetimeCurrent.getHour()
 						&& datetimeCurrent.getHour() <= Shifts.SHIFTS_2_HOUR + 2) {
@@ -769,9 +775,9 @@ public class ZKFPDemo extends JFrame {
 				try {
 					// kiem tra co la nhan vien cong ty hay khong
 					boolean isEmployee = false;
-//					System.out.println("some action");
-//					System.out.println(textFieldMaTheTu.getText());
-//					listl = loadvantay.findAll();
+					java.sql.Date dateCurrentSQL = new java.sql.Date(dateCurrent.getTime());
+					// Tai sao khong lay list verify ra so sanh truoc ->
+					// Du lieu a hong dua qua khong co truong ma the nen khong the so sanh dc
 					for (int indexMathe = 0; indexMathe < listl.size(); indexMathe++) {
 						BigInteger inum = new BigInteger(listl.get(indexMathe).getMathe());
 						BigInteger inum1 = new BigInteger("1");
@@ -795,18 +801,10 @@ public class ZKFPDemo extends JFrame {
 								if (isEat) {
 									List<FoodNhaAn> foodNhaAnTop4 = new ArrayList<>();
 									orderFoodCurrent = new OrderFood();
-
 									// chua handle cho nay
-
 									// kiem tra xem hien tai co dang thuoc ca nao hay khong
 									if (shiftsCurrent != 0) {
 										// thai
-										// Date current
-										Date dateCurrentTemp = new Date();
-										// chinh thuc
-										java.sql.Date dateCurrent = new java.sql.Date(dateCurrentTemp.getTime());
-										// end chinh thuc
-
 										// query by date and employee
 										String queryFood = "";
 										queryFood = "SELECT ofbd.id as order_food_by_day_id, of.employee_code, of.employee_id, of.employee_name, of.department_code, of.department_name, cf.name,cf.image,cf.id as category_food_id,fbd.shifts_id, of.registration_date\r\n"
@@ -820,7 +818,7 @@ public class ZKFPDemo extends JFrame {
 											// pass id employee
 											preStatement.setString(1, listl.get(indexMathe).getMaNhanVien());
 											// date param
-											preStatement.setDate(2, dateCurrent);
+											preStatement.setDate(2, dateCurrentSQL);
 											preStatement.setInt(3, shiftsCurrent);
 											ResultSet resultSet = preStatement.executeQuery();
 
@@ -831,34 +829,11 @@ public class ZKFPDemo extends JFrame {
 											// check bang ma nhan vien cu
 											preStatementChecked.setString(1, listl.get(indexMathe).getMaNhanVien());
 											preStatementChecked.setInt(2, shiftsCurrent);
-											// convert date sql
-											java.sql.Date sqlDateChecked = new java.sql.Date(
-													new java.util.Date().getTime());
-											preStatementChecked.setDate(3, sqlDateChecked);
+											preStatementChecked.setDate(3, dateCurrentSQL);
 											ResultSet resultSetChecked = preStatementChecked.executeQuery();
 											boolean checkedExist = false;
 											if (resultSetChecked.next()) {
 												checkedExist = true;
-//												Toolkit.getDefaultToolkit().beep();
-//												JOptionPane optionPane = new JOptionPane(
-//														"BẠN ĐÃ NHẬN PHẦN ĂN TRƯỚC ĐÓ!", JOptionPane.WARNING_MESSAGE);
-//												JDialog dialog = optionPane.createDialog(btnImg, "Chú ý!");
-//												dialog.setAlwaysOnTop(true);
-////													dialog.setVisible(true);
-//
-//												new Thread(new Runnable() {
-//													@Override
-//													public void run() {
-//														try {
-//															Thread.sleep(2000);
-//														} catch (InterruptedException e) {
-//															e.printStackTrace();
-//														}
-//														dialog.setVisible(false);
-//													}
-//												}).start();
-//												dialog.setVisible(true);
-//												btnImg.setIcon(null);
 												String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan.png";
 												File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
 												BufferedImage bimgDaNhanSuatAn = null;
@@ -1021,9 +996,7 @@ public class ZKFPDemo extends JFrame {
 													"jdbc:mysql://192.168.0.132:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
 											preStatementTop3 = con.prepareStatement(queryTop4);
 											preStatementTop3.setInt(1, shiftsCurrent);
-											// convert date sql
-											java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
-											preStatementTop3.setDate(2, sqlDate);
+											preStatementTop3.setDate(2, dateCurrentSQL);
 											ResultSet resultSet = preStatementTop3.executeQuery();
 											while (resultSet.next()) {
 												FoodNhaAn foodNhaAn = new FoodNhaAn();
@@ -1323,9 +1296,6 @@ public class ZKFPDemo extends JFrame {
 									}
 									// co gio an
 									if (shiftsCurrent != 0) {
-										// Date current
-										Date dateCurrentTemp = new Date();
-										java.sql.Date dateCurrent = new java.sql.Date(dateCurrentTemp.getTime());
 										Connection conException = null;
 										PreparedStatement psCheckedException = null;
 										try {
@@ -1337,34 +1307,11 @@ public class ZKFPDemo extends JFrame {
 											// check bang ma nhan vien cu
 											psCheckedException.setString(1, listl.get(indexMathe).getMaNhanVien());
 											psCheckedException.setInt(2, shiftsCurrent);
-											// convert date sql
-											java.sql.Date sqlDateChecked = new java.sql.Date(
-													new java.util.Date().getTime());
-											psCheckedException.setDate(3, sqlDateChecked);
+											psCheckedException.setDate(3, dateCurrentSQL);
 											ResultSet resultSetChecked = psCheckedException.executeQuery();
 											boolean checkedExist = false;
 											if (resultSetChecked.next()) {
 												checkedExist = true;
-//												Toolkit.getDefaultToolkit().beep();
-//												JOptionPane optionPane = new JOptionPane(
-//														"BẠN ĐÃ NHẬN PHẦN ĂN TRƯỚC ĐÓ!", JOptionPane.WARNING_MESSAGE);
-//												JDialog dialog = optionPane.createDialog(btnImg, "Chú ý!");
-//												dialog.setAlwaysOnTop(true);
-////													dialog.setVisible(true);
-//
-//												new Thread(new Runnable() {
-//													@Override
-//													public void run() {
-//														try {
-//															Thread.sleep(2000);
-//														} catch (InterruptedException e) {
-//															e.printStackTrace();
-//														}
-//														dialog.setVisible(false);
-//													}
-//												}).start();
-//												dialog.setVisible(true);
-//												btnImg.setIcon(null);
 												String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan.png";
 												File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
 												BufferedImage bimgDaNhanSuatAn = null;
@@ -1466,7 +1413,7 @@ public class ZKFPDemo extends JFrame {
 												e2.printStackTrace();
 											}
 										}
-										// da dang ky mon an
+										// mon an da luu xuong db -> handle hien ra view
 										if (orderFoodCurrent.getEmployeeName() != null) {
 											textAreaMaNV.setText(orderFoodCurrent.getEmployeeCode());
 											textAreaTenNV.setText(orderFoodCurrent.getEmployeeName());
@@ -1510,7 +1457,6 @@ public class ZKFPDemo extends JFrame {
 										ZKFPDemo.ON_ALLOW_EXCEPTION = false;
 									}
 									// end
-
 								}
 							}
 							// nguoc lai khong co data
@@ -1538,8 +1484,10 @@ public class ZKFPDemo extends JFrame {
 						}
 					}
 					if (!isEmployee) {
+//						String cardId = textFieldMaTheTu.getText();
+
 						textFieldMaTheTu.setText("");
-						System.out.println("Trường hợp ngoại lệ");
+//						System.out.println("Trường hợp ngoại lệ");
 					}
 
 				} catch (Exception e2) {
@@ -1960,10 +1908,10 @@ public class ZKFPDemo extends JFrame {
 								// kiem tra xem hien tai co dang thuoc ca nao hay khong
 								if (shiftsCurrent != 0) {
 									// thai
-									// Date current
-									Date dateCurrentTemp = new Date();
+//									// Date current
+//									Date dateCurrentTemp = new Date();
 									// chinh thuc
-									java.sql.Date dateCurrent = new java.sql.Date(dateCurrentTemp.getTime());
+									java.sql.Date dateCurrentSQL = new java.sql.Date(dateCurrent.getTime());
 									// end chinh thuc
 
 									// query by date and employee
@@ -1979,7 +1927,7 @@ public class ZKFPDemo extends JFrame {
 										// pass id employee
 										preStatement.setString(1, listl.get(fid[0] - 1).getMaNhanVien());
 										// date param
-										preStatement.setDate(2, dateCurrent);
+										preStatement.setDate(2, dateCurrentSQL);
 										preStatement.setInt(3, shiftsCurrent);
 										ResultSet resultSet = preStatement.executeQuery();
 
@@ -1990,10 +1938,7 @@ public class ZKFPDemo extends JFrame {
 										// check bang ma nhan vien cu
 										preStatementChecked.setString(1, listl.get(fid[0] - 1).getMaNhanVien());
 										preStatementChecked.setInt(2, shiftsCurrent);
-										// convert date sql
-										java.sql.Date sqlDateChecked = new java.sql.Date(
-												new java.util.Date().getTime());
-										preStatementChecked.setDate(3, sqlDateChecked);
+										preStatementChecked.setDate(3, dateCurrentSQL);
 										ResultSet resultSetChecked = preStatementChecked.executeQuery();
 										boolean checkedExist = false;
 										if (resultSetChecked.next()) {
@@ -2159,26 +2104,7 @@ public class ZKFPDemo extends JFrame {
 										// set hinh
 										// check neu hinh bi null
 										if (orderFoodCurrent.getImage() == null) {
-//											String pathImageTuchon = "imagesSystem/image-monantuchon.png";
-//											File fileTuchon = new File(pathImageTuchon);
-//											BufferedImage bimgTuchon = null;
-//											try {
-//												bimgTuchon = ImageIO.read(fileTuchon);
-//											} catch (IOException e2) {
-//											}
-//											if (bimgTuchon == null) {
-//												btnImg.setIcon(null);
-//											}
-//											if (bimgTuchon != null) {
-//												Image scaledTuchon = bimgTuchon.getScaledInstance(500, 350,
-//														Image.SCALE_SMOOTH);
-//												ImageIcon imageTuchon = new ImageIcon(scaledTuchon);
-//												btnImg.setIcon(null);
-//												btnImg.setIcon(imageTuchon);
-//											}
 											btnImg.setIcon(null);
-//											textAreaTenMonAn.setText(orderFoodCurrent.getFoodName());
-
 										} else {
 											Image img = Toolkit.getDefaultToolkit()
 													.createImage(orderFoodCurrent.getImage());
@@ -2199,9 +2125,7 @@ public class ZKFPDemo extends JFrame {
 												"jdbc:mysql://192.168.0.132:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
 										preStatementTop3 = con.prepareStatement(queryTop4);
 										preStatementTop3.setInt(1, shiftsCurrent);
-										// convert date sql
-										java.sql.Date sqlDate = new java.sql.Date(new java.util.Date().getTime());
-										preStatementTop3.setDate(2, sqlDate);
+										preStatementTop3.setDate(2, dateCurrentSQL);
 										ResultSet resultSet = preStatementTop3.executeQuery();
 										while (resultSet.next()) {
 											FoodNhaAn foodNhaAn = new FoodNhaAn();
@@ -2493,8 +2417,8 @@ public class ZKFPDemo extends JFrame {
 								// co gio an
 								if (shiftsCurrent != 0) {
 									// Date current
-									Date dateCurrentTemp = new Date();
-									java.sql.Date dateCurrent = new java.sql.Date(dateCurrentTemp.getTime());
+//									Date dateCurrentTemp = new Date();
+//									java.sql.Date dateCurrent = new java.sql.Date(dateCurrentTemp.getTime());
 									Connection conException = null;
 									PreparedStatement psCheckedException = null;
 									try {
@@ -2507,8 +2431,7 @@ public class ZKFPDemo extends JFrame {
 										psCheckedException.setString(1, listl.get(fid[0] - 1).getMaNhanVien());
 										psCheckedException.setInt(2, shiftsCurrent);
 										// convert date sql
-										java.sql.Date sqlDateChecked = new java.sql.Date(
-												new java.util.Date().getTime());
+										java.sql.Date sqlDateChecked = new java.sql.Date(dateCurrent.getTime());
 										psCheckedException.setDate(3, sqlDateChecked);
 										ResultSet resultSetChecked = psCheckedException.executeQuery();
 										boolean checkedExist = false;
@@ -2634,7 +2557,7 @@ public class ZKFPDemo extends JFrame {
 											e2.printStackTrace();
 										}
 									}
-									// da dang ky mon an
+									// Da luu suat an xuong db -> handle hien ra view
 									if (orderFoodCurrent.getEmployeeName() != null) {
 										textAreaMaNV.setText(orderFoodCurrent.getEmployeeCode());
 										textAreaTenNV.setText(orderFoodCurrent.getEmployeeName());
