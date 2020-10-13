@@ -44,4 +44,32 @@ public class DateUtil {
 			return null;
 		}
 	}
+
+	public static Date HANDLE_START_TIME(int hour, int minutes, int ca) {
+		Calendar cal = Calendar.getInstance();
+
+		cal.set(Calendar.HOUR_OF_DAY, hour);
+		cal.set(Calendar.MINUTE, minutes);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		cal.add(Calendar.MINUTE, -45);
+		if (ca == 3) {
+			cal.add(Calendar.DATE, +1);
+		}
+		return cal.getTime();
+	}
+
+	public static Date HANDLE_END_TIME(int hour, int minutes, int ca) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, hour);
+		cal.set(Calendar.MINUTE, minutes);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		cal.add(Calendar.MINUTE, +90);
+		if (ca == 3) {
+			cal.add(Calendar.DATE, +1);
+		}
+		return cal.getTime();
+	}
+
 }
