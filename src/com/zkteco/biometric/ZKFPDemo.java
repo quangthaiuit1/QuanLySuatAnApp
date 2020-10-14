@@ -2485,7 +2485,6 @@ public class ZKFPDemo extends JFrame {
 
 											return;
 										}
-
 										preStatement = con.prepareStatement(queryFood);
 										// pass id employee
 										preStatement.setString(1, listl.get(fid[0] - 1).getMaNhanVien());
@@ -2537,7 +2536,7 @@ public class ZKFPDemo extends JFrame {
 												builder.append("?,");
 											}
 											// query nhan vien tu du lieu trung tam
-											String queryEmployee = "SELECT empl.id as employee_id,empl.name as employee_name,empl.code as employee_code,empl.codeOld as employee_code_old,depart.name as department_name,depart.code as department_code \r\n"
+											String queryEmployee = "SELECT empl.layOff as da_nghi_viec,empl.id as employee_id,empl.name as employee_name,empl.code as employee_code,empl.codeOld as employee_code_old,depart.name as department_name,depart.code as department_code \r\n"
 													+ "FROM dulieutrungtam.employee as empl, dulieutrungtam.department as depart\r\n"
 													+ "WHERE empl.codeOld = ? AND empl.department_id IN ("
 													+ builder.deleteCharAt(builder.length() - 1).toString()
@@ -2560,22 +2559,27 @@ public class ZKFPDemo extends JFrame {
 												}
 												ResultSet resultSet1 = preStatementEmployee.executeQuery();
 												while (resultSet1.next()) {
-													orderFoodCurrent
-															.setDepartmentName(resultSet1.getString("department_name"));
-													orderFoodCurrent
-															.setDepartmentCode(resultSet1.getString("department_code"));
-													orderFoodCurrent
-															.setEmployeeCode(resultSet1.getString("employee_code"));
-													orderFoodCurrent
-															.setEmployeeName(resultSet1.getString("employee_name"));
-													orderFoodCurrent.setFoodName("Tự chọn");
-													orderFoodCurrent.setFood_date(new Date());
-													// gan thang id cua category food tu chon
-													orderFoodCurrent.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
-													orderFoodCurrent
-															.setEmployeeId(resultSet1.getString("employee_code_old"));
-													orderFoodCurrent.setShifts_id(shiftsCurrent);
-													ZKFPDemo.addOne(orderFoodCurrent, orderFoodCurrent.getShifts_id());
+													boolean daNghiViec = resultSet1.getBoolean("da_nghi_viec");
+													// neu chua nghi viec moi duoc luu
+													if (!daNghiViec) {
+														orderFoodCurrent.setDepartmentName(
+																resultSet1.getString("department_name"));
+														orderFoodCurrent.setDepartmentCode(
+																resultSet1.getString("department_code"));
+														orderFoodCurrent
+																.setEmployeeCode(resultSet1.getString("employee_code"));
+														orderFoodCurrent
+																.setEmployeeName(resultSet1.getString("employee_name"));
+														orderFoodCurrent.setFoodName("Tự chọn");
+														orderFoodCurrent.setFood_date(new Date());
+														// gan thang id cua category food tu chon
+														orderFoodCurrent.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
+														orderFoodCurrent.setEmployeeId(
+																resultSet1.getString("employee_code_old"));
+														orderFoodCurrent.setShifts_id(shiftsCurrent);
+														ZKFPDemo.addOne(orderFoodCurrent,
+																orderFoodCurrent.getShifts_id());
+													}
 												}
 											} catch (Exception e) {
 												// TODO: handle exception
@@ -4473,8 +4477,8 @@ public class ZKFPDemo extends JFrame {
 					} else {
 
 						textArea.setText("Identify fail, errcode=" + ret + "\n");
-						// image he thong chua san sang
-						String pathImageTest = "imagesSystem/error1.png";
+						// van tay sai
+						String pathImageTest = "imagesSystem/image-error650x450.png";
 						File fileTest = new File(pathImageTest);
 						BufferedImage bimgTest = null;
 						try {
@@ -4485,9 +4489,9 @@ public class ZKFPDemo extends JFrame {
 							btnImg.setIcon(null);
 						}
 						if (bimgTest != null) {
-							Image scaledTest = bimgTest.getScaledInstance(widthHinhLon, heightHinhLon,
-									Image.SCALE_SMOOTH);
-							ImageIcon imageTest = new ImageIcon(scaledTest);
+//							Image scaledTest = bimgTest.getScaledInstance(widthHinhLon, heightHinhLon,
+//									Image.SCALE_SMOOTH);
+							ImageIcon imageTest = new ImageIcon(bimgTest);
 							btnImg.setIcon(null);
 							btnImg.setIcon(imageTest);
 						}
