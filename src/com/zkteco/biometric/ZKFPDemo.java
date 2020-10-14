@@ -624,7 +624,7 @@ public class ZKFPDemo extends JFrame {
 					shiftsCurrent = Shifts.SHIFTS_1_ID;
 					// bao gom nhan vien van phong + nhan vien ca 12 tieng
 					arr = TimekeepingDataService.timtheongay(dateSearchString);
-//					arr = TimekeepingDataService.timtheongay("10/10/2020");
+//					arr = TimekeepingDataService.timtheongay("13/10/2020");
 				}
 				if (!Shifts.TIME_START_SHIFTS_2.after(dateCurrent) && !Shifts.TIME_END_SHIFTS_2.before(dateCurrent)) {
 					shiftsCurrent = Shifts.SHIFTS_2_ID;
@@ -857,7 +857,7 @@ public class ZKFPDemo extends JFrame {
 											boolean checkedExist = false;
 											if (resultSetChecked.next()) {
 												checkedExist = true;
-												String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan.png";
+												String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan650x450.png";
 												File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
 												BufferedImage bimgDaNhanSuatAn = null;
 												try {
@@ -869,9 +869,10 @@ public class ZKFPDemo extends JFrame {
 													btnImg.setIcon(null);
 												}
 												if (bimgDaNhanSuatAn != null) {
-													Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
-															heightHinhLon, Image.SCALE_SMOOTH);
-													ImageIcon imageTest = new ImageIcon(scaledTest);
+//													Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+//															heightHinhLon, Image.SCALE_SMOOTH);
+//													ImageIcon imageTest = new ImageIcon(scaledTest);
+													ImageIcon imageTest = new ImageIcon(bimgDaNhanSuatAn);
 													btnImg.setIcon(imageTest);
 												}
 												return;
@@ -1272,25 +1273,486 @@ public class ZKFPDemo extends JFrame {
 								}
 								// neu cat com
 								if (!isEat && ZKFPDemo.ON_ALLOW_EXCEPTION == false) {
-									// image he thong chua san sang
-									String pathImageTest = "imagesSystem/image-khongdangkysuatan.png";
-									File fileTest = new File(pathImageTest);
-									BufferedImage bimgTest = null;
-									try {
-										bimgTest = ImageIO.read(fileTest);
-									} catch (IOException e2) {
+									// CODE CHINH THUC
+//									// image he thong chua san sang
+//									String pathImageTest = "imagesSystem/image-khongdangkysuatan.png";
+//									File fileTest = new File(pathImageTest);
+//									BufferedImage bimgTest = null;
+//									try {
+//										bimgTest = ImageIO.read(fileTest);
+//									} catch (IOException e2) {
+//									}
+//									if (bimgTest == null) {
+//										btnImg.setIcon(null);
+//									}
+//									if (bimgTest != null) {
+//										Image scaledTest = bimgTest.getScaledInstance(widthHinhLon, heightHinhLon,
+//												Image.SCALE_SMOOTH);
+//										ImageIcon imageTest = new ImageIcon(scaledTest);
+//										btnImg.setIcon(null);
+//										btnImg.setIcon(imageTest);
+//									}
+//									// end image he thong
+									// END CODE CHINH THUC
+									// CODE TAM THOI
+
+									// check xem nhan vien co cat com hay khong
+									// nho check cho nay listDataVerify bi null
+									// neu khong cat com ->
+									List<FoodNhaAn> foodNhaAnTop4 = new ArrayList<>();
+									orderFoodCurrent = new OrderFood();
+									// chua handle cho nay
+
+									// kiem tra xem hien tai co dang thuoc ca nao hay khong
+									if (shiftsCurrent != 0) {
+										// thai
+//										java.sql.Date dateCurrentSQL = new java.sql.Date(dateCurrent.getTime());
+										// query by date and employee
+										String queryFood = "";
+										queryFood = "SELECT ofbd.id as order_food_by_day_id, of.employee_code, of.employee_id, of.employee_name, of.department_code, of.department_name, cf.name,cf.image,cf.id as category_food_id,fbd.shifts_id, of.registration_date\r\n"
+												+ "FROM quanlydatcom.order_food_by_day as ofbd, quanlydatcom.order_food as of, quanlydatcom.food_by_day fbd, quanlydatcom.category_food as cf\r\n"
+												+ "WHERE of.employee_id = ? AND of.registration_date = ? AND fbd.shifts_id = ? AND ofbd.order_food_id = of.id AND ofbd.food_by_day_id = fbd.id AND cf.id = fbd.category_food_id;	";
+
+										try {
+											con = ZKFPDemo.getConnectionMySQL(
+													"jdbc:mysql://192.168.0.132:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
+											preStatement = con.prepareStatement(queryFood);
+											// pass id employee
+											preStatement.setString(1, listl.get(indexMathe).getMaNhanVien());
+											// date param
+											preStatement.setDate(2, dateCurrentSQL);
+											preStatement.setInt(3, shiftsCurrent);
+											ResultSet resultSet = preStatement.executeQuery();
+
+											// kiem tra co du lieu ca do duoi DB chua
+											String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
+											PreparedStatement preStatementChecked = null;
+											preStatementChecked = con.prepareStatement(queryChecked);
+											// check bang ma nhan vien cu
+											preStatementChecked.setString(1, listl.get(indexMathe).getMaNhanVien());
+											preStatementChecked.setInt(2, shiftsCurrent);
+											preStatementChecked.setDate(3, dateCurrentSQL);
+											ResultSet resultSetChecked = preStatementChecked.executeQuery();
+											boolean checkedExist = false;
+											if (resultSetChecked.next()) {
+												checkedExist = true;
+												// image he thong da nhan suat an
+												String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan650x450.png";
+												File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
+												BufferedImage bimgDaNhanSuatAn = null;
+												try {
+													bimgDaNhanSuatAn = ImageIO.read(fileDaNhanSuatAn);
+												} catch (IOException e1) {
+												}
+												if (bimgDaNhanSuatAn == null) {
+													btnImg.setIcon(null);
+												}
+												if (bimgDaNhanSuatAn != null) {
+//													Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+//															heightHinhLon, Image.SCALE_SMOOTH);
+													ImageIcon imageTest = new ImageIcon(bimgDaNhanSuatAn);
+													btnImg.setIcon(imageTest);
+												}
+												// end image he thong
+												return;
+											}
+											// Neu chua an se them du lieu vao DB -> 2 truong hop: 1 la co dang ky , 2
+											// la khong dang ky
+											// Co dang ky
+											while (resultSet.next()) {
+												// neu nhan vien do da an ca do roi - > k cho them
+												if (!checkedExist) {
+													orderFoodCurrent.setDepartmentName(
+															resultSet.getString("of.department_name"));
+													orderFoodCurrent.setDepartmentCode(
+															resultSet.getString("of.department_code"));
+													orderFoodCurrent
+															.setEmployeeCode(resultSet.getString("of.employee_code"));
+													orderFoodCurrent
+															.setEmployeeName(resultSet.getString("of.employee_name"));
+													orderFoodCurrent.setFoodName(resultSet.getString("cf.name"));
+													orderFoodCurrent.setImage(resultSet.getBytes("cf.image"));
+													orderFoodCurrent
+															.setFood_date(resultSet.getDate("of.registration_date"));
+													orderFoodCurrent
+															.setCategory_food_id(resultSet.getInt("category_food_id"));
+													orderFoodCurrent
+															.setEmployeeId(resultSet.getString("of.employee_id"));
+													orderFoodCurrent.setShifts_id(resultSet.getInt("fbd.shifts_id"));
+													orderFoodCurrent.setNotRegFood(true);
+													ZKFPDemo.addOne(orderFoodCurrent, orderFoodCurrent.getShifts_id());
+												}
+											}
+											// chua dang ky
+											// handle cho phan mon an tu chon
+											if (!resultSet.first()) {
+												DepartmentData[] departmentHCMArray = DepartmentDataService
+														.timtheophongquanly("20002");
+												List<DepartmentData> departmentHCM = new ArrayList<>(
+														Arrays.asList(departmentHCMArray));
+												// HANDLE -> Tao list id department
+												List<Long> listDepartmentCodeHCM = new ArrayList<Long>();
+												for (DepartmentData de : departmentHCM) {
+													listDepartmentCodeHCM.add(de.getId());
+												}
+
+												StringBuilder builder = new StringBuilder();
+												for (int i = 0; i < listDepartmentCodeHCM.size(); i++) {
+													builder.append("?,");
+												}
+												// query nhan vien tu du lieu trung tam
+												String queryEmployee = "SELECT empl.id as employee_id,empl.name as employee_name,empl.code as employee_code,empl.codeOld as employee_code_old,depart.name as department_name,depart.code as department_code \r\n"
+														+ "FROM dulieutrungtam.employee as empl, dulieutrungtam.department as depart\r\n"
+														+ "WHERE empl.codeOld = ? AND empl.department_id IN ("
+														+ builder.deleteCharAt(builder.length() - 1).toString()
+														+ ") AND empl.department_id = depart.id;";
+												PreparedStatement preStatementEmployee = null;
+												Connection conDulieutrungtam = null;
+
+												try {
+													conDulieutrungtam = ZKFPDemo.getConnectionMySQL(
+															"jdbc:mysql://192.168.0.132:3306/dulieutrungtam?useUnicode=yes&characterEncoding=UTF-8");
+													preStatementEmployee = conDulieutrungtam
+															.prepareStatement(queryEmployee);
+													preStatementEmployee.setString(1,
+															listl.get(indexMathe).getMaNhanVien());
+													// handle param IN operator
+													int index = 2;
+													for (Long id : listDepartmentCodeHCM) {
+														preStatementEmployee.setObject(index++, id); // or whatever it
+																										// applies
+													}
+													ResultSet resultSet1 = preStatementEmployee.executeQuery();
+													while (resultSet1.next()) {
+														orderFoodCurrent.setDepartmentName(
+																resultSet1.getString("department_name"));
+														orderFoodCurrent.setDepartmentCode(
+																resultSet1.getString("department_code"));
+														orderFoodCurrent
+																.setEmployeeCode(resultSet1.getString("employee_code"));
+														orderFoodCurrent
+																.setEmployeeName(resultSet1.getString("employee_name"));
+														orderFoodCurrent.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
+														orderFoodCurrent.setFood_date(new Date());
+														// gan thang id cua category food tu chon
+														orderFoodCurrent.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
+														orderFoodCurrent.setEmployeeId(
+																resultSet1.getString("employee_code_old"));
+														orderFoodCurrent.setShifts_id(shiftsCurrent);
+														orderFoodCurrent.setNotRegFood(true);
+														ZKFPDemo.addOne(orderFoodCurrent,
+																orderFoodCurrent.getShifts_id());
+													}
+												} catch (Exception e1) {
+													// TODO: handle exception
+												} finally {
+													try {
+														ZKFPDemo.closeConnectionPre(conDulieutrungtam,
+																preStatementEmployee);
+													} catch (Exception e2) {
+														e2.printStackTrace();
+														;
+													}
+												}
+											}
+											// end mon an tu chon
+										} catch (Exception e1) {
+											// TODO: handle exception
+										} finally {
+											try {
+												ZKFPDemo.closeConnectionPre(con, preStatement);
+											} catch (Exception e2) {
+												e2.printStackTrace();
+											}
+										}
+										// da dang ky mon an
+										if (orderFoodCurrent.getEmployeeName() != null) {
+											textAreaMaNV.setText(orderFoodCurrent.getEmployeeCode());
+											textAreaTenNV.setText(orderFoodCurrent.getEmployeeName());
+											textAreaPhongban.setText(orderFoodCurrent.getDepartmentName());
+											// convert date to string
+											String pattern = "dd-MM-yyyy";
+											DateFormat df = new SimpleDateFormat(pattern);
+											String foodDate = df.format(orderFoodCurrent.getFood_date());
+											textAreaNgay.setText(foodDate);
+//												labelTenMonAnLarge.setText(orderFoodCurrent.getFoodName().toUpperCase());a
+											textAreaTenMonAnLarge.setText(orderFoodCurrent.getFoodName().toUpperCase());
+
+											// set hinh
+											// check neu hinh bi null
+											if (orderFoodCurrent.getImage() == null) {
+												btnImg.setIcon(null);
+											} else {
+												Image img = Toolkit.getDefaultToolkit()
+														.createImage(orderFoodCurrent.getImage());
+												ImageIcon icon = new ImageIcon(img.getScaledInstance(widthHinhLon,
+														heightHinhLon, Image.SCALE_SMOOTH));
+												btnImg.setIcon(icon);
+											}
+										}
+
+										// handle show 3 o nho cho 4 nguoi quet gan nhat
+										String queryTop4 = "SELECT FNA.employee_name,CF.name, FNA.employee_id, CF.image\r\n"
+												+ "FROM quanlydatcom.food_nha_an as FNA, quanlydatcom.category_food as CF\r\n"
+												+ "WHERE FNA.category_food_id = CF.id and FNA.shifts_id = ? and FNA.food_date = ?\r\n"
+												+ "ORDER BY FNA.id DESC\r\n" + "LIMIT 3;";
+
+										try {
+											con = ZKFPDemo.getConnectionMySQL(
+													"jdbc:mysql://192.168.0.132:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
+											preStatementTop3 = con.prepareStatement(queryTop4);
+											preStatementTop3.setInt(1, shiftsCurrent);
+											preStatementTop3.setDate(2, dateCurrentSQL);
+											ResultSet resultSet = preStatementTop3.executeQuery();
+											while (resultSet.next()) {
+												FoodNhaAn foodNhaAn = new FoodNhaAn();
+												foodNhaAn.setEmployeeName(resultSet.getString("FNA.employee_name"));
+												foodNhaAn.setImageFood(resultSet.getBytes("CF.image"));
+												foodNhaAn.setEmployeeIdOld(resultSet.getString("FNA.employee_id"));
+												foodNhaAn.setFoodName(resultSet.getString("CF.name"));
+												foodNhaAnTop4.add(foodNhaAn);
+											}
+										} catch (Exception e1) {
+											// TODO: handle exception
+										} finally {
+											try {
+												ZKFPDemo.closeConnectionPre(con, preStatementTop3);
+											} catch (Exception e2) {
+												e2.printStackTrace();
+												;
+											}
+										}
+										// set hinh
+										// query co bi rong hay khong
+										if (!foodNhaAnTop4.isEmpty()) {
+											// query co 2 phan tu
+											if (foodNhaAnTop4.size() == 1) {
+
+												// image nhan vien
+												String pathImage = "images/" + foodNhaAnTop4.get(0).getEmployeeIdOld()
+														+ ".bmp";
+												File file = new File(pathImage);
+												BufferedImage bimg = null;
+												try {
+													bimg = ImageIO.read(file);
+												} catch (IOException e1) {
+												}
+												if (bimg == null) {
+													labelHinhNV1.setText("");
+												}
+												if (bimg != null) {
+													Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+													ImageIcon image = new ImageIcon(scaled);
+													labelHinhNV1.setIcon(image);
+												}
+												textAreaTenMonAn1
+														.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
+												// image mon an 1
+												if (foodNhaAnTop4.get(0).getImageFood() == null) {
+													btnImage1.setIcon(null);
+												} else {
+													Image img1 = Toolkit.getDefaultToolkit()
+															.createImage(foodNhaAnTop4.get(0).getImageFood());
+													ImageIcon icon1 = new ImageIcon(
+															img1.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+													btnImage1.setIcon(icon1);
+												}
+												labelName1.setText(foodNhaAnTop4.get(0).getEmployeeName());
+											}
+											if (foodNhaAnTop4.size() == 2) {
+												// image nhan vien 1
+												String pathImage = "images/" + foodNhaAnTop4.get(0).getEmployeeIdOld()
+														+ ".bmp";
+												File file = new File(pathImage);
+												BufferedImage bimg = null;
+												try {
+													bimg = ImageIO.read(file);
+												} catch (IOException e1) {
+												}
+
+												if (bimg == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimg != null) {
+													Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+													ImageIcon image = new ImageIcon(scaled);
+													labelHinhNV1.setIcon(image);
+												}
+												textAreaTenMonAn1
+														.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
+												// check neu image null
+												if (foodNhaAnTop4.get(0).getImageFood() == null) {
+													btnImage1.setIcon(null);
+												} else {
+													Image img1 = Toolkit.getDefaultToolkit()
+															.createImage(foodNhaAnTop4.get(0).getImageFood());
+													ImageIcon icon1 = new ImageIcon(
+															img1.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+													btnImage1.setIcon(icon1);
+												}
+
+												labelName1.setText(foodNhaAnTop4.get(0).getEmployeeName());
+
+												// image nhan vien 2
+												String pathImage2 = "images/" + foodNhaAnTop4.get(1).getEmployeeIdOld()
+														+ ".bmp";
+												File file2 = new File(pathImage2);
+												BufferedImage bimg2 = null;
+												try {
+													bimg2 = ImageIO.read(file2);
+												} catch (IOException e1) {
+												}
+												if (bimg2 == null) {
+													labelHinhNV2.setIcon(null);
+												}
+												if (bimg2 != null) {
+													Image scaled2 = bimg2.getScaledInstance(140, 140,
+															Image.SCALE_SMOOTH);
+													ImageIcon image2 = new ImageIcon(scaled2);
+													labelHinhNV2.setIcon(image2);
+												}
+												textAreaTenMonAn2
+														.setText(foodNhaAnTop4.get(1).getFoodName().toUpperCase());
+												// check neu image mon an 2 null
+												if (foodNhaAnTop4.get(1).getImageFood() == null) {
+													btnImage2.setIcon(null);
+												} else {
+													Image img2 = Toolkit.getDefaultToolkit()
+															.createImage(foodNhaAnTop4.get(1).getImageFood());
+													ImageIcon icon2 = new ImageIcon(
+															img2.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+													btnImage2.setIcon(icon2);
+												}
+												labelName2.setText(foodNhaAnTop4.get(1).getEmployeeName());
+											}
+											if (foodNhaAnTop4.size() == 3) {
+												// image nhan vien 1
+												String pathImage = "images/" + foodNhaAnTop4.get(0).getEmployeeIdOld()
+														+ ".bmp";
+												File file = new File(pathImage);
+												BufferedImage bimg = null;
+												try {
+													bimg = ImageIO.read(file);
+												} catch (IOException e1) {
+												}
+												if (bimg == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimg != null) {
+													Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+													ImageIcon image = new ImageIcon(scaled);
+													labelHinhNV1.setIcon(image);
+												}
+												// hinh mon an 1
+												// check neu image null
+												textAreaTenMonAn1
+														.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
+												if (foodNhaAnTop4.get(0).getImageFood() == null) {
+													btnImage1.setIcon(null);
+												} else {
+													Image img1 = Toolkit.getDefaultToolkit()
+															.createImage(foodNhaAnTop4.get(0).getImageFood());
+													ImageIcon icon1 = new ImageIcon(
+															img1.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+													btnImage1.setIcon(icon1);
+												}
+												labelName1.setText(foodNhaAnTop4.get(0).getEmployeeName());
+
+												// image nhan vien 2
+												String pathImage2 = "images/" + foodNhaAnTop4.get(1).getEmployeeIdOld()
+														+ ".bmp";
+												File file2 = new File(pathImage2);
+												BufferedImage bimg2 = null;
+												try {
+													bimg2 = ImageIO.read(file2);
+												} catch (IOException e1) {
+												}
+												if (bimg2 == null) {
+													labelHinhNV2.setIcon(null);
+												}
+												if (bimg2 != null) {
+													Image scaled2 = bimg2.getScaledInstance(140, 140,
+															Image.SCALE_SMOOTH);
+													ImageIcon image2 = new ImageIcon(scaled2);
+													labelHinhNV2.setIcon(image2);
+												}
+
+												// image mon an 2
+												// check neu image mon an 2 null
+												textAreaTenMonAn2
+														.setText(foodNhaAnTop4.get(1).getFoodName().toUpperCase());
+												if (foodNhaAnTop4.get(1).getImageFood() == null) {
+													btnImage2.setIcon(null);
+												} else {
+													Image img2 = Toolkit.getDefaultToolkit()
+															.createImage(foodNhaAnTop4.get(1).getImageFood());
+													ImageIcon icon2 = new ImageIcon(
+															img2.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+													btnImage2.setIcon(icon2);
+												}
+												labelName2.setText(foodNhaAnTop4.get(1).getEmployeeName());
+
+												// image nhan vien 3
+												String pathImage3 = "images/" + foodNhaAnTop4.get(2).getEmployeeIdOld()
+														+ ".bmp";
+												File file3 = new File(pathImage3);
+												BufferedImage bimg3 = null;
+												try {
+													bimg3 = ImageIO.read(file3);
+												} catch (IOException e1) {
+												}
+												if (bimg3 == null) {
+													labelHinhNV3.setIcon(null);
+												}
+												if (bimg3 != null) {
+													Image scaled3 = bimg3.getScaledInstance(140, 140,
+															Image.SCALE_SMOOTH);
+													ImageIcon image3 = new ImageIcon(scaled3);
+													labelHinhNV3.setIcon(image3);
+												}
+
+												// image mon an 3
+												textAreaTenMonAn3
+														.setText(foodNhaAnTop4.get(2).getFoodName().toUpperCase());
+												if (foodNhaAnTop4.get(2).getImageFood() == null) {
+													btnImage3.setIcon(null);
+												} else {
+													Image img3 = Toolkit.getDefaultToolkit()
+															.createImage(foodNhaAnTop4.get(2).getImageFood());
+													ImageIcon icon3 = new ImageIcon(
+															img3.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+													btnImage3.setIcon(icon3);
+												}
+												labelName3.setText(foodNhaAnTop4.get(2).getEmployeeName());
+											}
+										}
+										textArea.setText("Thành công");
+										// end thai
 									}
-									if (bimgTest == null) {
-										btnImg.setIcon(null);
+									// Khong co gio an phu hop
+									else {
+										// image he thong chua san sang
+										String pathImageTest = "imagesSystem/image-khongcogioanphuhop.png";
+										File fileTest = new File(pathImageTest);
+										BufferedImage bimgTest = null;
+										try {
+											bimgTest = ImageIO.read(fileTest);
+										} catch (IOException e2) {
+										}
+										if (bimgTest == null) {
+											btnImg.setIcon(null);
+										}
+										if (bimgTest != null) {
+											Image scaledTest = bimgTest.getScaledInstance(widthHinhLon, heightHinhLon,
+													Image.SCALE_SMOOTH);
+											ImageIcon imageTest = new ImageIcon(scaledTest);
+											btnImg.setIcon(null);
+											btnImg.setIcon(imageTest);
+										}
+										// end image he thong
 									}
-									if (bimgTest != null) {
-										Image scaledTest = bimgTest.getScaledInstance(widthHinhLon, heightHinhLon,
-												Image.SCALE_SMOOTH);
-										ImageIcon imageTest = new ImageIcon(scaledTest);
-										btnImg.setIcon(null);
-										btnImg.setIcon(imageTest);
-									}
-									// end image he thong
+									// END CODE TAM THOI
+
 								}
 								// CAT COM VA VAN CHO LUU
 								if (!isEat && ZKFPDemo.ON_ALLOW_EXCEPTION) {
@@ -1335,7 +1797,7 @@ public class ZKFPDemo extends JFrame {
 											boolean checkedExist = false;
 											if (resultSetChecked.next()) {
 												checkedExist = true;
-												String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan.png";
+												String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan650x450.png";
 												File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
 												BufferedImage bimgDaNhanSuatAn = null;
 												try {
@@ -1347,9 +1809,10 @@ public class ZKFPDemo extends JFrame {
 													btnImg.setIcon(null);
 												}
 												if (bimgDaNhanSuatAn != null) {
-													Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
-															heightHinhLon, Image.SCALE_SMOOTH);
-													ImageIcon imageTest = new ImageIcon(scaledTest);
+//													Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+//															heightHinhLon, Image.SCALE_SMOOTH);
+//													ImageIcon imageTest = new ImageIcon(scaledTest);
+													ImageIcon imageTest = new ImageIcon(bimgDaNhanSuatAn);
 													btnImg.setIcon(imageTest);
 												}
 												togglebtnKhongQuetVT.setText("CÓ Đ.KÝ");
@@ -1946,13 +2409,6 @@ public class ZKFPDemo extends JFrame {
 									try {
 										con = ZKFPDemo.getConnectionMySQL(
 												"jdbc:mysql://192.168.0.132:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
-										preStatement = con.prepareStatement(queryFood);
-										// pass id employee
-										preStatement.setString(1, listl.get(fid[0] - 1).getMaNhanVien());
-										// date param
-										preStatement.setDate(2, dateCurrentSQL);
-										preStatement.setInt(3, shiftsCurrent);
-										ResultSet resultSet = preStatement.executeQuery();
 
 										// kiem tra co du lieu ca do duoi DB chua
 										String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
@@ -1987,25 +2443,57 @@ public class ZKFPDemo extends JFrame {
 //											dialog.setVisible(true);
 //											btnImg.setIcon(null);
 											// image he thong da nhan suat an
-											String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan.png";
-											File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
-											BufferedImage bimgDaNhanSuatAn = null;
-											try {
-												bimgDaNhanSuatAn = ImageIO.read(fileDaNhanSuatAn);
-											} catch (IOException e) {
-											}
-											if (bimgDaNhanSuatAn == null) {
-												btnImg.setIcon(null);
-											}
-											if (bimgDaNhanSuatAn != null) {
-												Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
-														heightHinhLon, Image.SCALE_SMOOTH);
-												ImageIcon imageTest = new ImageIcon(scaledTest);
-												btnImg.setIcon(imageTest);
-											}
+//											String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan650x450.png";
+//											File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
+//											BufferedImage bimgDaNhanSuatAn = null;
+//											try {
+//												bimgDaNhanSuatAn = ImageIO.read(fileDaNhanSuatAn);
+//											} catch (IOException e) {
+//											}
+//											if (bimgDaNhanSuatAn == null) {
+//												btnImg.setIcon(null);
+//											}
+//											if (bimgDaNhanSuatAn != null) {
+//												Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+//														heightHinhLon, Image.SCALE_SMOOTH);
+//												ImageIcon imageTest = new ImageIcon(scaledTest);
+//												btnImg.setIcon(imageTest);
+//											}
 											// end image he thong
+											try {
+
+												String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan650x450.png";
+												File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
+												BufferedImage bimgDaNhanSuatAn = null;
+												try {
+													bimgDaNhanSuatAn = ImageIO.read(fileDaNhanSuatAn);
+												} catch (IOException e) {
+												}
+												if (bimgDaNhanSuatAn == null) {
+													btnImg.setIcon(null);
+												}
+												if (bimgDaNhanSuatAn != null) {
+//													Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+//															heightHinhLon, Image.SCALE_SMOOTH);
+
+													ImageIcon imageTest = new ImageIcon(bimgDaNhanSuatAn);
+													btnImg.setIcon(imageTest);
+												}
+											} catch (Exception ex) {
+												System.out.println(ex);
+											}
+
 											return;
 										}
+
+										preStatement = con.prepareStatement(queryFood);
+										// pass id employee
+										preStatement.setString(1, listl.get(fid[0] - 1).getMaNhanVien());
+										// date param
+										preStatement.setDate(2, dateCurrentSQL);
+										preStatement.setInt(3, shiftsCurrent);
+										ResultSet resultSet = preStatement.executeQuery();
+
 										// Neu chua an se them du lieu vao DB -> 2 truong hop: 1 la co dang ky , 2
 										// la khong dang ky
 										// Co dang ky
@@ -2392,95 +2880,71 @@ public class ZKFPDemo extends JFrame {
 							}
 							// neu cat com
 							if (!isEat && ZKFPDemo.ON_ALLOW_EXCEPTION == false) {
-								// image he thong chua san sang
-								String pathImageTest = "imagesSystem/image-khongdangkysuatan.png";
-								File fileTest = new File(pathImageTest);
-								BufferedImage bimgTest = null;
-								try {
-									bimgTest = ImageIO.read(fileTest);
-								} catch (IOException e2) {
-								}
-								if (bimgTest == null) {
-									btnImg.setIcon(null);
-								}
-								if (bimgTest != null) {
-									Image scaledTest = bimgTest.getScaledInstance(widthHinhLon, heightHinhLon,
-											Image.SCALE_SMOOTH);
-									ImageIcon imageTest = new ImageIcon(scaledTest);
-									btnImg.setIcon(null);
-									btnImg.setIcon(imageTest);
-								}
-								// end image he thong
-							}
-							// CAT COM VA VAN CHO LUU
-							if (!isEat && ZKFPDemo.ON_ALLOW_EXCEPTION) {
+								// CODE CHINH THUC
+//								// image he thong chua san sang
+//								String pathImageTest = "imagesSystem/image-khongdangkysuatan.png";
+//								File fileTest = new File(pathImageTest);
+//								BufferedImage bimgTest = null;
+//								try {
+//									bimgTest = ImageIO.read(fileTest);
+//								} catch (IOException e2) {
+//								}
+//								if (bimgTest == null) {
+//									btnImg.setIcon(null);
+//								}
+//								if (bimgTest != null) {
+//									Image scaledTest = bimgTest.getScaledInstance(widthHinhLon, heightHinhLon,
+//											Image.SCALE_SMOOTH);
+//									ImageIcon imageTest = new ImageIcon(scaledTest);
+//									btnImg.setIcon(null);
+//									btnImg.setIcon(imageTest);
+//								}
+//								// end image he thong
+								// END CODE CHINH THUC
+								// CODE TAM THOI
 
-								// handle khong co gio an va da an roi
-								if (shiftsCurrent == 0) {
-									// image he thong chua san sang
-									String pathImageTest = "imagesSystem/image-khongcogioanphuhop.png";
-									File fileTest = new File(pathImageTest);
-									BufferedImage bimgTest = null;
-									try {
-										bimgTest = ImageIO.read(fileTest);
-									} catch (IOException e2) {
-									}
-									if (bimgTest == null) {
-										btnImg.setIcon(null);
-									}
-									if (bimgTest != null) {
-										Image scaledTest = bimgTest.getScaledInstance(widthHinhLon, heightHinhLon,
-												Image.SCALE_SMOOTH);
-										ImageIcon imageTest = new ImageIcon(scaledTest);
-										btnImg.setIcon(null);
-										btnImg.setIcon(imageTest);
-									}
-									return;
-								}
-								// co gio an
+								// check xem nhan vien co cat com hay khong
+								// nho check cho nay listDataVerify bi null
+								// neu khong cat com ->
+								List<FoodNhaAn> foodNhaAnTop4 = new ArrayList<>();
+								orderFoodCurrent = new OrderFood();
+								// chua handle cho nay
+
+								// kiem tra xem hien tai co dang thuoc ca nao hay khong
 								if (shiftsCurrent != 0) {
-									// Date current
-//									Date dateCurrentTemp = new Date();
-//									java.sql.Date dateCurrent = new java.sql.Date(dateCurrentTemp.getTime());
-									Connection conException = null;
-									PreparedStatement psCheckedException = null;
+									// thai
+									java.sql.Date dateCurrentSQL = new java.sql.Date(dateCurrent.getTime());
+									// query by date and employee
+									String queryFood = "";
+									queryFood = "SELECT ofbd.id as order_food_by_day_id, of.employee_code, of.employee_id, of.employee_name, of.department_code, of.department_name, cf.name,cf.image,cf.id as category_food_id,fbd.shifts_id, of.registration_date\r\n"
+											+ "FROM quanlydatcom.order_food_by_day as ofbd, quanlydatcom.order_food as of, quanlydatcom.food_by_day fbd, quanlydatcom.category_food as cf\r\n"
+											+ "WHERE of.employee_id = ? AND of.registration_date = ? AND fbd.shifts_id = ? AND ofbd.order_food_id = of.id AND ofbd.food_by_day_id = fbd.id AND cf.id = fbd.category_food_id;	";
+
 									try {
-										conException = ZKFPDemo.getConnectionMySQL(
+										con = ZKFPDemo.getConnectionMySQL(
 												"jdbc:mysql://192.168.0.132:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
+										preStatement = con.prepareStatement(queryFood);
+										// pass id employee
+										preStatement.setString(1, listl.get(fid[0] - 1).getMaNhanVien());
+										// date param
+										preStatement.setDate(2, dateCurrentSQL);
+										preStatement.setInt(3, shiftsCurrent);
+										ResultSet resultSet = preStatement.executeQuery();
+
 										// kiem tra co du lieu ca do duoi DB chua
-										String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an_exception WHERE employee_id = ? and shifts_id = ? and food_date = ?";
-										psCheckedException = conException.prepareStatement(queryChecked);
+										String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
+										PreparedStatement preStatementChecked = null;
+										preStatementChecked = con.prepareStatement(queryChecked);
 										// check bang ma nhan vien cu
-										psCheckedException.setString(1, listl.get(fid[0] - 1).getMaNhanVien());
-										psCheckedException.setInt(2, shiftsCurrent);
-										// convert date sql
-										java.sql.Date sqlDateChecked = new java.sql.Date(dateCurrent.getTime());
-										psCheckedException.setDate(3, sqlDateChecked);
-										ResultSet resultSetChecked = psCheckedException.executeQuery();
+										preStatementChecked.setString(1, listl.get(fid[0] - 1).getMaNhanVien());
+										preStatementChecked.setInt(2, shiftsCurrent);
+										preStatementChecked.setDate(3, dateCurrentSQL);
+										ResultSet resultSetChecked = preStatementChecked.executeQuery();
 										boolean checkedExist = false;
 										if (resultSetChecked.next()) {
 											checkedExist = true;
-//											Toolkit.getDefaultToolkit().beep();
-//											JOptionPane optionPane = new JOptionPane("BẠN ĐÃ NHẬN PHẦN ĂN TRƯỚC ĐÓ!",
-//													JOptionPane.WARNING_MESSAGE);
-//											JDialog dialog = optionPane.createDialog(btnImg, "Chú ý!");
-//											dialog.setAlwaysOnTop(true);
-////											dialog.setVisible(true);
-//
-//											new Thread(new Runnable() {
-//												@Override
-//												public void run() {
-//													try {
-//														Thread.sleep(2000);
-//													} catch (InterruptedException e) {
-//														e.printStackTrace();
-//													}
-//													dialog.setVisible(false);
-//												}
-//											}).start();
-//											dialog.setVisible(true);
-//											btnImg.setIcon(null);
-											String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan.png";
+											// image he thong da nhan suat an
+											String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan650x450.png";
 											File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
 											BufferedImage bimgDaNhanSuatAn = null;
 											try {
@@ -2491,18 +2955,43 @@ public class ZKFPDemo extends JFrame {
 												btnImg.setIcon(null);
 											}
 											if (bimgDaNhanSuatAn != null) {
-												Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
-														heightHinhLon, Image.SCALE_SMOOTH);
-												ImageIcon imageTest = new ImageIcon(scaledTest);
+//												Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+//														heightHinhLon, Image.SCALE_SMOOTH);
+												ImageIcon imageTest = new ImageIcon(bimgDaNhanSuatAn);
 												btnImg.setIcon(imageTest);
 											}
-											togglebtnKhongQuetVT.setText("CÓ Đ.KÝ");
-											ZKFPDemo.ON_ALLOW_EXCEPTION = false;
+											// end image he thong
 											return;
 										}
-										// NEU CHUA AN THI CHO THEM SUAT AN VAO DB
-										if (!checkedExist) {
-											orderFoodCurrent = new OrderFood();
+										// Neu chua an se them du lieu vao DB -> 2 truong hop: 1 la co dang ky , 2
+										// la khong dang ky
+										// Co dang ky
+										while (resultSet.next()) {
+											// neu nhan vien do da an ca do roi - > k cho them
+											if (!checkedExist) {
+												orderFoodCurrent
+														.setDepartmentName(resultSet.getString("of.department_name"));
+												orderFoodCurrent
+														.setDepartmentCode(resultSet.getString("of.department_code"));
+												orderFoodCurrent
+														.setEmployeeCode(resultSet.getString("of.employee_code"));
+												orderFoodCurrent
+														.setEmployeeName(resultSet.getString("of.employee_name"));
+												orderFoodCurrent.setFoodName(resultSet.getString("cf.name"));
+												orderFoodCurrent.setImage(resultSet.getBytes("cf.image"));
+												orderFoodCurrent
+														.setFood_date(resultSet.getDate("of.registration_date"));
+												orderFoodCurrent
+														.setCategory_food_id(resultSet.getInt("category_food_id"));
+												orderFoodCurrent.setEmployeeId(resultSet.getString("of.employee_id"));
+												orderFoodCurrent.setShifts_id(resultSet.getInt("fbd.shifts_id"));
+												orderFoodCurrent.setNotRegFood(true);
+												ZKFPDemo.addOne(orderFoodCurrent, orderFoodCurrent.getShifts_id());
+											}
+										}
+										// chua dang ky
+										// handle cho phan mon an tu chon
+										if (!resultSet.first()) {
 											DepartmentData[] departmentHCMArray = DepartmentDataService
 													.timtheophongquanly("20002");
 											List<DepartmentData> departmentHCM = new ArrayList<>(
@@ -2549,15 +3038,15 @@ public class ZKFPDemo extends JFrame {
 															.setEmployeeCode(resultSet1.getString("employee_code"));
 													orderFoodCurrent
 															.setEmployeeName(resultSet1.getString("employee_name"));
-													orderFoodCurrent.setFoodName("Tự chọn");
+													orderFoodCurrent.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
 													orderFoodCurrent.setFood_date(new Date());
 													// gan thang id cua category food tu chon
 													orderFoodCurrent.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
 													orderFoodCurrent
 															.setEmployeeId(resultSet1.getString("employee_code_old"));
 													orderFoodCurrent.setShifts_id(shiftsCurrent);
-													ZKFPDemo.addOneException(orderFoodCurrent,
-															orderFoodCurrent.getShifts_id());
+													orderFoodCurrent.setNotRegFood(true);
+													ZKFPDemo.addOne(orderFoodCurrent, orderFoodCurrent.getShifts_id());
 												}
 											} catch (Exception e) {
 												// TODO: handle exception
@@ -2571,16 +3060,17 @@ public class ZKFPDemo extends JFrame {
 												}
 											}
 										}
+										// end mon an tu chon
 									} catch (Exception e) {
 										// TODO: handle exception
 									} finally {
 										try {
-											ZKFPDemo.closeConnectionPre(conException, psCheckedException);
+											ZKFPDemo.closeConnectionPre(con, preStatement);
 										} catch (Exception e2) {
 											e2.printStackTrace();
 										}
 									}
-									// Da luu suat an xuong db -> handle hien ra view
+									// da dang ky mon an
 									if (orderFoodCurrent.getEmployeeName() != null) {
 										textAreaMaNV.setText(orderFoodCurrent.getEmployeeCode());
 										textAreaTenNV.setText(orderFoodCurrent.getEmployeeName());
@@ -2590,41 +3080,936 @@ public class ZKFPDemo extends JFrame {
 										DateFormat df = new SimpleDateFormat(pattern);
 										String foodDate = df.format(orderFoodCurrent.getFood_date());
 										textAreaNgay.setText(foodDate);
-										textAreaMonAn.setText(orderFoodCurrent.getFoodName());
+//											labelTenMonAnLarge.setText(orderFoodCurrent.getFoodName().toUpperCase());a
+										textAreaTenMonAnLarge.setText(orderFoodCurrent.getFoodName().toUpperCase());
+
 										// set hinh
 										// check neu hinh bi null
 										if (orderFoodCurrent.getImage() == null) {
-											String pathImageTuchon = "imagesSystem/image-monantuchon.png";
-											File fileTuchon = new File(pathImageTuchon);
-											BufferedImage bimgTuchon = null;
-											try {
-												bimgTuchon = ImageIO.read(fileTuchon);
-											} catch (IOException e2) {
-											}
-											if (bimgTuchon == null) {
-												btnImg.setIcon(null);
-											}
-											if (bimgTuchon != null) {
-												Image scaledTuchon = bimgTuchon.getScaledInstance(widthHinhLon,
-														heightHinhLon, Image.SCALE_SMOOTH);
-												ImageIcon imageTuchon = new ImageIcon(scaledTuchon);
-												btnImg.setIcon(null);
-												btnImg.setIcon(imageTuchon);
-											}
+											btnImg.setIcon(null);
 										} else {
 											Image img = Toolkit.getDefaultToolkit()
 													.createImage(orderFoodCurrent.getImage());
-											ImageIcon icon = new ImageIcon(
-													img.getScaledInstance(500, 350, Image.SCALE_SMOOTH));
+											ImageIcon icon = new ImageIcon(img.getScaledInstance(widthHinhLon,
+													heightHinhLon, Image.SCALE_SMOOTH));
 											btnImg.setIcon(icon);
 										}
 									}
+
+									// handle show 3 o nho cho 4 nguoi quet gan nhat
+									String queryTop4 = "SELECT FNA.employee_name,CF.name, FNA.employee_id, CF.image\r\n"
+											+ "FROM quanlydatcom.food_nha_an as FNA, quanlydatcom.category_food as CF\r\n"
+											+ "WHERE FNA.category_food_id = CF.id and FNA.shifts_id = ? and FNA.food_date = ?\r\n"
+											+ "ORDER BY FNA.id DESC\r\n" + "LIMIT 3;";
+
+									try {
+										con = ZKFPDemo.getConnectionMySQL(
+												"jdbc:mysql://192.168.0.132:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
+										preStatementTop3 = con.prepareStatement(queryTop4);
+										preStatementTop3.setInt(1, shiftsCurrent);
+										preStatementTop3.setDate(2, dateCurrentSQL);
+										ResultSet resultSet = preStatementTop3.executeQuery();
+										while (resultSet.next()) {
+											FoodNhaAn foodNhaAn = new FoodNhaAn();
+											foodNhaAn.setEmployeeName(resultSet.getString("FNA.employee_name"));
+											foodNhaAn.setImageFood(resultSet.getBytes("CF.image"));
+											foodNhaAn.setEmployeeIdOld(resultSet.getString("FNA.employee_id"));
+											foodNhaAn.setFoodName(resultSet.getString("CF.name"));
+											foodNhaAnTop4.add(foodNhaAn);
+										}
+									} catch (Exception e) {
+										// TODO: handle exception
+									} finally {
+										try {
+											ZKFPDemo.closeConnectionPre(con, preStatementTop3);
+										} catch (Exception e2) {
+											e2.printStackTrace();
+											;
+										}
+									}
+									// set hinh
+									// query co bi rong hay khong
+									if (!foodNhaAnTop4.isEmpty()) {
+										// query co 2 phan tu
+										if (foodNhaAnTop4.size() == 1) {
+
+											// image nhan vien
+											String pathImage = "images/" + foodNhaAnTop4.get(0).getEmployeeIdOld()
+													+ ".bmp";
+											File file = new File(pathImage);
+											BufferedImage bimg = null;
+											try {
+												bimg = ImageIO.read(file);
+											} catch (IOException e) {
+											}
+											if (bimg == null) {
+												labelHinhNV1.setText("");
+											}
+											if (bimg != null) {
+												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+												ImageIcon image = new ImageIcon(scaled);
+												labelHinhNV1.setIcon(image);
+											}
+											textAreaTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
+											// image mon an 1
+											if (foodNhaAnTop4.get(0).getImageFood() == null) {
+												btnImage1.setIcon(null);
+											} else {
+												Image img1 = Toolkit.getDefaultToolkit()
+														.createImage(foodNhaAnTop4.get(0).getImageFood());
+												ImageIcon icon1 = new ImageIcon(
+														img1.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+												btnImage1.setIcon(icon1);
+											}
+											labelName1.setText(foodNhaAnTop4.get(0).getEmployeeName());
+										}
+										if (foodNhaAnTop4.size() == 2) {
+											// image nhan vien 1
+											String pathImage = "images/" + foodNhaAnTop4.get(0).getEmployeeIdOld()
+													+ ".bmp";
+											File file = new File(pathImage);
+											BufferedImage bimg = null;
+											try {
+												bimg = ImageIO.read(file);
+											} catch (IOException e) {
+											}
+
+											if (bimg == null) {
+												labelHinhNV1.setIcon(null);
+											}
+											if (bimg != null) {
+												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+												ImageIcon image = new ImageIcon(scaled);
+												labelHinhNV1.setIcon(image);
+											}
+											textAreaTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
+											// check neu image null
+											if (foodNhaAnTop4.get(0).getImageFood() == null) {
+												btnImage1.setIcon(null);
+											} else {
+												Image img1 = Toolkit.getDefaultToolkit()
+														.createImage(foodNhaAnTop4.get(0).getImageFood());
+												ImageIcon icon1 = new ImageIcon(
+														img1.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+												btnImage1.setIcon(icon1);
+											}
+
+											labelName1.setText(foodNhaAnTop4.get(0).getEmployeeName());
+
+											// image nhan vien 2
+											String pathImage2 = "images/" + foodNhaAnTop4.get(1).getEmployeeIdOld()
+													+ ".bmp";
+											File file2 = new File(pathImage2);
+											BufferedImage bimg2 = null;
+											try {
+												bimg2 = ImageIO.read(file2);
+											} catch (IOException e) {
+											}
+											if (bimg2 == null) {
+												labelHinhNV2.setIcon(null);
+											}
+											if (bimg2 != null) {
+												Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+												ImageIcon image2 = new ImageIcon(scaled2);
+												labelHinhNV2.setIcon(image2);
+											}
+											textAreaTenMonAn2.setText(foodNhaAnTop4.get(1).getFoodName().toUpperCase());
+											// check neu image mon an 2 null
+											if (foodNhaAnTop4.get(1).getImageFood() == null) {
+												btnImage2.setIcon(null);
+											} else {
+												Image img2 = Toolkit.getDefaultToolkit()
+														.createImage(foodNhaAnTop4.get(1).getImageFood());
+												ImageIcon icon2 = new ImageIcon(
+														img2.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+												btnImage2.setIcon(icon2);
+											}
+											labelName2.setText(foodNhaAnTop4.get(1).getEmployeeName());
+										}
+										if (foodNhaAnTop4.size() == 3) {
+											// image nhan vien 1
+											String pathImage = "images/" + foodNhaAnTop4.get(0).getEmployeeIdOld()
+													+ ".bmp";
+											File file = new File(pathImage);
+											BufferedImage bimg = null;
+											try {
+												bimg = ImageIO.read(file);
+											} catch (IOException e) {
+											}
+											if (bimg == null) {
+												labelHinhNV1.setIcon(null);
+											}
+											if (bimg != null) {
+												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+												ImageIcon image = new ImageIcon(scaled);
+												labelHinhNV1.setIcon(image);
+											}
+											// hinh mon an 1
+											// check neu image null
+											textAreaTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
+											if (foodNhaAnTop4.get(0).getImageFood() == null) {
+												btnImage1.setIcon(null);
+											} else {
+												Image img1 = Toolkit.getDefaultToolkit()
+														.createImage(foodNhaAnTop4.get(0).getImageFood());
+												ImageIcon icon1 = new ImageIcon(
+														img1.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+												btnImage1.setIcon(icon1);
+											}
+											labelName1.setText(foodNhaAnTop4.get(0).getEmployeeName());
+
+											// image nhan vien 2
+											String pathImage2 = "images/" + foodNhaAnTop4.get(1).getEmployeeIdOld()
+													+ ".bmp";
+											File file2 = new File(pathImage2);
+											BufferedImage bimg2 = null;
+											try {
+												bimg2 = ImageIO.read(file2);
+											} catch (IOException e) {
+											}
+											if (bimg2 == null) {
+												labelHinhNV2.setIcon(null);
+											}
+											if (bimg2 != null) {
+												Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+												ImageIcon image2 = new ImageIcon(scaled2);
+												labelHinhNV2.setIcon(image2);
+											}
+
+											// image mon an 2
+											// check neu image mon an 2 null
+											textAreaTenMonAn2.setText(foodNhaAnTop4.get(1).getFoodName().toUpperCase());
+											if (foodNhaAnTop4.get(1).getImageFood() == null) {
+												btnImage2.setIcon(null);
+											} else {
+												Image img2 = Toolkit.getDefaultToolkit()
+														.createImage(foodNhaAnTop4.get(1).getImageFood());
+												ImageIcon icon2 = new ImageIcon(
+														img2.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+												btnImage2.setIcon(icon2);
+											}
+											labelName2.setText(foodNhaAnTop4.get(1).getEmployeeName());
+
+											// image nhan vien 3
+											String pathImage3 = "images/" + foodNhaAnTop4.get(2).getEmployeeIdOld()
+													+ ".bmp";
+											File file3 = new File(pathImage3);
+											BufferedImage bimg3 = null;
+											try {
+												bimg3 = ImageIO.read(file3);
+											} catch (IOException e) {
+											}
+											if (bimg3 == null) {
+												labelHinhNV3.setIcon(null);
+											}
+											if (bimg3 != null) {
+												Image scaled3 = bimg3.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+												ImageIcon image3 = new ImageIcon(scaled3);
+												labelHinhNV3.setIcon(image3);
+											}
+
+											// image mon an 3
+											textAreaTenMonAn3.setText(foodNhaAnTop4.get(2).getFoodName().toUpperCase());
+											if (foodNhaAnTop4.get(2).getImageFood() == null) {
+												btnImage3.setIcon(null);
+											} else {
+												Image img3 = Toolkit.getDefaultToolkit()
+														.createImage(foodNhaAnTop4.get(2).getImageFood());
+												ImageIcon icon3 = new ImageIcon(
+														img3.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+												btnImage3.setIcon(icon3);
+											}
+											labelName3.setText(foodNhaAnTop4.get(2).getEmployeeName());
+										}
+									}
 									textArea.setText("Thành công");
-									togglebtnKhongQuetVT.setText("CÓ Đ.KÝ");
-									ZKFPDemo.ON_ALLOW_EXCEPTION = false;
+									// end thai
 								}
-								// end
+								// Khong co gio an phu hop
+								else {
+									// image he thong chua san sang
+									String pathImageTest = "imagesSystem/image-khongcogioanphuhop.png";
+									File fileTest = new File(pathImageTest);
+									BufferedImage bimgTest = null;
+									try {
+										bimgTest = ImageIO.read(fileTest);
+									} catch (IOException e2) {
+									}
+									if (bimgTest == null) {
+										btnImg.setIcon(null);
+									}
+									if (bimgTest != null) {
+										Image scaledTest = bimgTest.getScaledInstance(widthHinhLon, heightHinhLon,
+												Image.SCALE_SMOOTH);
+										ImageIcon imageTest = new ImageIcon(scaledTest);
+										btnImg.setIcon(null);
+										btnImg.setIcon(imageTest);
+									}
+									// end image he thong
+								}
+								// END CODE TAM THOI
+
 							}
+							// CAT COM VA VAN CHO LUU
+							if (!isEat && ZKFPDemo.ON_ALLOW_EXCEPTION) {
+								// CODE TAM THOI
+
+								// check xem nhan vien co cat com hay khong
+								// nho check cho nay listDataVerify bi null
+								// neu khong cat com ->
+								List<FoodNhaAn> foodNhaAnTop4 = new ArrayList<>();
+								orderFoodCurrent = new OrderFood();
+								// chua handle cho nay
+
+								// kiem tra xem hien tai co dang thuoc ca nao hay khong
+								if (shiftsCurrent != 0) {
+									// thai
+									java.sql.Date dateCurrentSQL = new java.sql.Date(dateCurrent.getTime());
+									// query by date and employee
+									String queryFood = "";
+									queryFood = "SELECT ofbd.id as order_food_by_day_id, of.employee_code, of.employee_id, of.employee_name, of.department_code, of.department_name, cf.name,cf.image,cf.id as category_food_id,fbd.shifts_id, of.registration_date\r\n"
+											+ "FROM quanlydatcom.order_food_by_day as ofbd, quanlydatcom.order_food as of, quanlydatcom.food_by_day fbd, quanlydatcom.category_food as cf\r\n"
+											+ "WHERE of.employee_id = ? AND of.registration_date = ? AND fbd.shifts_id = ? AND ofbd.order_food_id = of.id AND ofbd.food_by_day_id = fbd.id AND cf.id = fbd.category_food_id;	";
+
+									try {
+										con = ZKFPDemo.getConnectionMySQL(
+												"jdbc:mysql://192.168.0.132:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
+										preStatement = con.prepareStatement(queryFood);
+										// pass id employee
+										preStatement.setString(1, listl.get(fid[0] - 1).getMaNhanVien());
+										// date param
+										preStatement.setDate(2, dateCurrentSQL);
+										preStatement.setInt(3, shiftsCurrent);
+										ResultSet resultSet = preStatement.executeQuery();
+
+										// kiem tra co du lieu ca do duoi DB chua
+										String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
+										PreparedStatement preStatementChecked = null;
+										preStatementChecked = con.prepareStatement(queryChecked);
+										// check bang ma nhan vien cu
+										preStatementChecked.setString(1, listl.get(fid[0] - 1).getMaNhanVien());
+										preStatementChecked.setInt(2, shiftsCurrent);
+										preStatementChecked.setDate(3, dateCurrentSQL);
+										ResultSet resultSetChecked = preStatementChecked.executeQuery();
+										boolean checkedExist = false;
+										if (resultSetChecked.next()) {
+											checkedExist = true;
+											// image he thong da nhan suat an
+											String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan650x450.png";
+											File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
+											BufferedImage bimgDaNhanSuatAn = null;
+											try {
+												bimgDaNhanSuatAn = ImageIO.read(fileDaNhanSuatAn);
+											} catch (IOException e) {
+											}
+											if (bimgDaNhanSuatAn == null) {
+												btnImg.setIcon(null);
+											}
+											if (bimgDaNhanSuatAn != null) {
+//												Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+//														heightHinhLon, Image.SCALE_SMOOTH);
+//												ImageIcon imageTest = new ImageIcon(scaledTest);
+												ImageIcon imageTest = new ImageIcon(bimgDaNhanSuatAn);
+												btnImg.setIcon(imageTest);
+											}
+											// end image he thong
+											return;
+										}
+										// Neu chua an se them du lieu vao DB -> 2 truong hop: 1 la co dang ky , 2
+										// la khong dang ky
+										// Co dang ky
+										while (resultSet.next()) {
+											// neu nhan vien do da an ca do roi - > k cho them
+											if (!checkedExist) {
+												orderFoodCurrent
+														.setDepartmentName(resultSet.getString("of.department_name"));
+												orderFoodCurrent
+														.setDepartmentCode(resultSet.getString("of.department_code"));
+												orderFoodCurrent
+														.setEmployeeCode(resultSet.getString("of.employee_code"));
+												orderFoodCurrent
+														.setEmployeeName(resultSet.getString("of.employee_name"));
+												orderFoodCurrent.setFoodName(resultSet.getString("cf.name"));
+												orderFoodCurrent.setImage(resultSet.getBytes("cf.image"));
+												orderFoodCurrent
+														.setFood_date(resultSet.getDate("of.registration_date"));
+												orderFoodCurrent
+														.setCategory_food_id(resultSet.getInt("category_food_id"));
+												orderFoodCurrent.setEmployeeId(resultSet.getString("of.employee_id"));
+												orderFoodCurrent.setShifts_id(resultSet.getInt("fbd.shifts_id"));
+												orderFoodCurrent.setNotRegFood(true);
+												ZKFPDemo.addOne(orderFoodCurrent, orderFoodCurrent.getShifts_id());
+											}
+										}
+										// chua dang ky
+										// handle cho phan mon an tu chon
+										if (!resultSet.first()) {
+											DepartmentData[] departmentHCMArray = DepartmentDataService
+													.timtheophongquanly("20002");
+											List<DepartmentData> departmentHCM = new ArrayList<>(
+													Arrays.asList(departmentHCMArray));
+											// HANDLE -> Tao list id department
+											List<Long> listDepartmentCodeHCM = new ArrayList<Long>();
+											for (DepartmentData de : departmentHCM) {
+												listDepartmentCodeHCM.add(de.getId());
+											}
+
+											StringBuilder builder = new StringBuilder();
+											for (int i = 0; i < listDepartmentCodeHCM.size(); i++) {
+												builder.append("?,");
+											}
+											// query nhan vien tu du lieu trung tam
+											String queryEmployee = "SELECT empl.id as employee_id,empl.name as employee_name,empl.code as employee_code,empl.codeOld as employee_code_old,depart.name as department_name,depart.code as department_code \r\n"
+													+ "FROM dulieutrungtam.employee as empl, dulieutrungtam.department as depart\r\n"
+													+ "WHERE empl.codeOld = ? AND empl.department_id IN ("
+													+ builder.deleteCharAt(builder.length() - 1).toString()
+													+ ") AND empl.department_id = depart.id;";
+											PreparedStatement preStatementEmployee = null;
+											Connection conDulieutrungtam = null;
+
+											try {
+												conDulieutrungtam = ZKFPDemo.getConnectionMySQL(
+														"jdbc:mysql://192.168.0.132:3306/dulieutrungtam?useUnicode=yes&characterEncoding=UTF-8");
+												preStatementEmployee = conDulieutrungtam
+														.prepareStatement(queryEmployee);
+												preStatementEmployee.setString(1,
+														listl.get(fid[0] - 1).getMaNhanVien());
+												// handle param IN operator
+												int index = 2;
+												for (Long id : listDepartmentCodeHCM) {
+													preStatementEmployee.setObject(index++, id); // or whatever it
+																									// applies
+												}
+												ResultSet resultSet1 = preStatementEmployee.executeQuery();
+												while (resultSet1.next()) {
+													orderFoodCurrent
+															.setDepartmentName(resultSet1.getString("department_name"));
+													orderFoodCurrent
+															.setDepartmentCode(resultSet1.getString("department_code"));
+													orderFoodCurrent
+															.setEmployeeCode(resultSet1.getString("employee_code"));
+													orderFoodCurrent
+															.setEmployeeName(resultSet1.getString("employee_name"));
+													orderFoodCurrent.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
+													orderFoodCurrent.setFood_date(new Date());
+													// gan thang id cua category food tu chon
+													orderFoodCurrent.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
+													orderFoodCurrent
+															.setEmployeeId(resultSet1.getString("employee_code_old"));
+													orderFoodCurrent.setShifts_id(shiftsCurrent);
+													orderFoodCurrent.setNotRegFood(true);
+													ZKFPDemo.addOne(orderFoodCurrent, orderFoodCurrent.getShifts_id());
+												}
+											} catch (Exception e) {
+												// TODO: handle exception
+											} finally {
+												try {
+													ZKFPDemo.closeConnectionPre(conDulieutrungtam,
+															preStatementEmployee);
+												} catch (Exception e2) {
+													e2.printStackTrace();
+													;
+												}
+											}
+										}
+										// end mon an tu chon
+									} catch (Exception e) {
+										// TODO: handle exception
+									} finally {
+										try {
+											ZKFPDemo.closeConnectionPre(con, preStatement);
+										} catch (Exception e2) {
+											e2.printStackTrace();
+										}
+									}
+									// da dang ky mon an
+									if (orderFoodCurrent.getEmployeeName() != null) {
+										textAreaMaNV.setText(orderFoodCurrent.getEmployeeCode());
+										textAreaTenNV.setText(orderFoodCurrent.getEmployeeName());
+										textAreaPhongban.setText(orderFoodCurrent.getDepartmentName());
+										// convert date to string
+										String pattern = "dd-MM-yyyy";
+										DateFormat df = new SimpleDateFormat(pattern);
+										String foodDate = df.format(orderFoodCurrent.getFood_date());
+										textAreaNgay.setText(foodDate);
+//											labelTenMonAnLarge.setText(orderFoodCurrent.getFoodName().toUpperCase());a
+										textAreaTenMonAnLarge.setText(orderFoodCurrent.getFoodName().toUpperCase());
+
+										// set hinh
+										// check neu hinh bi null
+										if (orderFoodCurrent.getImage() == null) {
+											btnImg.setIcon(null);
+										} else {
+											Image img = Toolkit.getDefaultToolkit()
+													.createImage(orderFoodCurrent.getImage());
+											ImageIcon icon = new ImageIcon(img.getScaledInstance(widthHinhLon,
+													heightHinhLon, Image.SCALE_SMOOTH));
+											btnImg.setIcon(icon);
+										}
+									}
+
+									// handle show 3 o nho cho 4 nguoi quet gan nhat
+									String queryTop4 = "SELECT FNA.employee_name,CF.name, FNA.employee_id, CF.image\r\n"
+											+ "FROM quanlydatcom.food_nha_an as FNA, quanlydatcom.category_food as CF\r\n"
+											+ "WHERE FNA.category_food_id = CF.id and FNA.shifts_id = ? and FNA.food_date = ?\r\n"
+											+ "ORDER BY FNA.id DESC\r\n" + "LIMIT 3;";
+
+									try {
+										con = ZKFPDemo.getConnectionMySQL(
+												"jdbc:mysql://192.168.0.132:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
+										preStatementTop3 = con.prepareStatement(queryTop4);
+										preStatementTop3.setInt(1, shiftsCurrent);
+										preStatementTop3.setDate(2, dateCurrentSQL);
+										ResultSet resultSet = preStatementTop3.executeQuery();
+										while (resultSet.next()) {
+											FoodNhaAn foodNhaAn = new FoodNhaAn();
+											foodNhaAn.setEmployeeName(resultSet.getString("FNA.employee_name"));
+											foodNhaAn.setImageFood(resultSet.getBytes("CF.image"));
+											foodNhaAn.setEmployeeIdOld(resultSet.getString("FNA.employee_id"));
+											foodNhaAn.setFoodName(resultSet.getString("CF.name"));
+											foodNhaAnTop4.add(foodNhaAn);
+										}
+									} catch (Exception e) {
+										// TODO: handle exception
+									} finally {
+										try {
+											ZKFPDemo.closeConnectionPre(con, preStatementTop3);
+										} catch (Exception e2) {
+											e2.printStackTrace();
+											;
+										}
+									}
+									// set hinh
+									// query co bi rong hay khong
+									if (!foodNhaAnTop4.isEmpty()) {
+										// query co 2 phan tu
+										if (foodNhaAnTop4.size() == 1) {
+
+											// image nhan vien
+											String pathImage = "images/" + foodNhaAnTop4.get(0).getEmployeeIdOld()
+													+ ".bmp";
+											File file = new File(pathImage);
+											BufferedImage bimg = null;
+											try {
+												bimg = ImageIO.read(file);
+											} catch (IOException e) {
+											}
+											if (bimg == null) {
+												labelHinhNV1.setText("");
+											}
+											if (bimg != null) {
+												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+												ImageIcon image = new ImageIcon(scaled);
+												labelHinhNV1.setIcon(image);
+											}
+											textAreaTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
+											// image mon an 1
+											if (foodNhaAnTop4.get(0).getImageFood() == null) {
+												btnImage1.setIcon(null);
+											} else {
+												Image img1 = Toolkit.getDefaultToolkit()
+														.createImage(foodNhaAnTop4.get(0).getImageFood());
+												ImageIcon icon1 = new ImageIcon(
+														img1.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+												btnImage1.setIcon(icon1);
+											}
+											labelName1.setText(foodNhaAnTop4.get(0).getEmployeeName());
+										}
+										if (foodNhaAnTop4.size() == 2) {
+											// image nhan vien 1
+											String pathImage = "images/" + foodNhaAnTop4.get(0).getEmployeeIdOld()
+													+ ".bmp";
+											File file = new File(pathImage);
+											BufferedImage bimg = null;
+											try {
+												bimg = ImageIO.read(file);
+											} catch (IOException e) {
+											}
+
+											if (bimg == null) {
+												labelHinhNV1.setIcon(null);
+											}
+											if (bimg != null) {
+												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+												ImageIcon image = new ImageIcon(scaled);
+												labelHinhNV1.setIcon(image);
+											}
+											textAreaTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
+											// check neu image null
+											if (foodNhaAnTop4.get(0).getImageFood() == null) {
+												btnImage1.setIcon(null);
+											} else {
+												Image img1 = Toolkit.getDefaultToolkit()
+														.createImage(foodNhaAnTop4.get(0).getImageFood());
+												ImageIcon icon1 = new ImageIcon(
+														img1.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+												btnImage1.setIcon(icon1);
+											}
+
+											labelName1.setText(foodNhaAnTop4.get(0).getEmployeeName());
+
+											// image nhan vien 2
+											String pathImage2 = "images/" + foodNhaAnTop4.get(1).getEmployeeIdOld()
+													+ ".bmp";
+											File file2 = new File(pathImage2);
+											BufferedImage bimg2 = null;
+											try {
+												bimg2 = ImageIO.read(file2);
+											} catch (IOException e) {
+											}
+											if (bimg2 == null) {
+												labelHinhNV2.setIcon(null);
+											}
+											if (bimg2 != null) {
+												Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+												ImageIcon image2 = new ImageIcon(scaled2);
+												labelHinhNV2.setIcon(image2);
+											}
+											textAreaTenMonAn2.setText(foodNhaAnTop4.get(1).getFoodName().toUpperCase());
+											// check neu image mon an 2 null
+											if (foodNhaAnTop4.get(1).getImageFood() == null) {
+												btnImage2.setIcon(null);
+											} else {
+												Image img2 = Toolkit.getDefaultToolkit()
+														.createImage(foodNhaAnTop4.get(1).getImageFood());
+												ImageIcon icon2 = new ImageIcon(
+														img2.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+												btnImage2.setIcon(icon2);
+											}
+											labelName2.setText(foodNhaAnTop4.get(1).getEmployeeName());
+										}
+										if (foodNhaAnTop4.size() == 3) {
+											// image nhan vien 1
+											String pathImage = "images/" + foodNhaAnTop4.get(0).getEmployeeIdOld()
+													+ ".bmp";
+											File file = new File(pathImage);
+											BufferedImage bimg = null;
+											try {
+												bimg = ImageIO.read(file);
+											} catch (IOException e) {
+											}
+											if (bimg == null) {
+												labelHinhNV1.setIcon(null);
+											}
+											if (bimg != null) {
+												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+												ImageIcon image = new ImageIcon(scaled);
+												labelHinhNV1.setIcon(image);
+											}
+											// hinh mon an 1
+											// check neu image null
+											textAreaTenMonAn1.setText(foodNhaAnTop4.get(0).getFoodName().toUpperCase());
+											if (foodNhaAnTop4.get(0).getImageFood() == null) {
+												btnImage1.setIcon(null);
+											} else {
+												Image img1 = Toolkit.getDefaultToolkit()
+														.createImage(foodNhaAnTop4.get(0).getImageFood());
+												ImageIcon icon1 = new ImageIcon(
+														img1.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+												btnImage1.setIcon(icon1);
+											}
+											labelName1.setText(foodNhaAnTop4.get(0).getEmployeeName());
+
+											// image nhan vien 2
+											String pathImage2 = "images/" + foodNhaAnTop4.get(1).getEmployeeIdOld()
+													+ ".bmp";
+											File file2 = new File(pathImage2);
+											BufferedImage bimg2 = null;
+											try {
+												bimg2 = ImageIO.read(file2);
+											} catch (IOException e) {
+											}
+											if (bimg2 == null) {
+												labelHinhNV2.setIcon(null);
+											}
+											if (bimg2 != null) {
+												Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+												ImageIcon image2 = new ImageIcon(scaled2);
+												labelHinhNV2.setIcon(image2);
+											}
+
+											// image mon an 2
+											// check neu image mon an 2 null
+											textAreaTenMonAn2.setText(foodNhaAnTop4.get(1).getFoodName().toUpperCase());
+											if (foodNhaAnTop4.get(1).getImageFood() == null) {
+												btnImage2.setIcon(null);
+											} else {
+												Image img2 = Toolkit.getDefaultToolkit()
+														.createImage(foodNhaAnTop4.get(1).getImageFood());
+												ImageIcon icon2 = new ImageIcon(
+														img2.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+												btnImage2.setIcon(icon2);
+											}
+											labelName2.setText(foodNhaAnTop4.get(1).getEmployeeName());
+
+											// image nhan vien 3
+											String pathImage3 = "images/" + foodNhaAnTop4.get(2).getEmployeeIdOld()
+													+ ".bmp";
+											File file3 = new File(pathImage3);
+											BufferedImage bimg3 = null;
+											try {
+												bimg3 = ImageIO.read(file3);
+											} catch (IOException e) {
+											}
+											if (bimg3 == null) {
+												labelHinhNV3.setIcon(null);
+											}
+											if (bimg3 != null) {
+												Image scaled3 = bimg3.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+												ImageIcon image3 = new ImageIcon(scaled3);
+												labelHinhNV3.setIcon(image3);
+											}
+
+											// image mon an 3
+											textAreaTenMonAn3.setText(foodNhaAnTop4.get(2).getFoodName().toUpperCase());
+											if (foodNhaAnTop4.get(2).getImageFood() == null) {
+												btnImage3.setIcon(null);
+											} else {
+												Image img3 = Toolkit.getDefaultToolkit()
+														.createImage(foodNhaAnTop4.get(2).getImageFood());
+												ImageIcon icon3 = new ImageIcon(
+														img3.getScaledInstance(190, 160, Image.SCALE_SMOOTH));
+												btnImage3.setIcon(icon3);
+											}
+											labelName3.setText(foodNhaAnTop4.get(2).getEmployeeName());
+										}
+									}
+									textArea.setText("Thành công");
+									// end thai
+								}
+								// Khong co gio an phu hop
+								else {
+									// image he thong chua san sang
+									String pathImageTest = "imagesSystem/image-khongcogioanphuhop.png";
+									File fileTest = new File(pathImageTest);
+									BufferedImage bimgTest = null;
+									try {
+										bimgTest = ImageIO.read(fileTest);
+									} catch (IOException e2) {
+									}
+									if (bimgTest == null) {
+										btnImg.setIcon(null);
+									}
+									if (bimgTest != null) {
+										Image scaledTest = bimgTest.getScaledInstance(widthHinhLon, heightHinhLon,
+												Image.SCALE_SMOOTH);
+										ImageIcon imageTest = new ImageIcon(scaledTest);
+										btnImg.setIcon(null);
+										btnImg.setIcon(imageTest);
+									}
+									// end image he thong
+								}
+								// END CODE TAM THOI
+
+//								// CODE CHINH THUC: truong hop khong dang ky com va nut duoc bat len
+//								// handle khong co gio an va da an roi
+//								if (shiftsCurrent == 0) {
+//									// image he thong chua san sang
+//									String pathImageTest = "imagesSystem/image-khongcogioanphuhop.png";
+//									File fileTest = new File(pathImageTest);
+//									BufferedImage bimgTest = null;
+//									try {
+//										bimgTest = ImageIO.read(fileTest);
+//									} catch (IOException e2) {
+//									}
+//									if (bimgTest == null) {
+//										btnImg.setIcon(null);
+//									}
+//									if (bimgTest != null) {
+//										Image scaledTest = bimgTest.getScaledInstance(widthHinhLon, heightHinhLon,
+//												Image.SCALE_SMOOTH);
+//										ImageIcon imageTest = new ImageIcon(scaledTest);
+//										btnImg.setIcon(null);
+//										btnImg.setIcon(imageTest);
+//									}
+//									return;
+//								}
+//								// co gio an
+//								if (shiftsCurrent != 0) {
+//									Connection conException = null;
+//									PreparedStatement psCheckedException = null;
+//									try {
+//										conException = ZKFPDemo.getConnectionMySQL(
+//												"jdbc:mysql://192.168.0.132:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
+//										// kiem tra co du lieu ca do duoi DB chua
+//										String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an_exception WHERE employee_id = ? and shifts_id = ? and food_date = ?";
+//										psCheckedException = conException.prepareStatement(queryChecked);
+//										// check bang ma nhan vien cu
+//										psCheckedException.setString(1, listl.get(fid[0] - 1).getMaNhanVien());
+//										psCheckedException.setInt(2, shiftsCurrent);
+//										// convert date sql
+//										java.sql.Date sqlDateChecked = new java.sql.Date(dateCurrent.getTime());
+//										psCheckedException.setDate(3, sqlDateChecked);
+//										ResultSet resultSetChecked = psCheckedException.executeQuery();
+//										boolean checkedExist = false;
+//										if (resultSetChecked.next()) {
+//											checkedExist = true;
+////											Toolkit.getDefaultToolkit().beep();
+////											JOptionPane optionPane = new JOptionPane("BẠN ĐÃ NHẬN PHẦN ĂN TRƯỚC ĐÓ!",
+////													JOptionPane.WARNING_MESSAGE);
+////											JDialog dialog = optionPane.createDialog(btnImg, "Chú ý!");
+////											dialog.setAlwaysOnTop(true);
+//////											dialog.setVisible(true);
+////
+////											new Thread(new Runnable() {
+////												@Override
+////												public void run() {
+////													try {
+////														Thread.sleep(2000);
+////													} catch (InterruptedException e) {
+////														e.printStackTrace();
+////													}
+////													dialog.setVisible(false);
+////												}
+////											}).start();
+////											dialog.setVisible(true);
+////											btnImg.setIcon(null);
+//											String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan650x450.png";
+//											File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
+//											BufferedImage bimgDaNhanSuatAn = null;
+//											try {
+//												bimgDaNhanSuatAn = ImageIO.read(fileDaNhanSuatAn);
+//											} catch (IOException e) {
+//											}
+//											if (bimgDaNhanSuatAn == null) {
+//												btnImg.setIcon(null);
+//											}
+//											if (bimgDaNhanSuatAn != null) {
+//												Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+//														heightHinhLon, Image.SCALE_SMOOTH);
+//												ImageIcon imageTest = new ImageIcon(scaledTest);
+//												btnImg.setIcon(imageTest);
+//											}
+//											togglebtnKhongQuetVT.setText("CÓ Đ.KÝ");
+//											ZKFPDemo.ON_ALLOW_EXCEPTION = false;
+//											return;
+//										}
+//										// NEU CHUA AN THI CHO THEM SUAT AN VAO DB
+//										if (!checkedExist) {
+//											orderFoodCurrent = new OrderFood();
+//											DepartmentData[] departmentHCMArray = DepartmentDataService
+//													.timtheophongquanly("20002");
+//											List<DepartmentData> departmentHCM = new ArrayList<>(
+//													Arrays.asList(departmentHCMArray));
+//											// HANDLE -> Tao list id department
+//											List<Long> listDepartmentCodeHCM = new ArrayList<Long>();
+//											for (DepartmentData de : departmentHCM) {
+//												listDepartmentCodeHCM.add(de.getId());
+//											}
+//
+//											StringBuilder builder = new StringBuilder();
+//											for (int i = 0; i < listDepartmentCodeHCM.size(); i++) {
+//												builder.append("?,");
+//											}
+//											// query nhan vien tu du lieu trung tam
+//											String queryEmployee = "SELECT empl.id as employee_id,empl.name as employee_name,empl.code as employee_code,empl.codeOld as employee_code_old,depart.name as department_name,depart.code as department_code \r\n"
+//													+ "FROM dulieutrungtam.employee as empl, dulieutrungtam.department as depart\r\n"
+//													+ "WHERE empl.codeOld = ? AND empl.department_id IN ("
+//													+ builder.deleteCharAt(builder.length() - 1).toString()
+//													+ ") AND empl.department_id = depart.id;";
+//											PreparedStatement preStatementEmployee = null;
+//											Connection conDulieutrungtam = null;
+//
+//											try {
+//												conDulieutrungtam = ZKFPDemo.getConnectionMySQL(
+//														"jdbc:mysql://192.168.0.132:3306/dulieutrungtam?useUnicode=yes&characterEncoding=UTF-8");
+//												preStatementEmployee = conDulieutrungtam
+//														.prepareStatement(queryEmployee);
+//												preStatementEmployee.setString(1,
+//														listl.get(fid[0] - 1).getMaNhanVien());
+//												// handle param IN operator
+//												int index = 2;
+//												for (Long id : listDepartmentCodeHCM) {
+//													preStatementEmployee.setObject(index++, id); // or whatever it
+//																									// applies
+//												}
+//												ResultSet resultSet1 = preStatementEmployee.executeQuery();
+//												while (resultSet1.next()) {
+//													orderFoodCurrent
+//															.setDepartmentName(resultSet1.getString("department_name"));
+//													orderFoodCurrent
+//															.setDepartmentCode(resultSet1.getString("department_code"));
+//													orderFoodCurrent
+//															.setEmployeeCode(resultSet1.getString("employee_code"));
+//													orderFoodCurrent
+//															.setEmployeeName(resultSet1.getString("employee_name"));
+//													orderFoodCurrent.setFoodName("Tự chọn");
+//													orderFoodCurrent.setFood_date(new Date());
+//													// gan thang id cua category food tu chon
+//													orderFoodCurrent.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
+//													orderFoodCurrent
+//															.setEmployeeId(resultSet1.getString("employee_code_old"));
+//													orderFoodCurrent.setShifts_id(shiftsCurrent);
+//													ZKFPDemo.addOneException(orderFoodCurrent,
+//															orderFoodCurrent.getShifts_id());
+//												}
+//											} catch (Exception e) {
+//												// TODO: handle exception
+//											} finally {
+//												try {
+//													ZKFPDemo.closeConnectionPre(conDulieutrungtam,
+//															preStatementEmployee);
+//												} catch (Exception e2) {
+//													e2.printStackTrace();
+//													;
+//												}
+//											}
+//										}
+//									} catch (Exception e) {
+//										// TODO: handle exception
+//									} finally {
+//										try {
+//											ZKFPDemo.closeConnectionPre(conException, psCheckedException);
+//										} catch (Exception e2) {
+//											e2.printStackTrace();
+//										}
+//									}
+//									// Da luu suat an xuong db -> handle hien ra view
+//									if (orderFoodCurrent.getEmployeeName() != null) {
+//										textAreaMaNV.setText(orderFoodCurrent.getEmployeeCode());
+//										textAreaTenNV.setText(orderFoodCurrent.getEmployeeName());
+//										textAreaPhongban.setText(orderFoodCurrent.getDepartmentName());
+//										// convert date to string
+//										String pattern = "dd-MM-yyyy";
+//										DateFormat df = new SimpleDateFormat(pattern);
+//										String foodDate = df.format(orderFoodCurrent.getFood_date());
+//										textAreaNgay.setText(foodDate);
+//										textAreaMonAn.setText(orderFoodCurrent.getFoodName());
+//										// set hinh
+//										// check neu hinh bi null
+//										if (orderFoodCurrent.getImage() == null) {
+//											String pathImageTuchon = "imagesSystem/image-monantuchon.png";
+//											File fileTuchon = new File(pathImageTuchon);
+//											BufferedImage bimgTuchon = null;
+//											try {
+//												bimgTuchon = ImageIO.read(fileTuchon);
+//											} catch (IOException e2) {
+//											}
+//											if (bimgTuchon == null) {
+//												btnImg.setIcon(null);
+//											}
+//											if (bimgTuchon != null) {
+//												Image scaledTuchon = bimgTuchon.getScaledInstance(widthHinhLon,
+//														heightHinhLon, Image.SCALE_SMOOTH);
+//												ImageIcon imageTuchon = new ImageIcon(scaledTuchon);
+//												btnImg.setIcon(null);
+//												btnImg.setIcon(imageTuchon);
+//											}
+//										} else {
+//											Image img = Toolkit.getDefaultToolkit()
+//													.createImage(orderFoodCurrent.getImage());
+//											ImageIcon icon = new ImageIcon(
+//													img.getScaledInstance(500, 350, Image.SCALE_SMOOTH));
+//											btnImg.setIcon(icon);
+//										}
+//									}
+//									textArea.setText("Thành công");
+//									togglebtnKhongQuetVT.setText("CÓ Đ.KÝ");
+//									ZKFPDemo.ON_ALLOW_EXCEPTION = false;
+//								}
+//								// end
+							}
+							// END CODE CHINH THUC: truong hop khong dang ky com va nut duoc bat len
 						}
 						// nguoc lai khong co data
 						if (ZKFPDemo.listDataVerify == null) {
@@ -2691,7 +4076,7 @@ public class ZKFPDemo extends JFrame {
 									if (resultSetChecked.next()) {
 										checkedExist = true;
 										// image he thong da nhan suat an
-										String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan.png";
+										String pathImageDaNhanSuatAn = "imagesSystem/image-danhansuatan650x450.png";
 										File fileDaNhanSuatAn = new File(pathImageDaNhanSuatAn);
 										BufferedImage bimgDaNhanSuatAn = null;
 										try {
@@ -2702,9 +4087,10 @@ public class ZKFPDemo extends JFrame {
 											btnImg.setIcon(null);
 										}
 										if (bimgDaNhanSuatAn != null) {
-											Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
-													heightHinhLon, Image.SCALE_SMOOTH);
-											ImageIcon imageTest = new ImageIcon(scaledTest);
+//											Image scaledTest = bimgDaNhanSuatAn.getScaledInstance(widthHinhLon,
+//													heightHinhLon, Image.SCALE_SMOOTH);
+//											ImageIcon imageTest = new ImageIcon(scaledTest);
+											ImageIcon imageTest = new ImageIcon(bimgDaNhanSuatAn);
 											btnImg.setIcon(imageTest);
 										}
 										// end image he thong
