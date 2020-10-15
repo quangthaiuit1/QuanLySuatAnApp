@@ -72,4 +72,9 @@ public class DateUtil {
 		return cal.getTime();
 	}
 
+	public static java.sql.Timestamp GET_CURRENT_TIMESTAMP() {
+		java.util.Date today = new java.util.Date();
+		return new java.sql.Timestamp(today.getTime());
+	}
+
 }
