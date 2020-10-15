@@ -58,6 +58,10 @@ public class ZKFPDemo extends JFrame {
 	private static final int TIME_VISIBLE = 3000;
 	private static boolean ON_ALLOW_EXCEPTION = false;
 
+	private static BufferedImage bimgNoImageNV = null;
+	private static BufferedImage bimgTuchon = null;
+	private static BufferedImage bimgNotImage = null;
+
 	JButton btnOpen = null;
 	JButton btnEnroll = null;
 	JButton btnVerify = null;
@@ -374,7 +378,7 @@ public class ZKFPDemo extends JFrame {
 
 		labelHinhNV2 = new JLabel("", JLabel.CENTER);
 		this.add(labelHinhNV2);
-		labelHinhNV2.setBounds(marginLeftJComponentHinhNho + widthHinhNhanVien + widthGiuaHinhNhanVien + 20,
+		labelHinhNV2.setBounds(marginLeftJComponentHinhNho + widthHinhNhanVien + widthGiuaHinhNhanVien + 25,
 				heightFirstJComponentHinhNho + heightJComponentLeft, heightHinhNhanVien, widthHinhNhanVien);
 
 		btnImage2 = new JButton();
@@ -396,7 +400,7 @@ public class ZKFPDemo extends JFrame {
 
 		labelName3 = new JLabel();
 		this.add(labelName3);
-		labelName3.setBounds(marginLeftJComponentHinhNho + widthHinhNhanVien * 2 + widthGiuaHinhNhanVien * 2 + 35,
+		labelName3.setBounds(marginLeftJComponentHinhNho + widthHinhNhanVien * 2 + widthGiuaHinhNhanVien * 2 + 45,
 				heightFirstJComponentHinhNho, 190, heightJComponentLeft);
 		labelName3.setFont(new Font("Times New Roman", Font.PLAIN, sizeTextJComponentLeft));
 
@@ -1015,15 +1019,9 @@ public class ZKFPDemo extends JFrame {
 											// set hinh
 											// check neu hinh bi null
 											if (orderFoodCurrent.getImage() == null) {
+												// neu la mon an tu chon thi show hinh tu chon
 												if (orderFoodCurrent
 														.getCategory_food_id() == FoodCustom.FOOD_CUSTOM_ID) {
-													String pathImageTuchon = "imagesSystem/image-monantuchon.png";
-													File fileTuchon = new File(pathImageTuchon);
-													BufferedImage bimgTuchon = null;
-													try {
-														bimgTuchon = ImageIO.read(fileTuchon);
-													} catch (IOException e2) {
-													}
 													if (bimgTuchon == null) {
 														btnImg.setIcon(null);
 													}
@@ -1036,13 +1034,6 @@ public class ZKFPDemo extends JFrame {
 													}
 												} else {
 													// khong co hinh mon an
-													String pathImageNotImage = "imagesSystem/image-notimage.png";
-													File fileNotImage = new File(pathImageNotImage);
-													BufferedImage bimgNotImage = null;
-													try {
-														bimgNotImage = ImageIO.read(fileNotImage);
-													} catch (IOException e1) {
-													}
 													if (bimgNotImage == null) {
 														btnImg.setIcon(null);
 													}
@@ -1107,7 +1098,14 @@ public class ZKFPDemo extends JFrame {
 												} catch (IOException e1) {
 												}
 												if (bimg == null) {
-													labelHinhNV1.setText("");
+													// image he thong nhan vien khong co hinh
+													if (bimgNoImageNV == null) {
+														labelHinhNV1.setIcon(null);
+													}
+													if (bimgNoImageNV != null) {
+														ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+														labelHinhNV1.setIcon(imageNoImageNV);
+													}
 												}
 												if (bimg != null) {
 													Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -1140,7 +1138,13 @@ public class ZKFPDemo extends JFrame {
 												}
 
 												if (bimg == null) {
-													labelHinhNV1.setIcon(null);
+													if (bimgNoImageNV == null) {
+														labelHinhNV1.setIcon(null);
+													}
+													if (bimgNoImageNV != null) {
+														ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+														labelHinhNV1.setIcon(imageNoImageNV);
+													}
 												}
 												if (bimg != null) {
 													Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -1172,7 +1176,14 @@ public class ZKFPDemo extends JFrame {
 												} catch (IOException e1) {
 												}
 												if (bimg2 == null) {
-													labelHinhNV2.setIcon(null);
+													// image he thong nhan vien khong co hinh
+													if (bimgNoImageNV == null) {
+														labelHinhNV2.setIcon(null);
+													}
+													if (bimgNoImageNV != null) {
+														ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+														labelHinhNV2.setIcon(imageNoImageNV);
+													}
 												}
 												if (bimg2 != null) {
 													Image scaled2 = bimg2.getScaledInstance(140, 140,
@@ -1205,7 +1216,14 @@ public class ZKFPDemo extends JFrame {
 												} catch (IOException e1) {
 												}
 												if (bimg == null) {
-													labelHinhNV1.setIcon(null);
+													// image he thong nhan vien khong co hinh
+													if (bimgNoImageNV == null) {
+														labelHinhNV1.setIcon(null);
+													}
+													if (bimgNoImageNV != null) {
+														ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+														labelHinhNV1.setIcon(imageNoImageNV);
+													}
 												}
 												if (bimg != null) {
 													Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -1238,7 +1256,14 @@ public class ZKFPDemo extends JFrame {
 												} catch (IOException e1) {
 												}
 												if (bimg2 == null) {
-													labelHinhNV2.setIcon(null);
+													// image he thong nhan vien khong co hinh
+													if (bimgNoImageNV == null) {
+														labelHinhNV2.setIcon(null);
+													}
+													if (bimgNoImageNV != null) {
+														ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+														labelHinhNV2.setIcon(imageNoImageNV);
+													}
 												}
 												if (bimg2 != null) {
 													Image scaled2 = bimg2.getScaledInstance(140, 140,
@@ -1272,7 +1297,14 @@ public class ZKFPDemo extends JFrame {
 												} catch (IOException e1) {
 												}
 												if (bimg3 == null) {
-													labelHinhNV3.setIcon(null);
+													// image he thong nhan vien khong co hinh
+													if (bimgNoImageNV == null) {
+														labelHinhNV3.setIcon(null);
+													}
+													if (bimgNoImageNV != null) {
+														ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+														labelHinhNV3.setIcon(imageNoImageNV);
+													}
 												}
 												if (bimg3 != null) {
 													Image scaled3 = bimg3.getScaledInstance(140, 140,
@@ -1554,13 +1586,6 @@ public class ZKFPDemo extends JFrame {
 											if (orderFoodCurrent.getImage() == null) {
 												if (orderFoodCurrent
 														.getCategory_food_id() == FoodCustom.FOOD_CUSTOM_ID) {
-													String pathImageTuchon = "imagesSystem/image-monantuchon.png";
-													File fileTuchon = new File(pathImageTuchon);
-													BufferedImage bimgTuchon = null;
-													try {
-														bimgTuchon = ImageIO.read(fileTuchon);
-													} catch (IOException e2) {
-													}
 													if (bimgTuchon == null) {
 														btnImg.setIcon(null);
 													}
@@ -1573,13 +1598,6 @@ public class ZKFPDemo extends JFrame {
 													}
 												} else {
 													// khong co hinh mon an
-													String pathImageNotImage = "imagesSystem/image-notimage.png";
-													File fileNotImage = new File(pathImageNotImage);
-													BufferedImage bimgNotImage = null;
-													try {
-														bimgNotImage = ImageIO.read(fileNotImage);
-													} catch (IOException e1) {
-													}
 													if (bimgNotImage == null) {
 														btnImg.setIcon(null);
 													}
@@ -1644,7 +1662,14 @@ public class ZKFPDemo extends JFrame {
 												} catch (IOException e1) {
 												}
 												if (bimg == null) {
-													labelHinhNV1.setText("");
+													// image he thong nhan vien khong co hinh
+													if (bimgNoImageNV == null) {
+														labelHinhNV1.setIcon(null);
+													}
+													if (bimgNoImageNV != null) {
+														ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+														labelHinhNV1.setIcon(imageNoImageNV);
+													}
 												}
 												if (bimg != null) {
 													Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -1677,7 +1702,14 @@ public class ZKFPDemo extends JFrame {
 												}
 
 												if (bimg == null) {
-													labelHinhNV1.setIcon(null);
+													// image he thong nhan vien khong co hinh
+													if (bimgNoImageNV == null) {
+														labelHinhNV1.setIcon(null);
+													}
+													if (bimgNoImageNV != null) {
+														ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+														labelHinhNV1.setIcon(imageNoImageNV);
+													}
 												}
 												if (bimg != null) {
 													Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -1709,7 +1741,14 @@ public class ZKFPDemo extends JFrame {
 												} catch (IOException e1) {
 												}
 												if (bimg2 == null) {
-													labelHinhNV2.setIcon(null);
+													// image he thong nhan vien khong co hinh
+													if (bimgNoImageNV == null) {
+														labelHinhNV2.setIcon(null);
+													}
+													if (bimgNoImageNV != null) {
+														ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+														labelHinhNV2.setIcon(imageNoImageNV);
+													}
 												}
 												if (bimg2 != null) {
 													Image scaled2 = bimg2.getScaledInstance(140, 140,
@@ -1742,7 +1781,14 @@ public class ZKFPDemo extends JFrame {
 												} catch (IOException e1) {
 												}
 												if (bimg == null) {
-													labelHinhNV1.setIcon(null);
+													// image he thong nhan vien khong co hinh
+													if (bimgNoImageNV == null) {
+														labelHinhNV1.setIcon(null);
+													}
+													if (bimgNoImageNV != null) {
+														ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+														labelHinhNV1.setIcon(imageNoImageNV);
+													}
 												}
 												if (bimg != null) {
 													Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -1774,7 +1820,14 @@ public class ZKFPDemo extends JFrame {
 												} catch (IOException e1) {
 												}
 												if (bimg2 == null) {
-													labelHinhNV2.setIcon(null);
+													// image he thong nhan vien khong co hinh
+													if (bimgNoImageNV == null) {
+														labelHinhNV2.setIcon(null);
+													}
+													if (bimgNoImageNV != null) {
+														ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+														labelHinhNV2.setIcon(imageNoImageNV);
+													}
 												}
 												if (bimg2 != null) {
 													Image scaled2 = bimg2.getScaledInstance(140, 140,
@@ -1808,7 +1861,13 @@ public class ZKFPDemo extends JFrame {
 												} catch (IOException e1) {
 												}
 												if (bimg3 == null) {
-													labelHinhNV3.setIcon(null);
+													if (bimgNoImageNV == null) {
+														labelHinhNV3.setIcon(null);
+													}
+													if (bimgNoImageNV != null) {
+														ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+														labelHinhNV3.setIcon(imageNoImageNV);
+													}
 												}
 												if (bimg3 != null) {
 													Image scaled3 = bimg3.getScaledInstance(140, 140,
@@ -2088,13 +2147,6 @@ public class ZKFPDemo extends JFrame {
 											if (orderFoodCurrent.getImage() == null) {
 												if (orderFoodCurrent
 														.getCategory_food_id() == FoodCustom.FOOD_CUSTOM_ID) {
-													String pathImageTuchon = "imagesSystem/image-monantuchon.png";
-													File fileTuchon = new File(pathImageTuchon);
-													BufferedImage bimgTuchon = null;
-													try {
-														bimgTuchon = ImageIO.read(fileTuchon);
-													} catch (IOException e2) {
-													}
 													if (bimgTuchon == null) {
 														btnImg.setIcon(null);
 													}
@@ -2107,13 +2159,6 @@ public class ZKFPDemo extends JFrame {
 													}
 												} else {
 													// khong co hinh mon an
-													String pathImageNotImage = "imagesSystem/image-notimage.png";
-													File fileNotImage = new File(pathImageNotImage);
-													BufferedImage bimgNotImage = null;
-													try {
-														bimgNotImage = ImageIO.read(fileNotImage);
-													} catch (IOException e1) {
-													}
 													if (bimgNotImage == null) {
 														btnImg.setIcon(null);
 													}
@@ -2362,13 +2407,6 @@ public class ZKFPDemo extends JFrame {
 										// check neu hinh bi null
 										if (orderFoodCurrent.getImage() == null) {
 											if (orderFoodCurrent.getCategory_food_id() == FoodCustom.FOOD_CUSTOM_ID) {
-												String pathImageTuchon = "imagesSystem/image-monantuchon.png";
-												File fileTuchon = new File(pathImageTuchon);
-												BufferedImage bimgTuchon = null;
-												try {
-													bimgTuchon = ImageIO.read(fileTuchon);
-												} catch (IOException e2) {
-												}
 												if (bimgTuchon == null) {
 													btnImg.setIcon(null);
 												}
@@ -2381,13 +2419,6 @@ public class ZKFPDemo extends JFrame {
 												}
 											} else {
 												// khong co hinh mon an
-												String pathImageNotImage = "imagesSystem/image-notimage.png";
-												File fileNotImage = new File(pathImageNotImage);
-												BufferedImage bimgNotImage = null;
-												try {
-													bimgNotImage = ImageIO.read(fileNotImage);
-												} catch (IOException e1) {
-												}
 												if (bimgNotImage == null) {
 													btnImg.setIcon(null);
 												}
@@ -2452,7 +2483,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e1) {
 											}
 											if (bimg == null) {
-												labelHinhNV1.setText("");
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV1.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg != null) {
 												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -2484,7 +2522,14 @@ public class ZKFPDemo extends JFrame {
 											}
 
 											if (bimg == null) {
-												labelHinhNV1.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV1.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg != null) {
 												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -2515,7 +2560,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e1) {
 											}
 											if (bimg2 == null) {
-												labelHinhNV2.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV2.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV2.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg2 != null) {
 												Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -2546,7 +2598,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e1) {
 											}
 											if (bimg == null) {
-												labelHinhNV1.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV1.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg != null) {
 												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -2577,7 +2636,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e1) {
 											}
 											if (bimg2 == null) {
-												labelHinhNV2.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV2.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV2.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg2 != null) {
 												Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -2609,7 +2675,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e1) {
 											}
 											if (bimg3 == null) {
-												labelHinhNV3.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV3.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV3.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg3 != null) {
 												Image scaled3 = bimg3.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -3332,13 +3405,6 @@ public class ZKFPDemo extends JFrame {
 										// check neu hinh bi null
 										if (orderFoodCurrent.getImage() == null) {
 											if (orderFoodCurrent.getCategory_food_id() == FoodCustom.FOOD_CUSTOM_ID) {
-												String pathImageTuchon = "imagesSystem/image-monantuchon.png";
-												File fileTuchon = new File(pathImageTuchon);
-												BufferedImage bimgTuchon = null;
-												try {
-													bimgTuchon = ImageIO.read(fileTuchon);
-												} catch (IOException e2) {
-												}
 												if (bimgTuchon == null) {
 													btnImg.setIcon(null);
 												}
@@ -3351,13 +3417,6 @@ public class ZKFPDemo extends JFrame {
 												}
 											} else {
 												// khong co hinh mon an
-												String pathImageNotImage = "imagesSystem/image-notimage.png";
-												File fileNotImage = new File(pathImageNotImage);
-												BufferedImage bimgNotImage = null;
-												try {
-													bimgNotImage = ImageIO.read(fileNotImage);
-												} catch (IOException e1) {
-												}
 												if (bimgNotImage == null) {
 													btnImg.setIcon(null);
 												}
@@ -3422,7 +3481,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg == null) {
-												labelHinhNV1.setText("");
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV1.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg != null) {
 												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -3454,7 +3520,14 @@ public class ZKFPDemo extends JFrame {
 											}
 
 											if (bimg == null) {
-												labelHinhNV1.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV1.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg != null) {
 												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -3485,7 +3558,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg2 == null) {
-												labelHinhNV2.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV2.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV2.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg2 != null) {
 												Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -3516,7 +3596,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg == null) {
-												labelHinhNV1.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV1.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg != null) {
 												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -3548,7 +3635,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg2 == null) {
-												labelHinhNV2.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV2.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV2.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg2 != null) {
 												Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -3580,7 +3674,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg3 == null) {
-												labelHinhNV3.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV3.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV3.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg3 != null) {
 												Image scaled3 = bimg3.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -3861,13 +3962,6 @@ public class ZKFPDemo extends JFrame {
 										if (orderFoodCurrent.getImage() == null) {
 											// khong co hinh mon an
 											if (orderFoodCurrent.getCategory_food_id() == FoodCustom.FOOD_CUSTOM_ID) {
-												String pathImageTuchon = "imagesSystem/image-monantuchon.png";
-												File fileTuchon = new File(pathImageTuchon);
-												BufferedImage bimgTuchon = null;
-												try {
-													bimgTuchon = ImageIO.read(fileTuchon);
-												} catch (IOException e2) {
-												}
 												if (bimgTuchon == null) {
 													btnImg.setIcon(null);
 												}
@@ -3880,13 +3974,6 @@ public class ZKFPDemo extends JFrame {
 												}
 											} else {
 												// khong co hinh mon an
-												String pathImageNotImage = "imagesSystem/image-notimage.png";
-												File fileNotImage = new File(pathImageNotImage);
-												BufferedImage bimgNotImage = null;
-												try {
-													bimgNotImage = ImageIO.read(fileNotImage);
-												} catch (IOException e1) {
-												}
 												if (bimgNotImage == null) {
 													btnImg.setIcon(null);
 												}
@@ -3951,7 +4038,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg == null) {
-												labelHinhNV1.setText("");
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV1.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg != null) {
 												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -3983,7 +4077,14 @@ public class ZKFPDemo extends JFrame {
 											}
 
 											if (bimg == null) {
-												labelHinhNV1.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV1.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg != null) {
 												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -4014,7 +4115,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg2 == null) {
-												labelHinhNV2.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV2.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV2.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg2 != null) {
 												Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -4045,7 +4153,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg == null) {
-												labelHinhNV1.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV1.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg != null) {
 												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -4076,7 +4191,13 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg2 == null) {
-												labelHinhNV2.setIcon(null);
+												if (bimgNoImageNV == null) {
+													labelHinhNV2.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV2.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg2 != null) {
 												Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -4108,7 +4229,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg3 == null) {
-												labelHinhNV3.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV3.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV3.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg3 != null) {
 												Image scaled3 = bimg3.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -4369,13 +4497,6 @@ public class ZKFPDemo extends JFrame {
 										// check neu hinh bi null
 										if (orderFoodCurrent.getImage() == null) {
 											if (orderFoodCurrent.getCategory_food_id() == FoodCustom.FOOD_CUSTOM_ID) {
-												String pathImageTuchon = "imagesSystem/image-monantuchon.png";
-												File fileTuchon = new File(pathImageTuchon);
-												BufferedImage bimgTuchon = null;
-												try {
-													bimgTuchon = ImageIO.read(fileTuchon);
-												} catch (IOException e2) {
-												}
 												if (bimgTuchon == null) {
 													btnImg.setIcon(null);
 												}
@@ -4388,13 +4509,6 @@ public class ZKFPDemo extends JFrame {
 												}
 											} else {
 												// khong co hinh mon an
-												String pathImageNotImage = "imagesSystem/image-notimage.png";
-												File fileNotImage = new File(pathImageNotImage);
-												BufferedImage bimgNotImage = null;
-												try {
-													bimgNotImage = ImageIO.read(fileNotImage);
-												} catch (IOException e1) {
-												}
 												if (bimgNotImage == null) {
 													btnImg.setIcon(null);
 												}
@@ -4459,7 +4573,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg == null) {
-												labelHinhNV1.setText("");
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV1.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg != null) {
 												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -4491,7 +4612,14 @@ public class ZKFPDemo extends JFrame {
 											}
 
 											if (bimg == null) {
-												labelHinhNV1.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV1.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg != null) {
 												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -4522,7 +4650,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg2 == null) {
-												labelHinhNV2.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV2.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV2.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg2 != null) {
 												Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -4553,7 +4688,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg == null) {
-												labelHinhNV1.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV1.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV1.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg != null) {
 												Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -4584,7 +4726,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg2 == null) {
-												labelHinhNV2.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV2.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV2.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg2 != null) {
 												Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -4616,7 +4765,14 @@ public class ZKFPDemo extends JFrame {
 											} catch (IOException e) {
 											}
 											if (bimg3 == null) {
-												labelHinhNV3.setIcon(null);
+												// image he thong nhan vien khong co hinh
+												if (bimgNoImageNV == null) {
+													labelHinhNV3.setIcon(null);
+												}
+												if (bimgNoImageNV != null) {
+													ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+													labelHinhNV3.setIcon(imageNoImageNV);
+												}
 											}
 											if (bimg3 != null) {
 												Image scaled3 = bimg3.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -5090,13 +5246,6 @@ public class ZKFPDemo extends JFrame {
 									// check neu hinh bi null
 									if (orderFoodCurrent.getImage() == null) {
 										if (orderFoodCurrent.getCategory_food_id() == FoodCustom.FOOD_CUSTOM_ID) {
-											String pathImageTuchon = "imagesSystem/image-monantuchon.png";
-											File fileTuchon = new File(pathImageTuchon);
-											BufferedImage bimgTuchon = null;
-											try {
-												bimgTuchon = ImageIO.read(fileTuchon);
-											} catch (IOException e2) {
-											}
 											if (bimgTuchon == null) {
 												btnImg.setIcon(null);
 											}
@@ -5109,13 +5258,6 @@ public class ZKFPDemo extends JFrame {
 											}
 										} else {
 											// khong co hinh mon an
-											String pathImageNotImage = "imagesSystem/image-notimage.png";
-											File fileNotImage = new File(pathImageNotImage);
-											BufferedImage bimgNotImage = null;
-											try {
-												bimgNotImage = ImageIO.read(fileNotImage);
-											} catch (IOException e1) {
-											}
 											if (bimgNotImage == null) {
 												btnImg.setIcon(null);
 											}
@@ -5179,7 +5321,14 @@ public class ZKFPDemo extends JFrame {
 										} catch (IOException e) {
 										}
 										if (bimg == null) {
-											labelHinhNV1.setText("");
+											// image he thong nhan vien khong co hinh
+											if (bimgNoImageNV == null) {
+												labelHinhNV1.setIcon(null);
+											}
+											if (bimgNoImageNV != null) {
+												ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+												labelHinhNV1.setIcon(imageNoImageNV);
+											}
 										}
 										if (bimg != null) {
 											Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -5210,7 +5359,14 @@ public class ZKFPDemo extends JFrame {
 										}
 
 										if (bimg == null) {
-											labelHinhNV1.setIcon(null);
+											// image he thong nhan vien khong co hinh
+											if (bimgNoImageNV == null) {
+												labelHinhNV1.setIcon(null);
+											}
+											if (bimgNoImageNV != null) {
+												ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+												labelHinhNV1.setIcon(imageNoImageNV);
+											}
 										}
 										if (bimg != null) {
 											Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -5241,7 +5397,14 @@ public class ZKFPDemo extends JFrame {
 										} catch (IOException e) {
 										}
 										if (bimg2 == null) {
-											labelHinhNV2.setIcon(null);
+											// image he thong nhan vien khong co hinh
+											if (bimgNoImageNV == null) {
+												labelHinhNV2.setIcon(null);
+											}
+											if (bimgNoImageNV != null) {
+												ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+												labelHinhNV2.setIcon(imageNoImageNV);
+											}
 										}
 										if (bimg2 != null) {
 											Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -5271,7 +5434,14 @@ public class ZKFPDemo extends JFrame {
 										} catch (IOException e) {
 										}
 										if (bimg == null) {
-											labelHinhNV1.setIcon(null);
+											// image he thong nhan vien khong co hinh
+											if (bimgNoImageNV == null) {
+												labelHinhNV1.setIcon(null);
+											}
+											if (bimgNoImageNV != null) {
+												ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+												labelHinhNV1.setIcon(imageNoImageNV);
+											}
 										}
 										if (bimg != null) {
 											Image scaled = bimg.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -5302,7 +5472,14 @@ public class ZKFPDemo extends JFrame {
 										} catch (IOException e) {
 										}
 										if (bimg2 == null) {
-											labelHinhNV2.setIcon(null);
+											// image he thong nhan vien khong co hinh
+											if (bimgNoImageNV == null) {
+												labelHinhNV2.setIcon(null);
+											}
+											if (bimgNoImageNV != null) {
+												ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+												labelHinhNV2.setIcon(imageNoImageNV);
+											}
 										}
 										if (bimg2 != null) {
 											Image scaled2 = bimg2.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -5334,7 +5511,14 @@ public class ZKFPDemo extends JFrame {
 										} catch (IOException e) {
 										}
 										if (bimg3 == null) {
-											labelHinhNV3.setIcon(null);
+											// image he thong nhan vien khong co hinh
+											if (bimgNoImageNV == null) {
+												labelHinhNV3.setIcon(null);
+											}
+											if (bimgNoImageNV != null) {
+												ImageIcon imageNoImageNV = new ImageIcon(bimgNoImageNV);
+												labelHinhNV3.setIcon(imageNoImageNV);
+											}
 										}
 										if (bimg3 != null) {
 											Image scaled3 = bimg3.getScaledInstance(140, 140, Image.SCALE_SMOOTH);
@@ -5427,6 +5611,29 @@ public class ZKFPDemo extends JFrame {
 	public static void main(String[] args) {
 		// lauch frame
 		new ZKFPDemo().launchFrame();
+		// image he thong nhan vien khong co hinh
+		String pathImageNoImageNV = "imagesSystem/image-noimagenv140x140.png";
+		File fileNoImageNV = new File(pathImageNoImageNV);
+		try {
+			bimgNoImageNV = ImageIO.read(fileNoImageNV);
+		} catch (IOException e1) {
+		}
+		// image khong co hinh mon an
+		String pathImageNotImage = "imagesSystem/image-notimage.png";
+		File fileNotImage = new File(pathImageNotImage);
+		bimgNotImage = null;
+		try {
+			bimgNotImage = ImageIO.read(fileNotImage);
+		} catch (IOException e1) {
+		}
+		// hinh mon an tu chon
+		String pathImageTuchon = "imagesSystem/image-monantuchon.png";
+		File fileTuchon = new File(pathImageTuchon);
+		bimgTuchon = null;
+		try {
+			bimgTuchon = ImageIO.read(fileTuchon);
+		} catch (IOException e2) {
+		}
 	}
 
 	public static Connection getConnectionMySQL(String url) {
