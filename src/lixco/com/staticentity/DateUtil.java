@@ -65,7 +65,7 @@ public class DateUtil {
 		cal.set(Calendar.MINUTE, minutes);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		cal.add(Calendar.MINUTE, +90);
+		cal.add(Calendar.MINUTE, +105);
 		if (ca == 3) {
 			cal.add(Calendar.DATE, +1);
 		}
