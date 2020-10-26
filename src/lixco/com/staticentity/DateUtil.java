@@ -47,6 +47,10 @@ public class DateUtil {
 
 	public static Date HANDLE_START_TIME(int hour, int minutes, int ca) {
 		Calendar cal = Calendar.getInstance();
+		int hourTemp = cal.getTime().getHours();
+		if (hourTemp >= 0 && hourTemp <= 2) {
+			cal.add(Calendar.DATE, -1);
+		}
 
 		cal.set(Calendar.HOUR_OF_DAY, hour);
 		cal.set(Calendar.MINUTE, minutes);
@@ -61,6 +65,11 @@ public class DateUtil {
 
 	public static Date HANDLE_END_TIME(int hour, int minutes, int ca) {
 		Calendar cal = Calendar.getInstance();
+		int hourTemp = cal.getTime().getHours();
+		if (hourTemp >= 0 && hourTemp <= 2) {
+			cal.add(Calendar.DATE, -1);
+		}
+
 		cal.set(Calendar.HOUR_OF_DAY, hour);
 		cal.set(Calendar.MINUTE, minutes);
 		cal.set(Calendar.SECOND, 0);

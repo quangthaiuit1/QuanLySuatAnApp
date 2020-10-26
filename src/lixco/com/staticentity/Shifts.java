@@ -21,4 +21,6 @@ public class Shifts {
 	static public Date TIME_END_SHIFTS_2;
 	static public Date TIME_START_SHIFTS_3;
 	static public Date TIME_END_SHIFTS_3;
+	
+	static public Date NGAY_CUA_CA;
 }

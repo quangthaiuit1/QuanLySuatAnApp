@@ -16,6 +16,15 @@ public class OrderFood {
 	private int category_food_id;
 	private int shifts_id;
 	private boolean isNotRegFood = false;
+	private boolean isOverTime = false;
+	
+	public boolean isOverTime() {
+		return isOverTime;
+	}
+
+	public void setOverTime(boolean isOverTime) {
+		this.isOverTime = isOverTime;
+	}
 
 	public boolean isNotRegFood() {
 		return isNotRegFood;

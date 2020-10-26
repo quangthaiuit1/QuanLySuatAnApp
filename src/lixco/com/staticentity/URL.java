@@ -1,5 +1,6 @@
 package lixco.com.staticentity;
 
 public class URL {
-	static public String IP_DATABASE = "192.168.0.132:3306";
+	static public String LINK_QUANLYDATCOM_JDBC = "";
+	static public String LINK_DULIEUTRUNGTAM_JDBC = "";
 }
