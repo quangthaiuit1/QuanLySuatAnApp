@@ -426,50 +426,6 @@ public class ZKFPDemo extends JFrame {
 		textAreaTenMonAn3.setEditable(false);
 		textAreaTenMonAn3.setFont(new Font("Calibri", Font.BOLD, sizeTextTenMonAn));
 
-//		btnEnroll = new JButton("Enroll");
-//		this.add(btnEnroll);
-//		btnEnroll.setBounds(30, 60 + nRsize, 140, 30);
-//
-//		btnVerify = new JButton("Verify");
-//		this.add(btnVerify);
-//		btnVerify.setBounds(30, 110 + nRsize, 140, 30);
-//
-//		btnIdentify = new JButton("Identify");
-//		this.add(btnIdentify);
-//		btnIdentify.setBounds(30, 160 + nRsize, 140, 30);
-
-//		btnRegImg = new JButton("Register By Image");
-//		this.add(btnRegImg);
-//		btnRegImg.setBounds(30, 210 + nRsize, 140, 30);
-//
-//		btnIdentImg = new JButton("Verify By Image");
-//		this.add(btnIdentImg);
-//		btnIdentImg.setBounds(30, 260 + nRsize, 140, 30);
-
-//		btnClose = new JButton("Close");
-//		this.add(btnClose);
-//		btnClose.setBounds(30, 310 + nRsize, 140, 30);
-
-//		// For ISO/Ansi/ZK
-//		radioANSI = new JRadioButton("ANSI", true);
-//		this.add(radioANSI);
-//		radioANSI.setBounds(30, 560 + nRsize, 60, 30);
-//
-//		radioISO = new JRadioButton("ISO");
-//		this.add(radioISO);
-//		radioISO.setBounds(120, 560 + nRsize, 60, 30);
-//
-//		radioZK = new JRadioButton("ZK");
-//		this.add(radioZK);
-//		radioZK.setBounds(210, 560 + nRsize, 60, 30);
-
-//		ButtonGroup group = new ButtonGroup();
-//		group = new ButtonGroup();
-//		group.add(radioANSI);
-//		group.add(radioISO);
-//		group.add(radioZK);
-		// For End
-
 		// khoi tao chieu cao tu hinh lon
 		int heightImageLarge = 450;
 
@@ -672,7 +628,6 @@ public class ZKFPDemo extends JFrame {
 				if (arr != null) {
 					ZKFPDemo.listDataVerify = Arrays.asList(arr);
 				}
-
 				// END
 
 				// TODO Auto-generated method stub
@@ -1064,28 +1019,8 @@ public class ZKFPDemo extends JFrame {
 																}
 															}
 															// di ca hoac nhan vien van phong an ca 1
-															if (workShift) {
-																orderFoodCurrent.setDepartmentName(
-																		resultSet1.getString("department_name"));
-																orderFoodCurrent.setDepartmentCode(
-																		resultSet1.getString("department_code"));
-																orderFoodCurrent.setEmployeeCode(employeeCode);
-																orderFoodCurrent.setEmployeeName(
-																		resultSet1.getString("employee_name"));
-																orderFoodCurrent
-																		.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
-																orderFoodCurrent.setFood_date(
-																		DateUtil.DATE_WITHOUT_TIME(Shifts.NGAY_CUA_CA));
-																// gan thang id cua category food tu chon
-																orderFoodCurrent
-																		.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
-																orderFoodCurrent.setEmployeeId(
-																		resultSet1.getString("employee_code_old"));
-																orderFoodCurrent.setShifts_id(shiftsCurrent);
-																ZKFPDemo.addOne(orderFoodCurrent,
-																		orderFoodCurrent.getShifts_id());
-															}
-															if (!workShift && shiftsCurrent == Shifts.SHIFTS_1_ID) {
+															if (workShift || !workShift
+																	&& shiftsCurrent == Shifts.SHIFTS_1_ID) {
 																orderFoodCurrent.setDepartmentName(
 																		resultSet1.getString("department_name"));
 																orderFoodCurrent.setDepartmentCode(
@@ -1107,8 +1042,7 @@ public class ZKFPDemo extends JFrame {
 																		orderFoodCurrent.getShifts_id());
 															}
 															// nhan vien van phong an ca 3
-															if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID
-																	|| workShift) {
+															if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID) {
 																String pathImageKhongCoSuatAn = "imagesSystem/image-khongcosuatan-650x450.png";
 																File fileKCoSuatAn = new File(pathImageKhongCoSuatAn);
 																BufferedImage bimgKCoSuatAn = null;
@@ -1770,29 +1704,8 @@ public class ZKFPDemo extends JFrame {
 																}
 															}
 															// di ca hoac nhan vien van phong an ca 1
-															if (workShift) {
-																orderFoodCurrent.setDepartmentName(
-																		resultSet1.getString("department_name"));
-																orderFoodCurrent.setDepartmentCode(
-																		resultSet1.getString("department_code"));
-																orderFoodCurrent.setEmployeeCode(employeeCode);
-																orderFoodCurrent.setEmployeeName(
-																		resultSet1.getString("employee_name"));
-																orderFoodCurrent
-																		.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
-																orderFoodCurrent.setFood_date(
-																		DateUtil.DATE_WITHOUT_TIME(Shifts.NGAY_CUA_CA));
-																// gan thang id cua category food tu chon
-																orderFoodCurrent
-																		.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
-																orderFoodCurrent.setEmployeeId(
-																		resultSet1.getString("employee_code_old"));
-																orderFoodCurrent.setShifts_id(shiftsCurrent);
-																ZKFPDemo.addOne(orderFoodCurrent,
-																		orderFoodCurrent.getShifts_id());
-															}
-															// di ca hoac nhan vien van phong an ca 1
-															if (!workShift && shiftsCurrent == Shifts.SHIFTS_1_ID) {
+															if (workShift || !workShift
+																	&& shiftsCurrent == Shifts.SHIFTS_1_ID) {
 																orderFoodCurrent.setDepartmentName(
 																		resultSet1.getString("department_name"));
 																orderFoodCurrent.setDepartmentCode(
@@ -1814,8 +1727,7 @@ public class ZKFPDemo extends JFrame {
 																		orderFoodCurrent.getShifts_id());
 															}
 															// nhan vien van phong an ca 3
-															if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID
-																	|| workShift) {
+															if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID) {
 																String pathImageKhongCoSuatAn = "imagesSystem/image-khongcosuatan-650x450.png";
 																File fileKCoSuatAn = new File(pathImageKhongCoSuatAn);
 																BufferedImage bimgKCoSuatAn = null;
@@ -2501,8 +2413,7 @@ public class ZKFPDemo extends JFrame {
 																		orderFoodCurrent.getShifts_id());
 															}
 															// nhan vien van phong an ca 3
-															if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID
-																	|| workShift) {
+															if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID) {
 																String pathImageKhongCoSuatAn = "imagesSystem/image-khongcosuatan-650x450.png";
 																File fileKCoSuatAn = new File(pathImageKhongCoSuatAn);
 																BufferedImage bimgKCoSuatAn = null;
@@ -2878,12 +2789,12 @@ public class ZKFPDemo extends JFrame {
 															orderFoodCurrent.setEmployeeId(
 																	resultSet1.getString("employee_code_old"));
 															orderFoodCurrent.setShifts_id(shiftsCurrent);
+															orderFoodCurrent.setNotRegFood(true);
 															ZKFPDemo.addOne(orderFoodCurrent,
 																	orderFoodCurrent.getShifts_id());
 														}
 														// nhan vien van phong an ca 3
-														if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID
-																|| workShift) {
+														if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID) {
 															String pathImageKhongCoSuatAn = "imagesSystem/image-khongcosuatan-650x450.png";
 															File fileKCoSuatAn = new File(pathImageKhongCoSuatAn);
 															BufferedImage bimgKCoSuatAn = null;
@@ -3778,7 +3689,6 @@ public class ZKFPDemo extends JFrame {
 										// la khong dang ky
 										// Co dang ky
 										while (resultSet.next()) {
-											// neu nhan vien do da an ca do roi - > k cho them
 											if (!checkedExist) {
 												orderFoodCurrent
 														.setDepartmentName(resultSet.getString("of.department_name"));
@@ -3919,7 +3829,8 @@ public class ZKFPDemo extends JFrame {
 															}
 														}
 														// di ca hoac nhan vien van phong an ca 1
-														if (workShift) {
+														if (workShift
+																|| !workShift && shiftsCurrent == Shifts.SHIFTS_1_ID) {
 															orderFoodCurrent.setDepartmentName(
 																	resultSet1.getString("department_name"));
 															orderFoodCurrent.setDepartmentCode(
@@ -3929,27 +3840,7 @@ public class ZKFPDemo extends JFrame {
 																	resultSet1.getString("employee_name"));
 															orderFoodCurrent.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
 															orderFoodCurrent.setFood_date(
-																	DateUtil.DATE_WITHOUT_TIME(new Date()));
-															// gan thang id cua category food tu chon
-															orderFoodCurrent
-																	.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
-															orderFoodCurrent.setEmployeeId(
-																	resultSet1.getString("employee_code_old"));
-															orderFoodCurrent.setShifts_id(shiftsCurrent);
-															ZKFPDemo.addOne(orderFoodCurrent,
-																	orderFoodCurrent.getShifts_id());
-														}
-														if (!workShift && shiftsCurrent == Shifts.SHIFTS_1_ID) {
-															orderFoodCurrent.setDepartmentName(
-																	resultSet1.getString("department_name"));
-															orderFoodCurrent.setDepartmentCode(
-																	resultSet1.getString("department_code"));
-															orderFoodCurrent.setEmployeeCode(employeeCode);
-															orderFoodCurrent.setEmployeeName(
-																	resultSet1.getString("employee_name"));
-															orderFoodCurrent.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
-															orderFoodCurrent.setFood_date(
-																	DateUtil.DATE_WITHOUT_TIME(new Date()));
+																	DateUtil.DATE_WITHOUT_TIME(Shifts.NGAY_CUA_CA));
 															// gan thang id cua category food tu chon
 															orderFoodCurrent
 																	.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
@@ -3960,8 +3851,7 @@ public class ZKFPDemo extends JFrame {
 																	orderFoodCurrent.getShifts_id());
 														}
 														// nhan vien van phong an ca 3
-														if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID
-																|| workShift) {
+														if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID) {
 															String pathImageKhongCoSuatAn = "imagesSystem/image-khongcosuatan-650x450.png";
 															File fileKCoSuatAn = new File(pathImageKhongCoSuatAn);
 															BufferedImage bimgKCoSuatAn = null;
@@ -4616,7 +4506,8 @@ public class ZKFPDemo extends JFrame {
 															}
 														}
 														// di ca hoac nhan vien van phong an ca 1
-														if (workShift) {
+														if (workShift
+																|| !workShift && shiftsCurrent == Shifts.SHIFTS_1_ID) {
 															orderFoodCurrent.setDepartmentName(
 																	resultSet1.getString("department_name"));
 															orderFoodCurrent.setDepartmentCode(
@@ -4626,27 +4517,7 @@ public class ZKFPDemo extends JFrame {
 																	resultSet1.getString("employee_name"));
 															orderFoodCurrent.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
 															orderFoodCurrent.setFood_date(
-																	DateUtil.DATE_WITHOUT_TIME(new Date()));
-															// gan thang id cua category food tu chon
-															orderFoodCurrent
-																	.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
-															orderFoodCurrent.setEmployeeId(
-																	resultSet1.getString("employee_code_old"));
-															orderFoodCurrent.setShifts_id(shiftsCurrent);
-															ZKFPDemo.addOne(orderFoodCurrent,
-																	orderFoodCurrent.getShifts_id());
-														}
-														if (!workShift && shiftsCurrent == Shifts.SHIFTS_1_ID) {
-															orderFoodCurrent.setDepartmentName(
-																	resultSet1.getString("department_name"));
-															orderFoodCurrent.setDepartmentCode(
-																	resultSet1.getString("department_code"));
-															orderFoodCurrent.setEmployeeCode(employeeCode);
-															orderFoodCurrent.setEmployeeName(
-																	resultSet1.getString("employee_name"));
-															orderFoodCurrent.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
-															orderFoodCurrent.setFood_date(
-																	DateUtil.DATE_WITHOUT_TIME(new Date()));
+																	DateUtil.DATE_WITHOUT_TIME(Shifts.NGAY_CUA_CA));
 															// gan thang id cua category food tu chon
 															orderFoodCurrent
 																	.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
@@ -4657,8 +4528,7 @@ public class ZKFPDemo extends JFrame {
 																	orderFoodCurrent.getShifts_id());
 														}
 														// nhan vien van phong an ca 3
-														if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID
-																|| workShift) {
+														if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID) {
 															String pathImageKhongCoSuatAn = "imagesSystem/image-khongcosuatan-650x450.png";
 															File fileKCoSuatAn = new File(pathImageKhongCoSuatAn);
 															BufferedImage bimgKCoSuatAn = null;
@@ -5304,7 +5174,7 @@ public class ZKFPDemo extends JFrame {
 																	resultSet1.getString("employee_name"));
 															orderFoodCurrent.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
 															orderFoodCurrent.setFood_date(
-																	DateUtil.DATE_WITHOUT_TIME(new Date()));
+																	DateUtil.DATE_WITHOUT_TIME(Shifts.NGAY_CUA_CA));
 															// gan thang id cua category food tu chon
 															orderFoodCurrent
 																	.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
@@ -5315,8 +5185,7 @@ public class ZKFPDemo extends JFrame {
 																	orderFoodCurrent.getShifts_id());
 														}
 														// nhan vien van phong an ca 3
-														if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID
-																|| workShift) {
+														if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID) {
 															String pathImageKhongCoSuatAn = "imagesSystem/image-khongcosuatan-650x450.png";
 															File fileKCoSuatAn = new File(pathImageKhongCoSuatAn);
 															BufferedImage bimgKCoSuatAn = null;
@@ -6173,19 +6042,19 @@ public class ZKFPDemo extends JFrame {
 														orderFoodCurrent
 																.setEmployeeName(resultSet1.getString("employee_name"));
 														orderFoodCurrent.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
-														orderFoodCurrent
-																.setFood_date(DateUtil.DATE_WITHOUT_TIME(new Date()));
+														orderFoodCurrent.setFood_date(
+																DateUtil.DATE_WITHOUT_TIME(Shifts.NGAY_CUA_CA));
 														// gan thang id cua category food tu chon
 														orderFoodCurrent.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
 														orderFoodCurrent.setEmployeeId(
 																resultSet1.getString("employee_code_old"));
 														orderFoodCurrent.setShifts_id(shiftsCurrent);
+														orderFoodCurrent.setNotRegFood(true);
 														ZKFPDemo.addOne(orderFoodCurrent,
 																orderFoodCurrent.getShifts_id());
 													}
 													// nhan vien van phong an ca 3
-													if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID
-															|| workShift) {
+													if (!workShift && shiftsCurrent == Shifts.SHIFTS_3_ID) {
 														String pathImageKhongCoSuatAn = "imagesSystem/image-khongcosuatan-650x450.png";
 														File fileKCoSuatAn = new File(pathImageKhongCoSuatAn);
 														BufferedImage bimgKCoSuatAn = null;
