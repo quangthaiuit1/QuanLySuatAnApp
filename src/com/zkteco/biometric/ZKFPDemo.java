@@ -997,8 +997,8 @@ public class ZKFPDemo extends JFrame {
 																			URL.LINK_QUANLYDATCOM_JDBC);
 //																	 kiem tra co dang ky tang ca hay khong
 																	String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																			+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot"
-																			+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND"
+																			+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																			+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																			+ "ot.id = food_ot.over_time_id";
 																	preStatementChecked = con.prepareStatement(query);
 																	// check bang ma nhan vien cu
@@ -1064,8 +1064,28 @@ public class ZKFPDemo extends JFrame {
 																}
 															}
 															// di ca hoac nhan vien van phong an ca 1
-															if (workShift || !workShift
-																	&& shiftsCurrent == Shifts.SHIFTS_1_ID) {
+															if (workShift) {
+																orderFoodCurrent.setDepartmentName(
+																		resultSet1.getString("department_name"));
+																orderFoodCurrent.setDepartmentCode(
+																		resultSet1.getString("department_code"));
+																orderFoodCurrent.setEmployeeCode(employeeCode);
+																orderFoodCurrent.setEmployeeName(
+																		resultSet1.getString("employee_name"));
+																orderFoodCurrent
+																		.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
+																orderFoodCurrent.setFood_date(
+																		DateUtil.DATE_WITHOUT_TIME(Shifts.NGAY_CUA_CA));
+																// gan thang id cua category food tu chon
+																orderFoodCurrent
+																		.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
+																orderFoodCurrent.setEmployeeId(
+																		resultSet1.getString("employee_code_old"));
+																orderFoodCurrent.setShifts_id(shiftsCurrent);
+																ZKFPDemo.addOne(orderFoodCurrent,
+																		orderFoodCurrent.getShifts_id());
+															}
+															if (!workShift && shiftsCurrent == Shifts.SHIFTS_1_ID) {
 																orderFoodCurrent.setDepartmentName(
 																		resultSet1.getString("department_name"));
 																orderFoodCurrent.setDepartmentCode(
@@ -1683,8 +1703,8 @@ public class ZKFPDemo extends JFrame {
 																			URL.LINK_QUANLYDATCOM_JDBC);
 //																	 kiem tra co dang ky tang ca hay khong
 																	String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																			+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot"
-																			+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND"
+																			+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																			+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																			+ "ot.id = food_ot.over_time_id";
 																	preStatementChecked = con.prepareStatement(query);
 																	// check bang ma nhan vien cu
@@ -1750,8 +1770,29 @@ public class ZKFPDemo extends JFrame {
 																}
 															}
 															// di ca hoac nhan vien van phong an ca 1
-															if (workShift || !workShift
-																	&& shiftsCurrent == Shifts.SHIFTS_1_ID) {
+															if (workShift) {
+																orderFoodCurrent.setDepartmentName(
+																		resultSet1.getString("department_name"));
+																orderFoodCurrent.setDepartmentCode(
+																		resultSet1.getString("department_code"));
+																orderFoodCurrent.setEmployeeCode(employeeCode);
+																orderFoodCurrent.setEmployeeName(
+																		resultSet1.getString("employee_name"));
+																orderFoodCurrent
+																		.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
+																orderFoodCurrent.setFood_date(
+																		DateUtil.DATE_WITHOUT_TIME(Shifts.NGAY_CUA_CA));
+																// gan thang id cua category food tu chon
+																orderFoodCurrent
+																		.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
+																orderFoodCurrent.setEmployeeId(
+																		resultSet1.getString("employee_code_old"));
+																orderFoodCurrent.setShifts_id(shiftsCurrent);
+																ZKFPDemo.addOne(orderFoodCurrent,
+																		orderFoodCurrent.getShifts_id());
+															}
+															// di ca hoac nhan vien van phong an ca 1
+															if (!workShift && shiftsCurrent == Shifts.SHIFTS_1_ID) {
 																orderFoodCurrent.setDepartmentName(
 																		resultSet1.getString("department_name"));
 																orderFoodCurrent.setDepartmentCode(
@@ -2370,8 +2411,8 @@ public class ZKFPDemo extends JFrame {
 																			URL.LINK_QUANLYDATCOM_JDBC);
 //																	 kiem tra co dang ky tang ca hay khong
 																	String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																			+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot"
-																			+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND"
+																			+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																			+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																			+ "ot.id = food_ot.over_time_id";
 																	preStatementChecked = con.prepareStatement(query);
 																	// check bang ma nhan vien cu
@@ -2751,8 +2792,8 @@ public class ZKFPDemo extends JFrame {
 																		.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 //																 kiem tra co dang ky tang ca hay khong
 																String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																		+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot"
-																		+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND"
+																		+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																		+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																		+ "ot.id = food_ot.over_time_id";
 																preStatementChecked = con.prepareStatement(query);
 																// check bang ma nhan vien cu
@@ -3811,8 +3852,8 @@ public class ZKFPDemo extends JFrame {
 																		.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 //																 kiem tra co dang ky tang ca hay khong
 																String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																		+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot"
-																		+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND"
+																		+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																		+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																		+ "ot.id = food_ot.over_time_id";
 																preStatementChecked = con.prepareStatement(query);
 																// check bang ma nhan vien cu
@@ -3878,8 +3919,27 @@ public class ZKFPDemo extends JFrame {
 															}
 														}
 														// di ca hoac nhan vien van phong an ca 1
-														if (workShift
-																|| !workShift && shiftsCurrent == Shifts.SHIFTS_1_ID) {
+														if (workShift) {
+															orderFoodCurrent.setDepartmentName(
+																	resultSet1.getString("department_name"));
+															orderFoodCurrent.setDepartmentCode(
+																	resultSet1.getString("department_code"));
+															orderFoodCurrent.setEmployeeCode(employeeCode);
+															orderFoodCurrent.setEmployeeName(
+																	resultSet1.getString("employee_name"));
+															orderFoodCurrent.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
+															orderFoodCurrent.setFood_date(
+																	DateUtil.DATE_WITHOUT_TIME(new Date()));
+															// gan thang id cua category food tu chon
+															orderFoodCurrent
+																	.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
+															orderFoodCurrent.setEmployeeId(
+																	resultSet1.getString("employee_code_old"));
+															orderFoodCurrent.setShifts_id(shiftsCurrent);
+															ZKFPDemo.addOne(orderFoodCurrent,
+																	orderFoodCurrent.getShifts_id());
+														}
+														if (!workShift && shiftsCurrent == Shifts.SHIFTS_1_ID) {
 															orderFoodCurrent.setDepartmentName(
 																	resultSet1.getString("department_name"));
 															orderFoodCurrent.setDepartmentCode(
@@ -4489,8 +4549,8 @@ public class ZKFPDemo extends JFrame {
 																		.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 //																 kiem tra co dang ky tang ca hay khong
 																String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																		+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot"
-																		+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND"
+																		+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																		+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																		+ "ot.id = food_ot.over_time_id";
 																preStatementChecked = con.prepareStatement(query);
 																// check bang ma nhan vien cu
@@ -4556,8 +4616,27 @@ public class ZKFPDemo extends JFrame {
 															}
 														}
 														// di ca hoac nhan vien van phong an ca 1
-														if (workShift
-																|| !workShift && shiftsCurrent == Shifts.SHIFTS_1_ID) {
+														if (workShift) {
+															orderFoodCurrent.setDepartmentName(
+																	resultSet1.getString("department_name"));
+															orderFoodCurrent.setDepartmentCode(
+																	resultSet1.getString("department_code"));
+															orderFoodCurrent.setEmployeeCode(employeeCode);
+															orderFoodCurrent.setEmployeeName(
+																	resultSet1.getString("employee_name"));
+															orderFoodCurrent.setFoodName(FoodCustom.FOOD_CUSTOM_NAME);
+															orderFoodCurrent.setFood_date(
+																	DateUtil.DATE_WITHOUT_TIME(new Date()));
+															// gan thang id cua category food tu chon
+															orderFoodCurrent
+																	.setCategory_food_id(FoodCustom.FOOD_CUSTOM_ID);
+															orderFoodCurrent.setEmployeeId(
+																	resultSet1.getString("employee_code_old"));
+															orderFoodCurrent.setShifts_id(shiftsCurrent);
+															ZKFPDemo.addOne(orderFoodCurrent,
+																	orderFoodCurrent.getShifts_id());
+														}
+														if (!workShift && shiftsCurrent == Shifts.SHIFTS_1_ID) {
 															orderFoodCurrent.setDepartmentName(
 																	resultSet1.getString("department_name"));
 															orderFoodCurrent.setDepartmentCode(
@@ -5147,8 +5226,8 @@ public class ZKFPDemo extends JFrame {
 																		.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 //																 kiem tra co dang ky tang ca hay khong
 																String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																		+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot"
-																		+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND"
+																		+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																		+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																		+ "ot.id = food_ot.over_time_id";
 																preStatementChecked = con.prepareStatement(query);
 																// check bang ma nhan vien cu
@@ -6020,8 +6099,8 @@ public class ZKFPDemo extends JFrame {
 																	.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 //															 kiem tra co dang ky tang ca hay khong
 															String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																	+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot"
-																	+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND"
+																	+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																	+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																	+ "ot.id = food_ot.over_time_id";
 															preStatementChecked = con.prepareStatement(query);
 															// check bang ma nhan vien cu
