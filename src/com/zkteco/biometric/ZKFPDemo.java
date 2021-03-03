@@ -527,7 +527,7 @@ public class ZKFPDemo extends JFrame {
 				try {
 
 					con = ZKFPDemo.getConnectionMySQL(
-							"jdbc:mysql://192.168.0.5:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
+							"jdbc:mysql://192.168.10.252:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
 
 					// query link jdbc
 					String queryLinkQuanLyDatCom = "SELECT * FROM quanlydatcom.link";
@@ -540,6 +540,9 @@ public class ZKFPDemo extends JFrame {
 						}
 						if (linkName.equals("DLTT")) {
 							URL.LINK_DULIEUTRUNGTAM_JDBC = resultSet.getString("link_jdbc");
+						}
+						if (linkName.equals("ChamCong")) {
+							URL.LINK_CHAMCONG = resultSet.getString("link_jdbc");
 						}
 					}
 					// end query link

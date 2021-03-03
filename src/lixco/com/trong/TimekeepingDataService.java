@@ -1,4 +1,5 @@
 package lixco.com.trong;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -29,7 +30,7 @@ public class TimekeepingDataService {
 		try {
 
 			String link = "?cm=findByTimeKp&dt=" + param;
-			String data = process(link);
+			String data = process(link,lixco.com.staticentity.URL.LINK_CHAMCONG);
 			DataResponseAPI ketqua = gson.fromJson(data, DataResponseAPI.class);
 			TimekeepingData[] employeeData = gson.fromJson(ketqua.getDt(), TimekeepingData[].class);
 			return employeeData;
@@ -39,7 +40,7 @@ public class TimekeepingDataService {
 		}
 
 	}
-	
+
 	public static TimekeepingData[] searchByDateAndWorkTemp(String strDate, String ca) {
 		try {
 			String link = "";
@@ -49,7 +50,7 @@ public class TimekeepingDataService {
 			if (ca.equals("CD")) {
 				link = "?cm=findByTimeKpWorkShifCD&dt=" + strDate;
 			}
-			String data = process(link);
+			String data = process(link, lixco.com.staticentity.URL.LINK_CHAMCONG);
 			DataResponseAPI ketqua = gson.fromJson(data, DataResponseAPI.class);
 			TimekeepingData[] employeeData = gson.fromJson(ketqua.getDt(), TimekeepingData[].class);
 			return employeeData;
@@ -60,8 +61,9 @@ public class TimekeepingDataService {
 
 	}
 
-	private static String process(String link) throws Exception {
-		URL url = new URL("http://192.168.0.5:9290" + "/chamcong/api/" + NAME + link);
+	private static String process(String link, String urlChamCong) throws Exception {
+		String urlTemp = urlChamCong + "/chamcong/api/" + NAME + link;
+		URL url = new URL(urlTemp);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setDoOutput(true);
 		conn.setRequestMethod("GET");
