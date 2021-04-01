@@ -1,0 +1,1 @@
+jdbc:sqlserver://192.168.10.236;databaseName=MITACOSQL_sa_LIXCO@admin2016

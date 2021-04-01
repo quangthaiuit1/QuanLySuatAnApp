@@ -11,9 +11,13 @@ import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -40,6 +44,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
+
 import lixco.com.entity.FoodNhaAn;
 import lixco.com.entity.OrderFood;
 import lixco.com.staticentity.DateUtil;
@@ -48,6 +54,7 @@ import lixco.com.staticentity.Shifts;
 import lixco.com.staticentity.URL;
 import lixco.com.trong.DepartmentData;
 import lixco.com.trong.DepartmentDataService;
+import lixco.com.trong.EmployeeData;
 import lixco.com.trong.TimekeepingData;
 import lixco.com.trong.TimekeepingDataService;
 import lixco.com.vantay.loadvantay;
@@ -171,6 +178,7 @@ public class ZKFPDemo extends JFrame {
 
 	public static List<TimekeepingData> listDataVerify;
 	public static int shiftsCurrent = 0;
+	public static String codeBranch = "";
 	// Date current
 	private Date dateCurrent = null;
 
@@ -502,6 +510,13 @@ public class ZKFPDemo extends JFrame {
 
 		this.setTitle("QUẢN LÝ NHÀ ĂN");
 		this.setResizable(false);
+//		listl = loadvantay.findAll();
+//		System.out.println(listl.size());
+//		for (template t : listl) {
+//			if (t.getMaNhanVien().equals("Ti0017") || t.getMaNhanVien().equals("IT0017")) {
+//				System.out.println("Tien");
+//			}
+//		}
 
 		togglebtnKhongQuetVT.addItemListener(new ItemListener() {
 
@@ -525,22 +540,23 @@ public class ZKFPDemo extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				textFieldMaTheTu.requestFocusInWindow();
 				try {
+					ZKFPDemo.codeBranch = readFile("configs/code_chinhanh.txt").trim();
+					String connect = readFile("configs/url_db_datcom.txt");
 
-					con = ZKFPDemo.getConnectionMySQL(
-							"jdbc:mysql://192.168.10.252:3306/quanlydatcom?useUnicode=yes&characterEncoding=UTF-8");
+					String[] connects = connect.split("__");
+					URL.LINK_QUANLYDATCOM_JDBC = connects[0].trim();
+					URL.LINK_DULIEUTRUNGTAM_JDBC = connects[1].trim();
+
+//					con = ZKFPDemo.getConnectionMySQL(
+//							"jdbc:mysql://192.168.10.252:3306/quanlydatcom_bd?useUnicode=yes&characterEncoding=UTF-8");
+					con = ZKFPDemo.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 
 					// query link jdbc
-					String queryLinkQuanLyDatCom = "SELECT * FROM quanlydatcom.link";
+					String queryLinkQuanLyDatCom = "SELECT * FROM link";
 					preStatement = con.prepareStatement(queryLinkQuanLyDatCom);
 					ResultSet resultSet = preStatement.executeQuery();
 					while (resultSet.next()) {
 						String linkName = resultSet.getString("link_name");
-						if (linkName.equals("QLDC")) {
-							URL.LINK_QUANLYDATCOM_JDBC = resultSet.getString("link_jdbc");
-						}
-						if (linkName.equals("DLTT")) {
-							URL.LINK_DULIEUTRUNGTAM_JDBC = resultSet.getString("link_jdbc");
-						}
 						if (linkName.equals("ChamCong")) {
 							URL.LINK_CHAMCONG = resultSet.getString("link_jdbc");
 						}
@@ -548,7 +564,7 @@ public class ZKFPDemo extends JFrame {
 					// end query link
 
 					// query va set ca lam viec
-					String queryTimeforShift = "SELECT * FROM quanlydatcom.shifts";
+					String queryTimeforShift = "SELECT * FROM shifts";
 					preStatement = con.prepareStatement(queryTimeforShift);
 					resultSet = preStatement.executeQuery();
 					while (resultSet.next()) {
@@ -740,7 +756,12 @@ public class ZKFPDemo extends JFrame {
 				workThread.start();// 线程启动
 
 				// load data finger -- btn enroll
-				listl = loadvantay.findAll();
+				String url_vantay = readFile("configs/url_ds_vantay.txt");
+				String[] parts = url_vantay.split("_");
+				String urlDB = parts[0];
+				String usernameRemote = parts[1];
+				String passRemote = parts[2];
+				listl = loadvantay.findAll(urlDB.trim(), usernameRemote.trim(), passRemote.trim());
 				for (int i = 0; i < listl.size(); i++) {
 					template tl = new template(listl.get(i).getMaChamCong(), listl.get(i).getFingerID(),
 							listl.get(i).getFlag(), listl.get(i).getFingerTemplate());
@@ -833,14 +854,14 @@ public class ZKFPDemo extends JFrame {
 										// query by date and employee
 										String queryFood = "";
 										queryFood = "SELECT ofbd.id as order_food_by_day_id, of.employee_code, of.employee_id, of.employee_name, of.department_code, of.department_name, cf.name,cf.image,cf.id as category_food_id,fbd.shifts_id, of.registration_date\r\n"
-												+ "FROM quanlydatcom.order_food_by_day as ofbd, quanlydatcom.order_food as of, quanlydatcom.food_by_day fbd, quanlydatcom.category_food as cf\r\n"
+												+ "FROM order_food_by_day as ofbd, order_food as of, food_by_day fbd, category_food as cf\r\n"
 												+ "WHERE of.employee_id = ? AND of.registration_date = ? AND fbd.shifts_id = ? AND ofbd.order_food_id = of.id AND ofbd.food_by_day_id = fbd.id AND cf.id = fbd.category_food_id;	";
 
 										try {
 											con = ZKFPDemo.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 											// kiem tra co du lieu ca do duoi DB
 											// chua
-											String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
+											String queryChecked = "SELECT * FROM food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
 											PreparedStatement preStatementChecked = null;
 											preStatementChecked = con.prepareStatement(queryChecked);
 											// check bang ma nhan vien cu
@@ -916,9 +937,17 @@ public class ZKFPDemo extends JFrame {
 											// handle cho phan mon an tu chon
 											if (!resultSet.first()) {
 												DepartmentData[] departmentHCMArray = DepartmentDataService
-														.timtheophongquanly("20002");
+														.timtheophongquanly(ZKFPDemo.codeBranch);
+
 												List<DepartmentData> departmentHCM = new ArrayList<>(
 														Arrays.asList(departmentHCMArray));
+
+//												DepartmentData[] departmentBDArray = DepartmentDataService
+//														.timtheophongquanly("20002");
+//												List<DepartmentData> departmentBD = new ArrayList<>(
+//														Arrays.asList(departmentBDArray));
+//
+//												departmentHCM.addAll(departmentBD);
 												// HANDLE -> Tao list id
 												// department
 												List<Long> listDepartmentCodeHCM = new ArrayList<Long>();
@@ -998,7 +1027,7 @@ public class ZKFPDemo extends JFrame {
 																	// ca hay
 																	// khong
 																	String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																			+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																			+ "FROM food_over_time as food_ot, over_time as ot "
 																			+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																			+ "ot.id = food_ot.over_time_id";
 																	preStatementChecked = con.prepareStatement(query);
@@ -1217,7 +1246,7 @@ public class ZKFPDemo extends JFrame {
 										// handle show 3 o nho cho 4 nguoi quet
 										// gan nhat
 										String queryTop4 = "SELECT FNA.employee_name,CF.name, FNA.employee_id, CF.image\r\n"
-												+ "FROM quanlydatcom.food_nha_an as FNA, quanlydatcom.category_food as CF\r\n"
+												+ "FROM food_nha_an as FNA, category_food as CF\r\n"
 												+ "WHERE FNA.category_food_id = CF.id and FNA.shifts_id = ? and FNA.food_date = ?\r\n"
 												+ "ORDER BY FNA.id DESC\r\n" + "LIMIT 3;";
 
@@ -1566,14 +1595,14 @@ public class ZKFPDemo extends JFrame {
 										// query by date and employee
 										String queryFood = "";
 										queryFood = "SELECT ofbd.id as order_food_by_day_id, of.employee_code, of.employee_id, of.employee_name, of.department_code, of.department_name, cf.name,cf.image,cf.id as category_food_id,fbd.shifts_id, of.registration_date\r\n"
-												+ "FROM quanlydatcom.order_food_by_day as ofbd, quanlydatcom.order_food as of, quanlydatcom.food_by_day fbd, quanlydatcom.category_food as cf\r\n"
+												+ "FROM order_food_by_day as ofbd, order_food as of, food_by_day fbd, category_food as cf\r\n"
 												+ "WHERE of.employee_id = ? AND of.registration_date = ? AND fbd.shifts_id = ? AND ofbd.order_food_id = of.id AND ofbd.food_by_day_id = fbd.id AND cf.id = fbd.category_food_id;	";
 
 										try {
 											con = ZKFPDemo.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 											// kiem tra co du lieu ca do duoi DB
 											// chua
-											String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
+											String queryChecked = "SELECT * FROM food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
 											PreparedStatement preStatementChecked = null;
 											preStatementChecked = con.prepareStatement(queryChecked);
 											// check bang ma nhan vien cu
@@ -1648,9 +1677,17 @@ public class ZKFPDemo extends JFrame {
 											// handle cho phan mon an tu chon
 											if (!resultSet.first()) {
 												DepartmentData[] departmentHCMArray = DepartmentDataService
-														.timtheophongquanly("20002");
+														.timtheophongquanly(ZKFPDemo.codeBranch);
 												List<DepartmentData> departmentHCM = new ArrayList<>(
 														Arrays.asList(departmentHCMArray));
+
+//												DepartmentData[] departmentBDArray = DepartmentDataService
+//														.timtheophongquanly("20002");
+//												List<DepartmentData> departmentBD = new ArrayList<>(
+//														Arrays.asList(departmentBDArray));
+//
+//												departmentHCM.addAll(departmentBD);
+
 												// HANDLE -> Tao list id
 												// department
 												List<Long> listDepartmentCodeHCM = new ArrayList<Long>();
@@ -1731,7 +1768,7 @@ public class ZKFPDemo extends JFrame {
 																	// ca hay
 																	// khong
 																	String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																			+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																			+ "FROM food_over_time as food_ot, over_time as ot "
 																			+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																			+ "ot.id = food_ot.over_time_id";
 																	preStatementChecked = con.prepareStatement(query);
@@ -1949,7 +1986,7 @@ public class ZKFPDemo extends JFrame {
 										// handle show 3 o nho cho 4 nguoi quet
 										// gan nhat
 										String queryTop4 = "SELECT FNA.employee_name,CF.name, FNA.employee_id, CF.image\r\n"
-												+ "FROM quanlydatcom.food_nha_an as FNA, quanlydatcom.category_food as CF\r\n"
+												+ "FROM food_nha_an as FNA, category_food as CF\r\n"
 												+ "WHERE FNA.category_food_id = CF.id and FNA.shifts_id = ? and FNA.food_date = ?\r\n"
 												+ "ORDER BY FNA.id DESC\r\n" + "LIMIT 3;";
 
@@ -2293,14 +2330,14 @@ public class ZKFPDemo extends JFrame {
 										// query by date and employee
 										String queryFood = "";
 										queryFood = "SELECT ofbd.id as order_food_by_day_id, of.employee_code, of.employee_id, of.employee_name, of.department_code, of.department_name, cf.name,cf.image,cf.id as category_food_id,fbd.shifts_id, of.registration_date\r\n"
-												+ "FROM quanlydatcom.order_food_by_day as ofbd, quanlydatcom.order_food as of, quanlydatcom.food_by_day fbd, quanlydatcom.category_food as cf\r\n"
+												+ "FROM order_food_by_day as ofbd, order_food as of, food_by_day fbd, category_food as cf\r\n"
 												+ "WHERE of.employee_id = ? AND of.registration_date = ? AND fbd.shifts_id = ? AND ofbd.order_food_id = of.id AND ofbd.food_by_day_id = fbd.id AND cf.id = fbd.category_food_id;	";
 
 										try {
 											con = ZKFPDemo.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 											// kiem tra co du lieu ca do duoi DB
 											// chua
-											String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
+											String queryChecked = "SELECT * FROM food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
 											PreparedStatement preStatementChecked = null;
 											preStatementChecked = con.prepareStatement(queryChecked);
 											// check bang ma nhan vien cu
@@ -2379,9 +2416,17 @@ public class ZKFPDemo extends JFrame {
 											if (!checkedExist) {
 												orderFoodCurrent = new OrderFood();
 												DepartmentData[] departmentHCMArray = DepartmentDataService
-														.timtheophongquanly("20002");
+														.timtheophongquanly(ZKFPDemo.codeBranch);
 												List<DepartmentData> departmentHCM = new ArrayList<>(
 														Arrays.asList(departmentHCMArray));
+
+//												DepartmentData[] departmentBDArray = DepartmentDataService
+//														.timtheophongquanly("20002");
+//												List<DepartmentData> departmentBD = new ArrayList<>(
+//														Arrays.asList(departmentBDArray));
+//
+//												departmentHCM.addAll(departmentBD);
+
 												// HANDLE -> Tao list id
 												// department
 												List<Long> listDepartmentCodeHCM = new ArrayList<Long>();
@@ -2461,7 +2506,7 @@ public class ZKFPDemo extends JFrame {
 																	// ca hay
 																	// khong
 																	String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																			+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																			+ "FROM food_over_time as food_ot, over_time as ot "
 																			+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																			+ "ot.id = food_ot.over_time_id";
 																	preStatementChecked = con.prepareStatement(query);
@@ -2720,14 +2765,14 @@ public class ZKFPDemo extends JFrame {
 									// query by date and employee
 									String queryFood = "";
 									queryFood = "SELECT ofbd.id as order_food_by_day_id, of.employee_code, of.employee_id, of.employee_name, of.department_code, of.department_name, cf.name,cf.image,cf.id as category_food_id,fbd.shifts_id, of.registration_date\r\n"
-											+ "FROM quanlydatcom.order_food_by_day as ofbd, quanlydatcom.order_food as of, quanlydatcom.food_by_day fbd, quanlydatcom.category_food as cf\r\n"
+											+ "FROM order_food_by_day as ofbd, order_food as of, food_by_day fbd, category_food as cf\r\n"
 											+ "WHERE of.employee_id = ? AND of.registration_date = ? AND fbd.shifts_id = ? AND ofbd.order_food_id = of.id AND ofbd.food_by_day_id = fbd.id AND cf.id = fbd.category_food_id;	";
 
 									try {
 										con = ZKFPDemo.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 										// kiem tra co du lieu ca do duoi DB
 										// chua
-										String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
+										String queryChecked = "SELECT * FROM food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
 										PreparedStatement preStatementChecked = null;
 										preStatementChecked = con.prepareStatement(queryChecked);
 										// check bang ma nhan vien cu
@@ -2798,9 +2843,17 @@ public class ZKFPDemo extends JFrame {
 										// handle cho phan mon an tu chon
 										if (!resultSet.first()) {
 											DepartmentData[] departmentHCMArray = DepartmentDataService
-													.timtheophongquanly("20002");
+													.timtheophongquanly(ZKFPDemo.codeBranch);
 											List<DepartmentData> departmentHCM = new ArrayList<>(
 													Arrays.asList(departmentHCMArray));
+
+//											DepartmentData[] departmentBDArray = DepartmentDataService
+//													.timtheophongquanly("20002");
+//											List<DepartmentData> departmentBD = new ArrayList<>(
+//													Arrays.asList(departmentBDArray));
+//
+//											departmentHCM.addAll(departmentBD);
+
 											// HANDLE -> Tao list id department
 											List<Long> listDepartmentCodeHCM = new ArrayList<Long>();
 											for (DepartmentData de : departmentHCM) {
@@ -2876,7 +2929,7 @@ public class ZKFPDemo extends JFrame {
 																// dang ky tang
 																// ca hay khong
 																String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																		+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																		+ "FROM food_over_time as food_ot, over_time as ot "
 																		+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																		+ "ot.id = food_ot.over_time_id";
 																preStatementChecked = con.prepareStatement(query);
@@ -3088,7 +3141,7 @@ public class ZKFPDemo extends JFrame {
 									// handle show 3 o nho cho 4 nguoi quet gan
 									// nhat
 									String queryTop4 = "SELECT FNA.employee_name,CF.name, FNA.employee_id, CF.image\r\n"
-											+ "FROM quanlydatcom.food_nha_an as FNA, quanlydatcom.category_food as CF\r\n"
+											+ "FROM food_nha_an as FNA, category_food as CF\r\n"
 											+ "WHERE FNA.category_food_id = CF.id and FNA.shifts_id = ? and FNA.food_date = ?\r\n"
 											+ "ORDER BY FNA.id DESC\r\n" + "LIMIT 3;";
 
@@ -3386,13 +3439,58 @@ public class ZKFPDemo extends JFrame {
 								}
 								// END CODE
 							}
+						} else {
+							// the quet khong chinh xac
+							textFieldMaTheTu.setText("");
+							textArea.setText("Mã thẻ không chính xác" + "\n");
+							// van tay sai
+							String pathImageTest = "imagesSystem/image-error650x450.png";
+							File fileTest = new File(pathImageTest);
+							BufferedImage bimgTest = null;
+							try {
+								bimgTest = ImageIO.read(fileTest);
+							} catch (IOException e2) {
+							}
+							if (bimgTest == null) {
+								btnImg.setIcon(null);
+							}
+							if (bimgTest != null) {
+								// Image scaledTest =
+								// bimgTest.getScaledInstance(widthHinhLon,
+								// heightHinhLon,
+								// Image.SCALE_SMOOTH);
+								ImageIcon imageTest = new ImageIcon(bimgTest);
+								btnImg.setIcon(null);
+								btnImg.setIcon(imageTest);
+							}
 						}
 					}
 					if (!isEmployee) {
 						// String cardId = textFieldMaTheTu.getText();
-
 						textFieldMaTheTu.setText("");
 						// System.out.println("Trường hợp ngoại lệ");
+						// the quet khong chinh xac
+						textArea.setText("Mã thẻ không chính xác" + "\n");
+						// van tay sai
+						String pathImageTest = "imagesSystem/image-error650x450.png";
+						File fileTest = new File(pathImageTest);
+						BufferedImage bimgTest = null;
+						try {
+							bimgTest = ImageIO.read(fileTest);
+						} catch (IOException e2) {
+						}
+						if (bimgTest == null) {
+							btnImg.setIcon(null);
+						}
+						if (bimgTest != null) {
+							// Image scaledTest =
+							// bimgTest.getScaledInstance(widthHinhLon,
+							// heightHinhLon,
+							// Image.SCALE_SMOOTH);
+							ImageIcon imageTest = new ImageIcon(bimgTest);
+							btnImg.setIcon(null);
+							btnImg.setIcon(imageTest);
+						}
 					}
 
 				} catch (Exception e2) {
@@ -3831,14 +3929,14 @@ public class ZKFPDemo extends JFrame {
 									// query by date and employee
 									String queryFood = "";
 									queryFood = "SELECT ofbd.id as order_food_by_day_id, of.employee_code, of.employee_id, of.employee_name, of.department_code, of.department_name, cf.name,cf.image,cf.id as category_food_id,fbd.shifts_id, of.registration_date\r\n"
-											+ "FROM quanlydatcom.order_food_by_day as ofbd, quanlydatcom.order_food as of, quanlydatcom.food_by_day fbd, quanlydatcom.category_food as cf\r\n"
+											+ "FROM order_food_by_day as ofbd, order_food as of, food_by_day fbd, category_food as cf\r\n"
 											+ "WHERE of.employee_id = ? AND of.registration_date = ? AND fbd.shifts_id = ? AND ofbd.order_food_id = of.id AND ofbd.food_by_day_id = fbd.id AND cf.id = fbd.category_food_id;";
 
 									try {
 										con = ZKFPDemo.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 										// kiem tra co du lieu ca do duoi DB
 										// chua
-										String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
+										String queryChecked = "SELECT * FROM food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
 										PreparedStatement preStatementChecked = null;
 										preStatementChecked = con.prepareStatement(queryChecked);
 										// check bang ma nhan vien cu
@@ -3916,9 +4014,17 @@ public class ZKFPDemo extends JFrame {
 										// handle cho phan mon an tu chon
 										if (!resultSet.first()) {
 											DepartmentData[] departmentHCMArray = DepartmentDataService
-													.timtheophongquanly("20002");
+													.timtheophongquanly(ZKFPDemo.codeBranch);
 											List<DepartmentData> departmentHCM = new ArrayList<>(
 													Arrays.asList(departmentHCMArray));
+
+//											DepartmentData[] departmentBDArray = DepartmentDataService
+//													.timtheophongquanly("20002");
+//											List<DepartmentData> departmentBD = new ArrayList<>(
+//													Arrays.asList(departmentBDArray));
+//
+//											departmentHCM.addAll(departmentBD);
+
 											// HANDLE -> Tao list id department
 											List<Long> listDepartmentCodeHCM = new ArrayList<Long>();
 											for (DepartmentData de : departmentHCM) {
@@ -3972,7 +4078,7 @@ public class ZKFPDemo extends JFrame {
 																// dang ky tang
 																// ca hay khong
 																String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																		+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																		+ "FROM food_over_time as food_ot, over_time as ot "
 																		+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																		+ "ot.id = food_ot.over_time_id";
 																preStatementChecked = con.prepareStatement(query);
@@ -4181,7 +4287,7 @@ public class ZKFPDemo extends JFrame {
 									// handle show 3 o nho cho 4 nguoi quet gan
 									// nhat
 									String queryTop4 = "SELECT FNA.employee_name,CF.name, FNA.employee_id, CF.image\r\n"
-											+ "FROM quanlydatcom.food_nha_an as FNA, quanlydatcom.category_food as CF\r\n"
+											+ "FROM food_nha_an as FNA, category_food as CF\r\n"
 											+ "WHERE FNA.category_food_id = CF.id and FNA.shifts_id = ? and FNA.food_date = ?\r\n"
 											+ "ORDER BY FNA.id DESC\r\n" + "LIMIT 3;";
 
@@ -4523,7 +4629,7 @@ public class ZKFPDemo extends JFrame {
 									// query by date and employee
 									String queryFood = "";
 									queryFood = "SELECT ofbd.id as order_food_by_day_id, of.employee_code, of.employee_id, of.employee_name, of.department_code, of.department_name, cf.name,cf.image,cf.id as category_food_id,fbd.shifts_id, of.registration_date\r\n"
-											+ "FROM quanlydatcom.order_food_by_day as ofbd, quanlydatcom.order_food as of, quanlydatcom.food_by_day fbd, quanlydatcom.category_food as cf\r\n"
+											+ "FROM order_food_by_day as ofbd, order_food as of, food_by_day fbd, category_food as cf\r\n"
 											+ "WHERE of.employee_id = ? AND of.registration_date = ? AND fbd.shifts_id = ? AND ofbd.order_food_id = of.id AND ofbd.food_by_day_id = fbd.id AND cf.id = fbd.category_food_id;	";
 
 									try {
@@ -4531,7 +4637,7 @@ public class ZKFPDemo extends JFrame {
 
 										// kiem tra co du lieu ca do duoi DB
 										// chua
-										String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
+										String queryChecked = "SELECT * FROM food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
 										PreparedStatement preStatementChecked = null;
 										preStatementChecked = con.prepareStatement(queryChecked);
 										// check bang ma nhan vien cu
@@ -4607,9 +4713,17 @@ public class ZKFPDemo extends JFrame {
 										// handle cho phan mon an tu chon
 										if (!resultSet.first()) {
 											DepartmentData[] departmentHCMArray = DepartmentDataService
-													.timtheophongquanly("20002");
+													.timtheophongquanly(ZKFPDemo.codeBranch);
 											List<DepartmentData> departmentHCM = new ArrayList<>(
 													Arrays.asList(departmentHCMArray));
+
+//											DepartmentData[] departmentBDArray = DepartmentDataService
+//													.timtheophongquanly("20002");
+//											List<DepartmentData> departmentBD = new ArrayList<>(
+//													Arrays.asList(departmentBDArray));
+//
+//											departmentHCM.addAll(departmentBD);
+
 											// HANDLE -> Tao list id department
 											List<Long> listDepartmentCodeHCM = new ArrayList<Long>();
 											for (DepartmentData de : departmentHCM) {
@@ -4685,7 +4799,7 @@ public class ZKFPDemo extends JFrame {
 																// dang ky tang
 																// ca hay khong
 																String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																		+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																		+ "FROM food_over_time as food_ot, over_time as ot "
 																		+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																		+ "ot.id = food_ot.over_time_id";
 																preStatementChecked = con.prepareStatement(query);
@@ -4895,7 +5009,7 @@ public class ZKFPDemo extends JFrame {
 									// handle show 3 o nho cho 4 nguoi quet gan
 									// nhat
 									String queryTop4 = "SELECT FNA.employee_name,CF.name, FNA.employee_id, CF.image\r\n"
-											+ "FROM quanlydatcom.food_nha_an as FNA, quanlydatcom.category_food as CF\r\n"
+											+ "FROM food_nha_an as FNA, category_food as CF\r\n"
 											+ "WHERE FNA.category_food_id = CF.id and FNA.shifts_id = ? and FNA.food_date = ?\r\n"
 											+ "ORDER BY FNA.id DESC\r\n" + "LIMIT 3;";
 
@@ -5211,14 +5325,14 @@ public class ZKFPDemo extends JFrame {
 									// query by date and employee
 									String queryFood = "";
 									queryFood = "SELECT ofbd.id as order_food_by_day_id, of.employee_code, of.employee_id, of.employee_name, of.department_code, of.department_name, cf.name,cf.image,cf.id as category_food_id,fbd.shifts_id, of.registration_date\r\n"
-											+ "FROM quanlydatcom.order_food_by_day as ofbd, quanlydatcom.order_food as of, quanlydatcom.food_by_day fbd, quanlydatcom.category_food as cf\r\n"
+											+ "FROM order_food_by_day as ofbd, order_food as of, food_by_day fbd, category_food as cf\r\n"
 											+ "WHERE of.employee_id = ? AND of.registration_date = ? AND fbd.shifts_id = ? AND ofbd.order_food_id = of.id AND ofbd.food_by_day_id = fbd.id AND cf.id = fbd.category_food_id;	";
 
 									try {
 										con = ZKFPDemo.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 										// kiem tra co du lieu ca do duoi DB
 										// chua
-										String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
+										String queryChecked = "SELECT * FROM food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
 										PreparedStatement preStatementChecked = null;
 										preStatementChecked = con.prepareStatement(queryChecked);
 										// check bang ma nhan vien cu
@@ -5296,9 +5410,17 @@ public class ZKFPDemo extends JFrame {
 										// handle cho phan mon an tu chon
 										if (!resultSet.first()) {
 											DepartmentData[] departmentHCMArray = DepartmentDataService
-													.timtheophongquanly("20002");
+													.timtheophongquanly(ZKFPDemo.codeBranch);
 											List<DepartmentData> departmentHCM = new ArrayList<>(
 													Arrays.asList(departmentHCMArray));
+
+//											DepartmentData[] departmentBDArray = DepartmentDataService
+//													.timtheophongquanly("20002");
+//											List<DepartmentData> departmentBD = new ArrayList<>(
+//													Arrays.asList(departmentBDArray));
+//
+//											departmentHCM.addAll(departmentBD);
+
 											// HANDLE -> Tao list id department
 											List<Long> listDepartmentCodeHCM = new ArrayList<Long>();
 											for (DepartmentData de : departmentHCM) {
@@ -5374,7 +5496,7 @@ public class ZKFPDemo extends JFrame {
 																// dang ky tang
 																// ca hay khong
 																String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																		+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																		+ "FROM food_over_time as food_ot, over_time as ot "
 																		+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																		+ "ot.id = food_ot.over_time_id";
 																preStatementChecked = con.prepareStatement(query);
@@ -5583,7 +5705,7 @@ public class ZKFPDemo extends JFrame {
 									// handle show 3 o nho cho 4 nguoi quet gan
 									// nhat
 									String queryTop4 = "SELECT FNA.employee_name,CF.name, FNA.employee_id, CF.image\r\n"
-											+ "FROM quanlydatcom.food_nha_an as FNA, quanlydatcom.category_food as CF\r\n"
+											+ "FROM food_nha_an as FNA, category_food as CF\r\n"
 											+ "WHERE FNA.category_food_id = CF.id and FNA.shifts_id = ? and FNA.food_date = ?\r\n"
 											+ "ORDER BY FNA.id DESC\r\n" + "LIMIT 3;";
 
@@ -6180,13 +6302,13 @@ public class ZKFPDemo extends JFrame {
 								// query by date and employee
 								String queryFood = "";
 								queryFood = "SELECT ofbd.id as order_food_by_day_id, of.employee_code, of.employee_id, of.employee_name, of.department_code, of.department_name, cf.name,cf.image,cf.id as category_food_id,fbd.shifts_id, of.registration_date\r\n"
-										+ "FROM quanlydatcom.order_food_by_day as ofbd, quanlydatcom.order_food as of, quanlydatcom.food_by_day fbd, quanlydatcom.category_food as cf\r\n"
+										+ "FROM order_food_by_day as ofbd, order_food as of, food_by_day fbd, category_food as cf\r\n"
 										+ "WHERE of.employee_id = ? AND of.registration_date = ? AND fbd.shifts_id = ? AND ofbd.order_food_id = of.id AND ofbd.food_by_day_id = fbd.id AND cf.id = fbd.category_food_id;	";
 
 								try {
 									con = ZKFPDemo.getConnectionMySQL(URL.LINK_QUANLYDATCOM_JDBC);
 									// kiem tra co du lieu ca do duoi DB chua
-									String queryChecked = "SELECT * FROM quanlydatcom.food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
+									String queryChecked = "SELECT * FROM food_nha_an WHERE employee_id = ? and shifts_id = ? and food_date = ?";
 									PreparedStatement preStatementChecked = null;
 									preStatementChecked = con.prepareStatement(queryChecked);
 									// check bang ma nhan vien cu
@@ -6250,9 +6372,17 @@ public class ZKFPDemo extends JFrame {
 									// handle cho phan mon an tu chon
 									if (!resultSet.first()) {
 										DepartmentData[] departmentHCMArray = DepartmentDataService
-												.timtheophongquanly("20002");
+												.timtheophongquanly(ZKFPDemo.codeBranch);
 										List<DepartmentData> departmentHCM = new ArrayList<>(
 												Arrays.asList(departmentHCMArray));
+
+//										DepartmentData[] departmentBDArray = DepartmentDataService
+//												.timtheophongquanly("20002");
+//										List<DepartmentData> departmentBD = new ArrayList<>(
+//												Arrays.asList(departmentBDArray));
+//
+//										departmentHCM.addAll(departmentBD);
+
 										// HANDLE -> Tao list id department
 										List<Long> listDepartmentCodeHCM = new ArrayList<Long>();
 										for (DepartmentData de : departmentHCM) {
@@ -6325,7 +6455,7 @@ public class ZKFPDemo extends JFrame {
 															// ky tang ca hay
 															// khong
 															String query = "SELECT food_ot.employee_name, food_ot.employee_code, ot.department_code,ot.department_name,ot.food_date, ot.shifts_id, food_ot.employee_code_old "
-																	+ "FROM quanlydatcom.food_over_time as food_ot, quanlydatcom.over_time as ot "
+																	+ "FROM food_over_time as food_ot, over_time as ot "
 																	+ "WHERE food_ot.employee_code = ? AND ot.shifts_id = ? AND ot.food_date = ? AND "
 																	+ "ot.id = food_ot.over_time_id";
 															preStatementChecked = con.prepareStatement(query);
@@ -6527,7 +6657,7 @@ public class ZKFPDemo extends JFrame {
 
 								// handle show 3 o nho cho 4 nguoi quet gan nhat
 								String queryTop4 = "SELECT FNA.employee_name,CF.name, FNA.employee_id, CF.image\r\n"
-										+ "FROM quanlydatcom.food_nha_an as FNA, quanlydatcom.category_food as CF\r\n"
+										+ "FROM food_nha_an as FNA, category_food as CF\r\n"
 										+ "WHERE FNA.category_food_id = CF.id and FNA.shifts_id = ? and FNA.food_date = ?\r\n"
 										+ "ORDER BY FNA.id DESC\r\n" + "LIMIT 3;";
 
@@ -7023,4 +7153,49 @@ public class ZKFPDemo extends JFrame {
 		}
 		return true;
 	}
+
+	public static String readFile(String path) {
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(path));
+			try {
+				StringBuilder sb = new StringBuilder();
+				String line = br.readLine();
+
+				while (line != null) {
+					sb.append(line);
+					sb.append(System.lineSeparator());
+					line = br.readLine();
+				}
+				String everything = sb.toString();
+				return everything;
+			} finally {
+				br.close();
+			}
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public static String readFileUrlVanTay() {
+		try {
+			BufferedReader br = new BufferedReader(new FileReader("configs/url_ds_vantay.txt"));
+			try {
+				StringBuilder sb = new StringBuilder();
+				String line = br.readLine();
+
+				while (line != null) {
+					sb.append(line);
+					sb.append(System.lineSeparator());
+					line = br.readLine();
+				}
+				String everything = sb.toString();
+				return everything;
+			} finally {
+				br.close();
+			}
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 }

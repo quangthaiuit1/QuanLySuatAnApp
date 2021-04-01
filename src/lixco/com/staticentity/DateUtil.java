@@ -48,6 +48,7 @@ public class DateUtil {
 	public static Date HANDLE_START_TIME(int hour, int minutes, int ca) {
 		Calendar cal = Calendar.getInstance();
 		int hourTemp = cal.getTime().getHours();
+		// handle: ngay 26 nhung khi 0h se nhay sang ca 3 ngay 27 => lui lai 1 ngay
 		if (hourTemp >= 0 && hourTemp <= 2) {
 			cal.add(Calendar.DATE, -1);
 		}
@@ -56,8 +57,8 @@ public class DateUtil {
 		cal.set(Calendar.MINUTE, minutes);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		cal.add(Calendar.MINUTE, -45);
-		if (ca == 3) {
+//		cal.add(Calendar.MINUTE, -45);
+		if (ca == 3 && hourTemp >= 0 && hourTemp <= 2) {
 			cal.add(Calendar.DATE, +1);
 		}
 		return cal.getTime();
@@ -74,8 +75,8 @@ public class DateUtil {
 		cal.set(Calendar.MINUTE, minutes);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		cal.add(Calendar.MINUTE, +105);
-		if (ca == 3) {
+		cal.add(Calendar.HOUR_OF_DAY, 4);
+		if (ca == 3 && hourTemp >= 0 && hourTemp <= 2) {
 			cal.add(Calendar.DATE, +1);
 		}
 		return cal.getTime();

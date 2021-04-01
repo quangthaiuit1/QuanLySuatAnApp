@@ -11,19 +11,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class loadvantay {
-	public static List<template> findAll() {
+	public static List<template> findAll(String urlDB, String usernameRemote, String password) {
 		List<template> ltl = new ArrayList<>();
 		Connection connection = null;
 		Statement statement = null;
 		try {
-			connection = DriverManager.getConnection("jdbc:sqlserver://192.168.1.236;databaseName=MITACOSQL", "sa",
-					"LIXCO@admin2016");
+			connection = DriverManager.getConnection(urlDB, usernameRemote, password);
 			String sql = "select template.*, manhanvien, tennhanvien, mathe from template, nhanvien where template.machamcong = nhanvien.machamcong";
 			statement = connection.createStatement();
 			ResultSet res = statement.executeQuery(sql);
 			while (res.next()) {
 				template tl = new template(res.getInt("MaChamCong"), res.getInt("FingerID"), res.getInt("Flag"),
-						res.getString("FingerTemplate"), res.getString("MaNhanVien"), res.getString("TenNhanvien"), res.getString("mathe"));
+						res.getString("FingerTemplate"), res.getString("MaNhanVien"), res.getString("TenNhanvien"),
+						res.getString("mathe"));
 
 				ltl.add(tl);
 			}

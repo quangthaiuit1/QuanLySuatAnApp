@@ -1,0 +1,27 @@
+
+
+Version:	3.12
+CmdLine:	C:\Users\lixco\Desktop\AppQuanLySuatAn\QuanLySuatAnApp\version_exe\15-03-2021\1\QLSABD.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Users\lixco\Desktop\AppQuanLySuatAn\QuanLySuatAnApp\version_exe\15-03-2021\1\.
+Java min ver:	1.000.000
+Java max ver:	
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8
+Check launcher:	C:\Program Files\Java\jre1.8.0_221\bin\javaw.exe (OK)
+Match:		1.008.000
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8.0_221
+Check launcher:	C:\Program Files\Java\jre1.8.0_221\bin\javaw.exe (OK)
+Match:		1.008.000_221
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8
+Ignore:		1.008.000
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8.0_221
+Ignore:		1.008.000_221
+64-bit search:	SOFTWARE\JavaSoft\JRE...
+64-bit search:	SOFTWARE\JavaSoft\JDK...
+Runtime used:	1.008.000_221 (64-bit)
+Launcher:	C:\Program Files\Java\jre1.8.0_221\bin\javaw.exe
+Launcher args:	-jar "C:\Users\lixco\Desktop\AppQuanLySuatAn\QuanLySuatAnApp\version_exe\15-03-2021\1\QLSABD.exe"
+Args length:	97/32768 chars
+Exit code:	0
