@@ -1,0 +1,27 @@
+
+
+Version:	3.13
+CmdLine:	C:\Users\Admin\Desktop\QuanLySuatAnApp\version_exe\08-04-2021\1\QLSA.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Users\Admin\Desktop\QuanLySuatAnApp\version_exe\08-04-2021\1\.
+Java min ver:	1.000.000
+Java max ver:	
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8
+Check launcher:	C:\Program Files\Java\jre1.8.0_221\bin\javaw.exe (OK)
+Match:		1.008.000
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.8.0_221
+Check launcher:	C:\Program Files\Java\jre1.8.0_221\bin\javaw.exe (OK)
+Match:		1.008.000_221
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8
+Ignore:		1.008.000
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.8.0_221
+Ignore:		1.008.000_221
+64-bit search:	SOFTWARE\JavaSoft\JRE...
+64-bit search:	SOFTWARE\JavaSoft\JDK...
+Runtime used:	1.008.000_221 (64-bit)
+Launcher:	C:\Program Files\Java\jre1.8.0_221\bin\javaw.exe
+Launcher args:	-jar "C:\Users\Admin\Desktop\QuanLySuatAnApp\version_exe\08-04-2021\1\QLSA.exe"
+Args length:	79/32768 chars
+Exit code:	0

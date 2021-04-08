@@ -81,6 +81,7 @@ public class ZKFPDemo extends JFrame {
 	JRadioButton radioISO = null;
 	JRadioButton radioANSI = null;
 	JRadioButton radioZK = null;
+	JButton btnRefesh = null;
 	// JButton btnhinh = null;
 
 	JTextField textFieldMaTheTu;
@@ -187,7 +188,7 @@ public class ZKFPDemo extends JFrame {
 		dateCurrent = DateUtil.DATE_WITHOUT_TIME(new Date());
 
 		this.setLayout(null);
-		btnOpen = new JButton("START");
+		btnOpen = new JButton("Bắt đầu");
 		this.add(btnOpen);
 		int nRsize = 30;
 		btnOpen.setBounds(30, 20, widthJComponentLeft, 50);
@@ -195,15 +196,22 @@ public class ZKFPDemo extends JFrame {
 		btnOpen.setBackground(new Color(41, 143, 72));
 		btnOpen.setForeground(Color.WHITE);
 
-		btnClose = new JButton("CLOSE");
+		btnClose = new JButton("Đóng");
 		this.add(btnClose);
 		btnClose.setBounds(30, 50 + nRsize, widthJComponentLeft, 50);
 		btnClose.setFont(new Font("Times New Roman", Font.BOLD, 30));
 		btnClose.setBackground(new Color(182, 46, 46));
 		btnClose.setForeground(Color.WHITE);
 
+		btnRefesh = new JButton("Sử dụng thẻ");
+		this.add(btnRefesh);
+		btnRefesh.setBounds(30, 110 + nRsize, widthJComponentLeft, 50);
+		btnRefesh.setFont(new Font("Times New Roman", Font.BOLD, 30));
+		btnRefesh.setBackground(new Color(234, 151, 62));
+		btnRefesh.setForeground(Color.WHITE);
+
 		// Tao chieu cao ban dau // chi can chinh o day cho tat ca cac the
-		int heightFirst = 150;
+		int heightFirst = 160;
 
 		labelMaThe = new JLabel("Mã thẻ", JLabel.CENTER);
 		this.add(labelMaThe);
@@ -531,6 +539,15 @@ public class ZKFPDemo extends JFrame {
 					togglebtnKhongQuetVT.setText("CÓ Đ.KÝ");
 					ZKFPDemo.ON_ALLOW_EXCEPTION = false;
 				}
+			}
+		});
+
+		btnRefesh.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textFieldMaTheTu.setText("");
+				textFieldMaTheTu.requestFocusInWindow();
 			}
 		});
 
@@ -7175,27 +7192,4 @@ public class ZKFPDemo extends JFrame {
 			return null;
 		}
 	}
-
-	public static String readFileUrlVanTay() {
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("configs/url_ds_vantay.txt"));
-			try {
-				StringBuilder sb = new StringBuilder();
-				String line = br.readLine();
-
-				while (line != null) {
-					sb.append(line);
-					sb.append(System.lineSeparator());
-					line = br.readLine();
-				}
-				String everything = sb.toString();
-				return everything;
-			} finally {
-				br.close();
-			}
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
 }
