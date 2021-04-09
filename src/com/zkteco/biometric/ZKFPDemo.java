@@ -44,8 +44,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Template;
-
 import lixco.com.entity.FoodNhaAn;
 import lixco.com.entity.OrderFood;
 import lixco.com.staticentity.DateUtil;
@@ -57,8 +55,8 @@ import lixco.com.trong.DepartmentDataService;
 import lixco.com.trong.EmployeeData;
 import lixco.com.trong.TimekeepingData;
 import lixco.com.trong.TimekeepingDataService;
-import lixco.com.vantay.loadvantay;
-import lixco.com.vantay.template;
+import lixco.com.vantay.Template;
+import lixco.com.vantay.LoadVanTay;
 
 public class ZKFPDemo extends JFrame {
 
@@ -131,7 +129,7 @@ public class ZKFPDemo extends JFrame {
 
 	private JTextArea textArea;
 
-	List<template> listl = new ArrayList<>();
+	List<Template> listl = new ArrayList<>();
 	// the width of fingerprint image
 	int fpWidth = 0;
 	// the height of fingerprint image
@@ -542,6 +540,7 @@ public class ZKFPDemo extends JFrame {
 			}
 		});
 
+		// button su dung the
 		btnRefesh.addActionListener(new ActionListener() {
 
 			@Override
@@ -551,6 +550,7 @@ public class ZKFPDemo extends JFrame {
 			}
 		});
 
+		// button bat dau
 		btnOpen.addActionListener(new ActionListener() {
 
 			@Override
@@ -778,9 +778,9 @@ public class ZKFPDemo extends JFrame {
 				String urlDB = parts[0];
 				String usernameRemote = parts[1];
 				String passRemote = parts[2];
-				listl = loadvantay.findAll(urlDB.trim(), usernameRemote.trim(), passRemote.trim());
+				listl = LoadVanTay.findAll(urlDB.trim(), usernameRemote.trim(), passRemote.trim());
 				for (int i = 0; i < listl.size(); i++) {
-					template tl = new template(listl.get(i).getMaChamCong(), listl.get(i).getFingerID(),
+					Template tl = new Template(listl.get(i).getMaChamCong(), listl.get(i).getFingerID(),
 							listl.get(i).getFlag(), listl.get(i).getFingerTemplate());
 					String cmau = tl.getFingerTemplate();
 					int[] sokt = new int[1];
@@ -841,7 +841,7 @@ public class ZKFPDemo extends JFrame {
 					// Du lieu a hong dua qua khong co truong ma the nen khong
 					// the so sanh dc
 					for (int indexMathe = 0; indexMathe < listl.size(); indexMathe++) {
-						BigInteger inum = new BigInteger(listl.get(indexMathe).getMathe());
+						BigInteger inum = new BigInteger(listl.get(indexMathe).getMaThe());
 						BigInteger inum1 = new BigInteger("1");
 						if (!textFieldMaTheTu.getText().isEmpty()) {
 							inum1 = new BigInteger(textFieldMaTheTu.getText());
