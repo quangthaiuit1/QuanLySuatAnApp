@@ -16,8 +16,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -52,11 +50,10 @@ import lixco.com.staticentity.Shifts;
 import lixco.com.staticentity.URL;
 import lixco.com.trong.DepartmentData;
 import lixco.com.trong.DepartmentDataService;
-import lixco.com.trong.EmployeeData;
 import lixco.com.trong.TimekeepingData;
 import lixco.com.trong.TimekeepingDataService;
-import lixco.com.vantay.Template;
 import lixco.com.vantay.LoadVanTay;
+import lixco.com.vantay.Template;
 
 public class ZKFPDemo extends JFrame {
 
@@ -3455,30 +3452,6 @@ public class ZKFPDemo extends JFrame {
 									// end image he thong
 								}
 								// END CODE
-							}
-						} else {
-							// the quet khong chinh xac
-							textFieldMaTheTu.setText("");
-							textArea.setText("Mã thẻ không chính xác" + "\n");
-							// van tay sai
-							String pathImageTest = "imagesSystem/image-error650x450.png";
-							File fileTest = new File(pathImageTest);
-							BufferedImage bimgTest = null;
-							try {
-								bimgTest = ImageIO.read(fileTest);
-							} catch (IOException e2) {
-							}
-							if (bimgTest == null) {
-								btnImg.setIcon(null);
-							}
-							if (bimgTest != null) {
-								// Image scaledTest =
-								// bimgTest.getScaledInstance(widthHinhLon,
-								// heightHinhLon,
-								// Image.SCALE_SMOOTH);
-								ImageIcon imageTest = new ImageIcon(bimgTest);
-								btnImg.setIcon(null);
-								btnImg.setIcon(imageTest);
 							}
 						}
 					}
